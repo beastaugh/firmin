@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin.js demo</title>
+    
+    <style type="text/css" media="screen">
+        #red-box {background:#f00; width:200px; height:166px;}
+    </style>
+    
+    <script type="text/javascript" src="../src/firmin.js"></script>
+</head><body>
+    
+    <div id="red-box"></div>
+    
+    <script type="text/javascript">
+    (function() {
+        var redBox = document.getElementById('red-box');
+        
+        setTimeout(function() {
+            Firmin.translateX(redBox, 300);
+        }, 1000);
+        
+        setTimeout(function() {
+            Firmin.translateX(redBox, 150);
+        }, 2000);
+    })();
+    </script>
+    
+</body></html>
