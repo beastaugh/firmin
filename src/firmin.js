@@ -1,5 +1,5 @@
 Firmin = (function() {
-    var API = {},
+    var API = {}, transforms = {},
     
     style = (function() {
         var head = document.getElementsByTagName('head')[0],
@@ -11,8 +11,9 @@ Firmin = (function() {
         return document.styleSheets[document.styleSheets.length - 1];
     })(),
     
-    save = function(selector, declarations) {
-        style.addRule(selector, declarations);
+    save = function(name, declarations) {
+        transforms[name] = declarations;
+        style.addRule('.' + name, declarations);
     },
     
     buildRule = function(type) {
@@ -46,7 +47,7 @@ Firmin = (function() {
             ref  = hash(rule),
             name = el.className.replace(/\s*firmin\d+\s*/, '');
         
-        save('.' + ref, rule);
+        save(ref, rule);
         
         el.className = (name.length > 0 ? (name + ' ') : '')  + ref;
         
