@@ -1,5 +1,5 @@
 Firmin = (function() {
-    var API = {}, transforms = {},
+    var API = {}, transforms = {}, hashCount = 0,
     
     style = (function() {
         var head = document.getElementsByTagName('head')[0],
@@ -34,8 +34,6 @@ Firmin = (function() {
         
         return prefix + type + '(' + rule + ');';
     },
-    
-    hashCount = 0,
     
     hash = function(str) {
         hashCount += 1;
