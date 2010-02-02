@@ -16,11 +16,19 @@
         var redBox = document.getElementById('red-box');
         
         setTimeout(function() {
-            Firmin.translateX(redBox, 300);
+            Firmin.translate(redBox, {x: 300, y: 200});
+        }, 500);
+        
+        setTimeout(function() {
+            Firmin.translate(redBox, {x: 150, y: 100});
         }, 1000);
         
         setTimeout(function() {
-            Firmin.translateX(redBox, 150);
+            Firmin.translateX(redBox, 400);
+        }, 1500);
+        
+        setTimeout(function() {
+            Firmin.translateY(redBox, 0);
         }, 2000);
     })();
     </script>

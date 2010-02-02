@@ -25,8 +25,8 @@ Firmin = (function() {
         for (var i = 0, len = values.length; i < len; i++) {
             current = values[i];
             
-            if (typeof current === 'number') {
-                current += 'px';
+            if (i !== 0) {
+                rule += ','
             }
             
             rule += current;
@@ -42,16 +42,36 @@ Firmin = (function() {
         return 'firmin' + hashCount;
     };
     
-    API.translateX = function(el, dist) {
-        var rule = buildRule('translateX', dist),
-            ref  = hash(rule),
-            name = el.className.replace(/\s*firmin\d+\s*/, '');
+    API.translate = function(el, translation) {
+        var x = translation.x || 0,
+            y = translation.y || 0,
+            rule, ref, name;
+        
+        if (typeof x === 'number' && x !== 0) {
+            x += 'px';
+        }
+        
+        if (typeof y === 'number' && y !== 0) {
+            y += 'px';
+        }
+        
+        rule = buildRule('translate', x, y);
+        ref  = hash(rule);
+        name = el.className.replace(/\s*firmin\d+\s*/, '');
         
         save(ref, rule);
         
         el.className = (name.length > 0 ? (name + ' ') : '')  + ref;
         
         return el;
+    };
+    
+    API.translateX = function(el, dist) {
+        return API.translate(el, {x: dist});
+    };
+    
+    API.translateY = function(el, dist) {
+        return API.translate(el, {y: dist});
     };
     
     return API;
