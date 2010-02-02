@@ -38,12 +38,23 @@ Firmin = (function() {
     hash = function(str) {
         hashCount += 1;
         return 'firmin' + hashCount;
+    },
+    
+    __transform__ = function(type, el, transform) {
+        var rule = buildRule(type, transform.x, transform.y),
+            ref  = hash(rule),
+            name = el.className.replace(/\s*firmin\d+\s*/, '');
+        
+        save(ref, rule);
+        
+        el.className = (name.length > 0 ? (name + ' ') : '')  + ref;
+        
+        return el;
     };
     
-    API.translate = function(el, translation) {
-        var x = translation.x || 0,
-            y = translation.y || 0,
-            rule, ref, name;
+    API.translate = function(el, transform) {
+        var x = transform.x || 0,
+            y = transform.y || 0;
         
         if (typeof x === 'number' && x !== 0) {
             x += 'px';
@@ -53,15 +64,10 @@ Firmin = (function() {
             y += 'px';
         }
         
-        rule = buildRule('translate', x, y);
-        ref  = hash(rule);
-        name = el.className.replace(/\s*firmin\d+\s*/, '');
+        transform.x = x;
+        transform.y = y;
         
-        save(ref, rule);
-        
-        el.className = (name.length > 0 ? (name + ' ') : '')  + ref;
-        
-        return el;
+        return __transform__('translate', el, transform);
     };
     
     API.translateX = function(el, dist) {
@@ -72,5 +78,25 @@ Firmin = (function() {
         return API.translate(el, {y: dist});
     };
     
+    API.scale =  function(el, transform) {
+        if (!transform.x) {
+            transform.x = 1;
+        }
+        
+        if (!transform.y) {
+            transform.y = 1;
+        }
+        
+        return __transform__('scale', el, transform);
+    };
+    
+    API.scaleX = function(el, dist) {
+        return API.scale(el, {x: dist});
+    };
+    
+    API.scaleY = function(el, dist) {
+        return API.scale(el, {y: dist});
+    };
+
     return API;
 })();
