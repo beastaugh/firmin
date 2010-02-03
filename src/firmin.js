@@ -1,60 +1,111 @@
 Firmin = (function() {
-    var API = {}, transforms = {}, hashCount = 0,
+    var EXT        = {},
+        transforms = {},
     
     style = (function() {
-        var head = document.getElementsByTagName('head')[0],
-            tag  = document.createElement('style');
+        var head = document.getElementsByTagName("head")[0],
+            tag  = document.createElement("style");
         
-        tag.setAttribute('type', 'text/css');
+        tag.setAttribute("type", "text/css");
         head.appendChild(tag);
         
         return document.styleSheets[document.styleSheets.length - 1];
-    })(),
+    })();
     
-    save = function(name, declarations) {
-        transforms[name] = declarations;
-        style.addRule('.' + name, declarations);
-    },
-    
-    buildRule = function(type) {
-        var prefix = '-webkit-transform:',
-            values = Array.prototype.slice.call(arguments, 1),
-            rule   = '',
-            current;
+    // Transforms are the basic building blocks of Firmin.
+    EXT.Transform = function() {
+        this.operations = {
+            translate: [0, 0],
+            scale:     [1, 1],
+            skew:      [0, 0],
+            rotate:    [0]
+        };
         
-        for (var i = 0, len = values.length; i < len; i++) {
-            current = values[i];
-            
-            if (i !== 0) {
-                rule += ','
+        return this;
+    };
+    
+    EXT.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix)/;
+    
+    // Firmin.Transform.create is a factory method that allows a new Transform
+    // to be created with any of the available operations, rather than adding
+    // them one by one.
+    //
+    //         var t = Firmin.Transform.create({
+    //             scale:     {x: 2,   y: 1.5},
+    //             translate: {x: 150, y: 450},
+    //         });
+    //
+    EXT.Transform.create = function(transforms) {
+        var transform = new EXT.Transform(),
+            type;
+        
+        for (type in transforms) {
+            if (type.match(EXT.Transform.OPERATION_PATTERN)) {
+                transform[type](transforms[type]);
             }
-            
-            rule += current;
         }
         
-        return prefix + type + '(' + rule + ');';
-    },
+        return transform;
+    };
     
-    hash = function(str) {
-        hashCount += 1;
-        return 'firmin' + hashCount;
-    },
+    EXT.Transform.prototype.hash = function() {
+        var hash = "", type;
+        
+        for (type in this.operations) {
+            hash += "-" + this.operations[type].join("-").replace(/\./g, "_");
+        }
+        
+        return hash;
+    };
     
-    __transform__ = function(type, el, transform) {
-        var rule = buildRule(type, transform.x, transform.y),
-            ref  = hash(rule),
-            name = el.className.replace(/\s*firmin\d+\s*/, '');
+    EXT.Transform.prototype.build = function() {
+        var prefix = "-webkit-transform:",
+            rule   = "",
+            type;
         
-        save(ref, rule);
+        for (type in this.operations) {
+            rule += " " + type + "(" + this.operations[type].join(", ") + ")";
+        }
         
-        el.className = (name.length > 0 ? (name + ' ') : '')  + ref;
+        return prefix + rule + ";";
+    };
+    
+    EXT.Transform.prototype.save = function() {
+        var hash = this.hash(),
+            name = 'firmin' + hash,
+            rule = transforms[hash];
+        
+        if (!rule) {
+            rule = this.build();
+            transforms[hash] = rule;
+            
+            style.addRule('.' + name, rule);
+        }
+        
+        return name;
+    };
+    
+    EXT.Transform.prototype.exec = function(el) {
+        var className    = el.className.replace(/\s*firmin[a-f0-9]+\s*/, ''),
+            tranformName = this.save();
+        
+        el.className = (name.length > 0 ? (name + ' ') : '')  + tranformName;
         
         return el;
     };
     
-    API.translate = function(el, transform) {
-        var x = transform.x || 0,
-            y = transform.y || 0;
+    EXT.Transform.prototype.translate = function(distances) {
+        var x = distances.x,
+            y = distances.y,
+            a, b;
+        
+        if (this.operations['translate']) {
+            a = this.operations['translate'].x || 0;
+            b = this.operations['translate'].y || 0;
+        } else {
+            a = 0;
+            b = 0;
+        }
         
         if (typeof x === 'number' && x !== 0) {
             x += 'px';
@@ -64,39 +115,43 @@ Firmin = (function() {
             y += 'px';
         }
         
-        transform.x = x;
-        transform.y = y;
+        this.operations['translate'] = [x || a, y || b];
+    };
+    
+    EXT.Transform.prototype.translateX = function(distance) {
+        this.translate({x: distance});
+    };
+    
+    EXT.Transform.prototype.translateY = function(distance) {
+        this.translate({y: distance});
+    };
+    
+    EXT.Transform.prototype.scale = function(magnitudes) {
+        var a, b;
         
-        return __transform__('translate', el, transform);
-    };
-    
-    API.translateX = function(el, dist) {
-        return API.translate(el, {x: dist});
-    };
-    
-    API.translateY = function(el, dist) {
-        return API.translate(el, {y: dist});
-    };
-    
-    API.scale =  function(el, transform) {
-        if (!transform.x) {
-            transform.x = 1;
+        if (this.operations['scale']) {
+            a = this.operations['scale'].x || 1;
+            b = this.operations['scale'].y || 1;
+        } else {
+            a = 1;
+            b = 1;
         }
         
-        if (!transform.y) {
-            transform.y = 1;
-        }
-        
-        return __transform__('scale', el, transform);
+        this.operations['scale'] = [magnitudes.x || a, magnitudes.y || b];
     };
     
-    API.scaleX = function(el, dist) {
-        return API.scale(el, {x: dist});
+    EXT.Transform.prototype.scaleX = function(magnitude) {
+        this.scale({x: magnitude});
     };
     
-    API.scaleY = function(el, dist) {
-        return API.scale(el, {y: dist});
+    EXT.Transform.prototype.scaleY = function(magnitude) {
+        this.scale({y: magnitude});
     };
-
-    return API;
+    
+    EXT.transform = function(el, transformation) {
+        var transform = EXT.Transform.create(transformation);
+        transform.exec(el);
+    };
+    
+    return EXT;
 })();
