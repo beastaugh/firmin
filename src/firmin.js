@@ -148,6 +148,38 @@ Firmin = (function() {
         this.scale({y: magnitude});
     };
     
+    EXT.Transform.prototype.skew = function(magnitudes) {
+        var x = magnitudes.x,
+            y = magnitudes.y,
+            a, b;
+        
+        if (this.operations['skew']) {
+            a = this.operations['skew'].x || 0;
+            b = this.operations['skew'].y || 0;
+        } else {
+            a = 0;
+            b = 0;
+        }
+        
+        if (typeof x === 'number' && x !== 0) {
+            x += 'deg';
+        }
+        
+        if (typeof y === 'number' && y !== 0) {
+            y += 'deg';
+        }
+        
+        this.operations['skew'] = [x || a, y || b];
+    };
+    
+    EXT.Transform.prototype.skewX = function(magnitude) {
+        this.skew({x: magnitude});
+    };
+    
+    EXT.Transform.prototype.skewY = function(magnitude) {
+        this.skew({y: magnitude});
+    };
+    
     EXT.transform = function(el, transformation) {
         var transform = EXT.Transform.create(transformation);
         transform.exec(el);
