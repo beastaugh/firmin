@@ -52,7 +52,7 @@ Firmin = (function() {
         var hash = "", type;
         
         for (type in this.operations) {
-            hash += "-" + this.operations[type].join("-").replace(/\./g, "_");
+            hash += "-" + this.operations[type].join("-").replace(/[^\w]/g, "_");
         }
         
         return hash;
