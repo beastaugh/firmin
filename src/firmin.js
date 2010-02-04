@@ -17,8 +17,8 @@ Firmin = (function() {
         this.operations = {
             translate: [0, 0],
             scale:     [1, 1],
-            skew:      [0, 0],
-            rotate:    [0]
+            skew:      ['0deg', '0deg'],
+            rotate:    ['0deg']
         };
         
         return this;
@@ -97,15 +97,8 @@ Firmin = (function() {
     EXT.Transform.prototype.translate = function(distances) {
         var x = distances.x,
             y = distances.y,
-            a, b;
-        
-        if (this.operations['translate']) {
-            a = this.operations['translate'].x || 0;
-            b = this.operations['translate'].y || 0;
-        } else {
-            a = 0;
-            b = 0;
-        }
+            a = this.operations['translate'][0],
+            b = this.operations['translate'][1];
         
         if (typeof x === 'number' && x !== 0) {
             x += 'px';
@@ -127,15 +120,8 @@ Firmin = (function() {
     };
     
     EXT.Transform.prototype.scale = function(magnitudes) {
-        var a, b;
-        
-        if (this.operations['scale']) {
-            a = this.operations['scale'].x || 1;
-            b = this.operations['scale'].y || 1;
-        } else {
-            a = 1;
-            b = 1;
-        }
+        var a = this.operations['scale'][0],
+            b = this.operations['scale'][1];
         
         this.operations['scale'] = [magnitudes.x || a, magnitudes.y || b];
     };
@@ -151,21 +137,14 @@ Firmin = (function() {
     EXT.Transform.prototype.skew = function(magnitudes) {
         var x = magnitudes.x,
             y = magnitudes.y,
-            a, b;
+            a = this.operations['skew'][0],
+            b = this.operations['skew'][1];
         
-        if (this.operations['skew']) {
-            a = this.operations['skew'].x || 0;
-            b = this.operations['skew'].y || 0;
-        } else {
-            a = 0;
-            b = 0;
-        }
-        
-        if (typeof x === 'number' && x !== 0) {
+        if (typeof x === 'number') {
             x += 'deg';
         }
         
-        if (typeof y === 'number' && y !== 0) {
+        if (typeof y === 'number') {
             y += 'deg';
         }
         
