@@ -18,7 +18,8 @@ Firmin = (function() {
             translate: [0, 0],
             scale:     [1, 1],
             skew:      ['0deg', '0deg'],
-            rotate:    ['0deg']
+            rotate:    ['0deg'],
+            matrix:    [1, 0, 0, 1, 0, 0]
         };
         
         return this;
@@ -165,6 +166,10 @@ Firmin = (function() {
         }
         
         this.operations['rotate'] = [angle];
+    };
+    
+    EXT.Transform.prototype.matrix = function(vector) {
+        this.operations['matrix'] = vector;
     };
     
     EXT.transform = function(el, transformation) {
