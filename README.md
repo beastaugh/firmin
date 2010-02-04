@@ -13,7 +13,7 @@ Firmin is a JavaScript animation library based on [WebKit transforms][wkt].
 Roadmap
 -------
 
-* Supplement the API with rotate and matrix transformations.
+* Supplement the API with matrix transformations.
 * Add animation (currently only immediate transformations are possible).
 
   [wkt]: http://webkit.org/blog/130/css-transforms/

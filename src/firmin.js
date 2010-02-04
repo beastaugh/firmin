@@ -159,6 +159,14 @@ Firmin = (function() {
         this.skew({y: magnitude});
     };
     
+    EXT.Transform.prototype.rotate = function(angle) {
+        if (typeof angle === 'number') {
+            angle += 'deg';
+        }
+        
+        this.operations['rotate'] = [angle];
+    };
+    
     EXT.transform = function(el, transformation) {
         var transform = EXT.Transform.create(transformation);
         transform.exec(el);
