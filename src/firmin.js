@@ -1,6 +1,7 @@
 Firmin = (function() {
-    var EXT        = {},
-        transforms = {},
+    var EXT         = {},
+        transforms  = {},
+        transitions = {},
     
     style = (function() {
         var head = document.getElementsByTagName("head")[0],
@@ -222,11 +223,11 @@ Firmin = (function() {
     EXT.Transition.prototype.save = function() {
         var hash = this.hash(),
             name = 'firmin-transition-' + hash,
-            rule = transforms[hash];
+            rule = transitions[hash];
         
         if (!rule) {
             rule = this.build();
-            transforms[hash] = rule;
+            transitions[hash] = rule;
             
             style.addRule('.' + name, rule);
         }
