@@ -73,7 +73,7 @@ Firmin = (function() {
     
     EXT.Transform.prototype.save = function() {
         var hash = this.hash(),
-            name = 'firmin' + hash,
+            name = 'firmin-transform-' + hash,
             rule = transforms[hash];
         
         if (!rule) {
@@ -87,7 +87,7 @@ Firmin = (function() {
     };
     
     EXT.Transform.prototype.exec = function(el) {
-        var className    = el.className.replace(/\s*firmin[a-f0-9]+\s*/, ''),
+        var className    = el.className.replace(/\s*firmin-transform-[a-f0-9]+\s*/, ''),
             tranformName = this.save();
         
         el.className = (name.length > 0 ? (name + ' ') : '')  + tranformName;
@@ -172,9 +172,87 @@ Firmin = (function() {
         this.operations['matrix'] = vector;
     };
     
+    // The Firmin.transform function is the primary public API for using
+    // transforms by themselves, e.g. without transitions.
     EXT.transform = function(el, transformation) {
         var transform = EXT.Transform.create(transformation);
         transform.exec(el);
+    };
+    
+    // Transforms can be composed with transitions to produce animation.
+    // Transitions have much the same API as Transforms.
+    EXT.Transition = function() {
+        this.properties     = ['all'];
+        this.duration       = 0;
+        this.delay          = 0;
+        this.timingFunction = null;
+        
+        return this;
+    };
+    
+    EXT.Transition.prototype.hash = function() {
+        var hash = "";
+        
+        hash += "ps" + this.properties.join("-");
+        hash += "du" + this.duration;
+        hash += "de" + this.delay;
+        
+        if (this.timingFunction) {
+            hash += "tf" + this.timingFunction;
+        }
+        
+        hash = hash.replace(/[^\w]/g, "_");
+        return hash;
+    };
+    
+    EXT.Transition.prototype.build = function() {
+        var rules = [];
+        
+        rules.push("-webkit-transition-property: " + this.properties.join(", "));
+        rules.push("-webkit-transition-duration: " + this.duration);
+        rules.push("-webkit-transition-delay: " + this.delay);
+        
+        if (this.timingFunction) {
+            rules.push("-webkit-transition-timing_function: " + this.timingFunction);
+        }
+        
+        return rules.join("; ") + ";";
+    };
+    
+    EXT.Transition.prototype.save = function() {
+        var hash = this.hash(),
+            name = 'firmin-transition-' + hash,
+            rule = transforms[hash];
+        
+        if (!rule) {
+            rule = this.build();
+            transforms[hash] = rule;
+            
+            style.addRule('.' + name, rule);
+        }
+        
+        return name;
+    };
+    
+    EXT.Transition.prototype.exec = function(el) {
+        var className    = el.className.replace(/\s*firmin-transition[a-f0-9]+\s*/, ''),
+            tranformName = this.save();
+        
+        el.className = (name.length > 0 ? (name + ' ') : '')  + tranformName;
+        
+        return el;
+    };
+    
+    EXT.animate = function(el, transformation, duration) {
+        var transform  = EXT.Transform.create(transformation),
+            transition = new EXT.Transition();
+        
+        transition.duration = typeof duration === 'number'
+            ? duration + "s"
+            : duration;
+        
+        transform.exec(el);
+        transition.exec(el);
     };
     
     return EXT;
