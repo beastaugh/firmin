@@ -21,9 +21,6 @@ Roadmap
   supplied, allowing us to reduce the size of the library by ripping out a lot
   of boilerplate.
 * Simplify hash function to just use the underlying matrix representation.
-* Remove the ability to use translations by themselves and replace them with
-  animations that execute instantaneously.
-* Expand and improve the API for creating and modifying Transformations.
 * Add support for stateful animations, where each new transformation applied
   takes the _current_ state of the object as its origin, rather than its
   initial state.

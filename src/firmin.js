@@ -11,10 +11,10 @@ Firmin = (function() {
         head.appendChild(tag);
         
         return document.styleSheets[document.styleSheets.length - 1];
-    })();
+    })(),
     
     // Transforms are the basic building blocks of Firmin.
-    EXT.Transform = function() {
+    Transform = function() {
         this.operations = {
             translate: [0, 0],
             scale:     [1, 1],
@@ -26,7 +26,7 @@ Firmin = (function() {
         return this;
     };
     
-    EXT.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix)/;
+    Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix)/;
     
     // Firmin.Transform.create is a factory method that allows a new Transform
     // to be created with any of the available operations, rather than adding
@@ -37,12 +37,12 @@ Firmin = (function() {
     //             translate: {x: 150, y: 450},
     //         });
     //
-    EXT.Transform.create = function(transforms) {
-        var transform = new EXT.Transform(),
+    Transform.create = function(transforms) {
+        var transform = new Transform(),
             type;
         
         for (type in transforms) {
-            if (type.match(EXT.Transform.OPERATION_PATTERN)) {
+            if (type.match(Transform.OPERATION_PATTERN)) {
                 transform[type](transforms[type]);
             }
         }
@@ -50,7 +50,7 @@ Firmin = (function() {
         return transform;
     };
     
-    EXT.Transform.prototype.hash = function() {
+    Transform.prototype.hash = function() {
         var hash = "", type;
         
         for (type in this.operations) {
@@ -60,7 +60,7 @@ Firmin = (function() {
         return hash;
     };
     
-    EXT.Transform.prototype.build = function() {
+    Transform.prototype.build = function() {
         var prefix = "-webkit-transform:",
             rule   = "",
             type;
@@ -72,22 +72,7 @@ Firmin = (function() {
         return prefix + rule + ";";
     };
     
-    EXT.Transform.prototype.save = function() {
-        var hash = this.hash(),
-            name = 'firmin-transform-' + hash,
-            rule = transforms[hash];
-        
-        if (!rule) {
-            rule = this.build();
-            transforms[hash] = rule;
-            
-            style.addRule('.' + name, rule);
-        }
-        
-        return name;
-    };
-    
-    EXT.Transform.prototype.exec = function(el) {
+    Transform.prototype.exec = function(el) {
         var className    = el.className.replace(/\s*firmin-transform-[a-f0-9]+\s*/, ''),
             tranformName = this.save();
         
@@ -96,7 +81,7 @@ Firmin = (function() {
         return el;
     };
     
-    EXT.Transform.prototype.translate = function(distances) {
+    Transform.prototype.translate = function(distances) {
         var x = distances.x,
             y = distances.y,
             a = this.operations['translate'][0],
@@ -113,30 +98,30 @@ Firmin = (function() {
         this.operations['translate'] = [x || a, y || b];
     };
     
-    EXT.Transform.prototype.translateX = function(distance) {
+    Transform.prototype.translateX = function(distance) {
         this.translate({x: distance});
     };
     
-    EXT.Transform.prototype.translateY = function(distance) {
+    Transform.prototype.translateY = function(distance) {
         this.translate({y: distance});
     };
     
-    EXT.Transform.prototype.scale = function(magnitudes) {
+    Transform.prototype.scale = function(magnitudes) {
         var a = this.operations['scale'][0],
             b = this.operations['scale'][1];
         
         this.operations['scale'] = [magnitudes.x || a, magnitudes.y || b];
     };
     
-    EXT.Transform.prototype.scaleX = function(magnitude) {
+    Transform.prototype.scaleX = function(magnitude) {
         this.scale({x: magnitude});
     };
     
-    EXT.Transform.prototype.scaleY = function(magnitude) {
+    Transform.prototype.scaleY = function(magnitude) {
         this.scale({y: magnitude});
     };
     
-    EXT.Transform.prototype.skew = function(magnitudes) {
+    Transform.prototype.skew = function(magnitudes) {
         var x = magnitudes.x,
             y = magnitudes.y,
             a = this.operations['skew'][0],
@@ -153,15 +138,15 @@ Firmin = (function() {
         this.operations['skew'] = [x || a, y || b];
     };
     
-    EXT.Transform.prototype.skewX = function(magnitude) {
+    Transform.prototype.skewX = function(magnitude) {
         this.skew({x: magnitude});
     };
     
-    EXT.Transform.prototype.skewY = function(magnitude) {
+    Transform.prototype.skewY = function(magnitude) {
         this.skew({y: magnitude});
     };
     
-    EXT.Transform.prototype.rotate = function(angle) {
+    Transform.prototype.rotate = function(angle) {
         if (typeof angle === 'number') {
             angle += 'deg';
         }
@@ -169,15 +154,8 @@ Firmin = (function() {
         this.operations['rotate'] = [angle];
     };
     
-    EXT.Transform.prototype.matrix = function(vector) {
+    Transform.prototype.matrix = function(vector) {
         this.operations['matrix'] = vector;
-    };
-    
-    // The Firmin.transform function is the primary public API for using
-    // transforms by themselves, e.g. without transitions.
-    EXT.transform = function(el, transformation) {
-        var transform = EXT.Transform.create(transformation);
-        transform.exec(el);
     };
     
     // Transforms can be composed with transitions to produce animation.
@@ -265,7 +243,7 @@ Firmin = (function() {
     EXT.animate = function(el, transformation, duration) {
         var transition = new EXT.Transition();
         
-        transition.transform = EXT.Transform.create(transformation);
+        transition.transform = Transform.create(transformation);
         
         transition.duration = typeof duration === 'number'
             ? duration + "s"
