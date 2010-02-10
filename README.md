@@ -4,10 +4,11 @@ Firmin.js
 Firmin is a JavaScript animation library based on [WebKit transforms][wkt].
 
     var box = document.getElementById("box");
-    Firmin.tranform(box, {
+    
+    Firmin.animate(box, {
         scale:     {x: 2, y: 3},
         translate: {x: -100, y: 35}
-    });
+    }, 0.5);
 
 
 Roadmap
