@@ -21,6 +21,9 @@ Roadmap
 * Remove the ability to use translations by themselves and replace them with
   animations that execute instantaneously.
 * Expand and improve the API for creating and modifying Transformations.
+* Add support for stateful animations, where each new transformation applied
+  takes the _current_ state of the object as its origin, rather than its
+  initial state.
 * Add support for 3D transforms.
 
   [wkt]: http://webkit.org/blog/130/css-transforms/
