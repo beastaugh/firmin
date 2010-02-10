@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin.js demo</title>
+    
+    <style type="text/css" media="screen">
+        #red-box {background:#f00; width:200px; height:166px;}
+    </style>
+    
+    <script type="text/javascript" src="../src/firmin.js"></script>
+</head><body>
+    
+    <div id="red-box"></div>
+    
+    <script type="text/javascript">
+    (function() {
+        var redBox = document.getElementById('red-box');
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                translate: {x: 300, y: 200}
+            }, 0.3);
+        }, 500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                translate: {x: 150, y: 100}
+            }, 0.3);
+        }, 1000);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                translateX: 400
+            }, 0.3);
+        }, 1500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                translateY: 0
+            }, 0.3);
+        }, 2000);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                scale: {x: 1.5, y: 1.5}
+            }, 0.3);
+        }, 2500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                scale: {x: 0.5, y: 0.5}
+            }, 0.3);
+        }, 3000);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                scaleX: 2
+            }, 0.3);
+        }, 3500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                scaleY: 3
+            }, 0.3);
+        }, 4000);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                skew: {x: 30, y: 30}
+            }, 0.3);
+        }, 4500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                skewX: -25
+            }, 0.3);
+        }, 5000);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                skewY: 45
+            }, 0.3);
+        }, 5500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                rotate: 45
+            }, 0.3);
+        }, 6000);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                rotate: -20
+            }, 0.3);
+        }, 6500);
+        
+        setTimeout(function() {
+            Firmin.animate(redBox, {
+                matrix: [3, 1, 0, 2, 1, 1]
+            }, 0.3);
+        }, 7000);
+    })();
+    </script>
+    
+</body></html>

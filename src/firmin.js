@@ -187,6 +187,8 @@ Firmin = (function() {
         this.duration       = 0;
         this.delay          = 0;
         this.timingFunction = null;
+        this.transform      = null;
+        this.opacity        = null;
         
         return this;
     };
@@ -202,6 +204,14 @@ Firmin = (function() {
             hash += "tf" + this.timingFunction;
         }
         
+        if (this.opacity) {
+            hash += "op" + this.opacity;
+        }
+        
+        if (this.transform) {
+            hash += "tr" + this.transform.hash();
+        }
+        
         hash = hash.replace(/[^\w]/g, "_");
         return hash;
     };
@@ -215,6 +225,14 @@ Firmin = (function() {
         
         if (this.timingFunction) {
             rules.push("-webkit-transition-timing_function: " + this.timingFunction);
+        }
+        
+        if (this.opacity) {
+            rules.push("opacity: " + this.opacity);
+        }
+        
+        if (this.transform) {
+            rules.push(this.transform.build());
         }
         
         return rules.join("; ") + ";";
@@ -245,14 +263,14 @@ Firmin = (function() {
     };
     
     EXT.animate = function(el, transformation, duration) {
-        var transform  = EXT.Transform.create(transformation),
-            transition = new EXT.Transition();
+        var transition = new EXT.Transition();
+        
+        transition.transform = EXT.Transform.create(transformation);
         
         transition.duration = typeof duration === 'number'
             ? duration + "s"
             : duration;
         
-        transform.exec(el);
         transition.exec(el);
     };
     
