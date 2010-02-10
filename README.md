@@ -16,5 +16,6 @@ Roadmap
 * Implement all existing transformations using the `matrix` operation.
 * Simplify hash function to just use the underlying matrix representation.
 * Expand and improve the API for creating and modifying Transformations.
+* Add support for 3D transforms.
 
   [wkt]: http://webkit.org/blog/130/css-transforms/
