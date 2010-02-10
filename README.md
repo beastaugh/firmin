@@ -14,7 +14,12 @@ Roadmap
 -------
 
 * Implement all existing transformations using the `matrix` operation.
+* Write a smarter merge function to use transform defaults where values are not
+  supplied, allowing us to reduce the size of the library by ripping out a lot
+  of boilerplate.
 * Simplify hash function to just use the underlying matrix representation.
+* Remove the ability to use translations by themselves and replace them with
+  animations that execute instantaneously.
 * Expand and improve the API for creating and modifying Transformations.
 * Add support for 3D transforms.
 
