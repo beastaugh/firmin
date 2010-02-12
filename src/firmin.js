@@ -59,7 +59,7 @@ Firmin = (function() {
         for (var i = 0; i < 6; i++) {
             hash += "-" + this.ctm[i].toString().replace(/\D/g, "_");
         }
-        console.log(hash);
+        
         hash += "-" + this.centre.join("-").replace(/\D/g, "_");
         
         return hash;
