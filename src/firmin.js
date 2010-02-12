@@ -15,13 +15,7 @@ Firmin = (function() {
     
     // Transforms are the basic building blocks of Firmin.
     Transform = function() {
-        this.operations = {
-            translate: [0, 0],
-            scale:     [1, 1],
-            skew:      ['0deg', '0deg'],
-            rotate:    ['0deg'],
-            matrix:    [1, 0, 0, 1, 0, 0]
-        };
+        this.ctm = [1, 0, 0, 1, 0, 0];
         
         return this;
     };
@@ -52,34 +46,29 @@ Firmin = (function() {
         return transform;
     };
     
-    Transform.prototype.merge = function(matrix) {
-        for (var i = 0, len = matrix.length; i < len; i++) {
-            if (typeof matrix[i] === "number") {
-                this.operations.matrix[i] = matrix[i];
-            }
-        }
+    Transform.prototype.merge = function(vector) {
+        this.ctm = vector;
     };
     
     Transform.prototype.hash = function() {
         var hash = "", type;
         
-        for (type in this.operations) {
-            hash += "-" + this.operations[type].join("-").replace(/[^\w]/g, "_");
+        for (var i = 0, len = this.ctm.length; i < len; i++) {
+            hash += "-" + this.ctm[i].toString().replace(/\D/g, "_");
         }
         
         return hash;
     };
     
     Transform.prototype.build = function() {
-        var prefix = "-webkit-transform:",
-            rule   = "",
-            type;
+        var prefixes = ["-webkit-transform:"],
+            rule     = "";
         
-        for (type in this.operations) {
-            rule += " " + type + "(" + this.operations[type].join(", ") + ")";
+        for (var i = 0, len = prefixes.length; i < len; i++) {
+            rule += prefixes[i] + "matrix(" + this.ctm.join(",") + ")" + ";"
         }
         
-        return prefix + rule + ";";
+        return rule;
     };
     
     Transform.prototype.exec = function(el) {
@@ -92,7 +81,7 @@ Firmin = (function() {
     };
     
     Transform.prototype.translate = function(distances) {
-        this.merge([1, 0, 0, 1, distances.x, distances.y]);
+        this.merge([1, 0, 0, 1, distances.x || 0, distances.y || 0]);
     };
     
     Transform.prototype.translateX = function(distance) {
@@ -104,7 +93,7 @@ Firmin = (function() {
     };
     
     Transform.prototype.scale = function(magnitudes) {
-        this.merge([magnitudes.x, 0, 0, magnitudes.y, 0, 0]);
+        this.merge([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
     };
     
     Transform.prototype.scaleX = function(magnitude) {
@@ -147,9 +136,7 @@ Firmin = (function() {
         ]);
     };
     
-    Transform.prototype.matrix = function(vector) {
-        this.operations['matrix'] = vector;
-    };
+    Transform.prototype.matrix = Transform.prototype.merge;
     
     // Transforms can be composed with transitions to produce animation.
     // Transitions have much the same API as Transforms.
