@@ -92,7 +92,7 @@ Firmin = (function() {
     Transform.prototype.translate = function(distances) {
         this.merge([null, null, null, null, distances.x, distances.y]);
     };
-    
+        
     Transform.prototype.translateX = function(distance) {
         this.translate({x: distance});
     };
@@ -102,10 +102,7 @@ Firmin = (function() {
     };
     
     Transform.prototype.scale = function(magnitudes) {
-        var a = this.operations['scale'][0],
-            b = this.operations['scale'][1];
-        
-        this.operations['scale'] = [magnitudes.x || a, magnitudes.y || b];
+        this.merge([magnitudes.x, null, null, magnitudes.y, null, null]);
     };
     
     Transform.prototype.scaleX = function(magnitude) {
