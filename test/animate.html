@@ -3,101 +3,116 @@
     <title>Firmin.js demo</title>
     
     <style type="text/css" media="screen">
+        html, body {font-family:Helvetica, Arial, sans-serif; color:#000; background:#fff;}
+        #description {float:right; margin:200px; font-size:36px; font-weight:normal;}
         #red-box {background:#f00; width:200px; height:166px;}
     </style>
     
     <script type="text/javascript" src="../src/firmin.js"></script>
 </head><body>
     
+    <h1 id="description">Animation tests</h1>
+    
     <div id="red-box"></div>
     
     <script type="text/javascript">
     (function() {
-        var redBox = document.getElementById('red-box');
+        var redBox   = document.getElementById('red-box'),
+            title    = document.getElementById('description'),
+            interval = 1000,
+            timeout  = 0,
         
-        setTimeout(function() {
+        test = function(description, block) {
+            setTimeout(function() {
+                title.innerHTML = description;
+                block();
+            }, timeout);
+            timeout += interval;
+        };
+        
+        test("Translate right 300px, down 200px", function() {
             Firmin.animate(redBox, {
                 translate: {x: 300, y: 200}
             }, 0.3);
-        }, 500);
+        });
         
-        setTimeout(function() {
+        test("Translate right 150px, down 100px", function() {
             Firmin.animate(redBox, {
                 translate: {x: 150, y: 100}
             }, 0.3);
-        }, 1000);
+        });
         
-        setTimeout(function() {
+        test("Translate right 400px", function() {
             Firmin.animate(redBox, {
                 translateX: 400
             }, 0.3);
-        }, 1500);
+        });
         
-        setTimeout(function() {
+        test("Don't translate it down", function() {
             Firmin.animate(redBox, {
                 translateY: 0
             }, 0.3);
-        }, 2000);
+        });
         
-        setTimeout(function() {
+        test("Scale both dimensions to 150% of their original size", function() {
             Firmin.animate(redBox, {
                 scale: {x: 1.5, y: 1.5}
             }, 0.3);
-        }, 2500);
+        });
         
-        setTimeout(function() {
+        test("Scale both dimensions to 50% of their original size", function() {
             Firmin.animate(redBox, {
                 scale: {x: 0.5, y: 0.5}
             }, 0.3);
-        }, 3000);
+        });
         
-        setTimeout(function() {
+        test("Scale horizontally to twice its original size", function() {
             Firmin.animate(redBox, {
                 scaleX: 2
             }, 0.3);
-        }, 3500);
+        });
         
-        setTimeout(function() {
+        test("Scale vertically to three times its original size", function() {
             Firmin.animate(redBox, {
                 scaleY: 3
             }, 0.3);
-        }, 4000);
+        });
         
-        setTimeout(function() {
+        test("Skew it 30 degrees in both dimensions", function() {
             Firmin.animate(redBox, {
                 skew: {x: 30, y: 30}
             }, 0.3);
-        }, 4500);
+        });
         
-        setTimeout(function() {
+        test("Skew it -25 degrees horizontally", function() {
             Firmin.animate(redBox, {
                 skewX: -25
             }, 0.3);
-        }, 5000);
+        });
         
-        setTimeout(function() {
+        test("Skew it 45 degrees vertically", function() {
             Firmin.animate(redBox, {
                 skewY: 45
             }, 0.3);
-        }, 5500);
+        });
         
-        setTimeout(function() {
+        test("Rotate it 45 degrees", function() {
             Firmin.animate(redBox, {
                 rotate: 45
             }, 0.3);
-        }, 6000);
+        });
         
-        setTimeout(function() {
+        test("Rotate it -20 degrees", function() {
             Firmin.animate(redBox, {
                 rotate: -20
             }, 0.3);
-        }, 6500);
+        });
         
-        setTimeout(function() {
+        test("Transform it with a matrix", function() {
             Firmin.animate(redBox, {
                 matrix: [3, 1, 0, 2, 1, 1]
             }, 0.3);
-        }, 7000);
+        });
     })();
     </script>
     
