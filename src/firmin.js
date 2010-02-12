@@ -50,6 +50,14 @@ Firmin = (function() {
         return transform;
     };
     
+    Transform.prototype.merge = function(matrix) {
+        for (var i = 0, len = matrix.length; i < len; i++) {
+            if (typeof matrix[i] === "number") {
+                this.operations.matrix[i] = matrix[i];
+            }
+        }
+    };
+    
     Transform.prototype.hash = function() {
         var hash = "", type;
         
@@ -82,20 +90,7 @@ Firmin = (function() {
     };
     
     Transform.prototype.translate = function(distances) {
-        var x = distances.x,
-            y = distances.y,
-            a = this.operations['translate'][0],
-            b = this.operations['translate'][1];
-        
-        if (typeof x === 'number' && x !== 0) {
-            x += 'px';
-        }
-        
-        if (typeof y === 'number' && y !== 0) {
-            y += 'px';
-        }
-        
-        this.operations['translate'] = [x || a, y || b];
+        this.merge([null, null, null, null, distances.x, distances.y]);
     };
     
     Transform.prototype.translateX = function(distance) {
