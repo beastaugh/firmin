@@ -15,7 +15,7 @@ Firmin = (function() {
     
     // Transforms are the basic building blocks of Firmin.
     Transform = function() {
-        this.ctm    = [1, 0, 0, 1, 0, 0];
+        this.ctm    = [1, 0, 0, 1, 0, 0, 0, 0, 1];
         this.centre = ["50%", "50%"];
         
         return this;
@@ -48,16 +48,18 @@ Firmin = (function() {
     };
     
     Transform.prototype.merge = function(vector) {
-        this.ctm = vector;
+        for (var i = 0, len = vector.length; i < len; i++) {
+            this.ctm[i] = vector[i];
+        }
     };
     
     Transform.prototype.hash = function() {
         var hash = "", type;
         
-        for (var i = 0, len = this.ctm.length; i < len; i++) {
+        for (var i = 0; i < 6; i++) {
             hash += "-" + this.ctm[i].toString().replace(/\D/g, "_");
         }
-        
+        console.log(hash);
         hash += "-" + this.centre.join("-").replace(/\D/g, "_");
         
         return hash;
@@ -68,7 +70,7 @@ Firmin = (function() {
             rule     = "";
         
         for (var i = 0, len = prefixes.length; i < len; i++) {
-            rule += prefixes[i] + ":matrix(" + this.ctm.join(",") + ")" + ";"
+            rule += prefixes[i] + ":matrix(" + this.ctm.slice(0, 6).join(",") + ")" + ";"
             rule += prefixes[i] + "-origin:" + this.centre.join(" ") + ";"
         }
         
