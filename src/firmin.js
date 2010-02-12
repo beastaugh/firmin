@@ -135,11 +135,16 @@ Firmin = (function() {
     };
     
     Transform.prototype.rotate = function(angle) {
-        if (typeof angle === 'number') {
-            angle += 'deg';
-        }
+        angle = angle * Transform.DEG_TO_RAD_RATIO;
         
-        this.operations['rotate'] = [angle];
+        this.merge([
+            Math.cos(angle),
+            Math.sin(angle),
+            -Math.sin(angle),
+            Math.cos(angle),
+            0,
+            0
+        ]);
     };
     
     Transform.prototype.matrix = function(vector) {
