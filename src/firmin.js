@@ -64,7 +64,7 @@ Firmin = (function() {
     };
     
     Transform.prototype.build = function() {
-        var prefixes = ["-webkit-transform"],
+        var prefixes = ["-webkit-transform", "-moz-transform", "transform"],
             rule     = "";
         
         for (var i = 0, len = prefixes.length; i < len; i++) {
