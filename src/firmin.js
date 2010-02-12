@@ -28,6 +28,8 @@ Firmin = (function() {
     
     Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix)/;
     
+    Transform.DEG_TO_RAD_RATIO  = Math.PI / 180;
+    
     // Firmin.Transform.create is a factory method that allows a new Transform
     // to be created with any of the available operations, rather than adding
     // them one by one.
@@ -90,9 +92,9 @@ Firmin = (function() {
     };
     
     Transform.prototype.translate = function(distances) {
-        this.merge([null, null, null, null, distances.x, distances.y]);
+        this.merge([1, 0, 0, 1, distances.x, distances.y]);
     };
-        
+    
     Transform.prototype.translateX = function(distance) {
         this.translate({x: distance});
     };
@@ -102,7 +104,7 @@ Firmin = (function() {
     };
     
     Transform.prototype.scale = function(magnitudes) {
-        this.merge([magnitudes.x, null, null, magnitudes.y, null, null]);
+        this.merge([magnitudes.x, 0, 0, magnitudes.y, 0, 0]);
     };
     
     Transform.prototype.scaleX = function(magnitude) {
@@ -114,20 +116,14 @@ Firmin = (function() {
     };
     
     Transform.prototype.skew = function(magnitudes) {
-        var x = magnitudes.x,
-            y = magnitudes.y,
-            a = this.operations['skew'][0],
-            b = this.operations['skew'][1];
-        
-        if (typeof x === 'number') {
-            x += 'deg';
-        }
-        
-        if (typeof y === 'number') {
-            y += 'deg';
-        }
-        
-        this.operations['skew'] = [x || a, y || b];
+        this.merge([
+            1,
+            Math.tan((magnitudes.y || 0) * Transform.DEG_TO_RAD_RATIO),
+            Math.tan((magnitudes.x || 0) * Transform.DEG_TO_RAD_RATIO),
+            1,
+            0,
+            0
+        ]);
     };
     
     Transform.prototype.skewX = function(magnitude) {
