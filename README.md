@@ -22,5 +22,6 @@ Roadmap
   takes the _current_ state of the object as its origin, rather than its
   initial state.
 * Add support for 3D transforms.
+* Add parser to support different value types, e.g. radians as well as degrees.
 
   [wkt]: http://webkit.org/blog/130/css-transforms/
