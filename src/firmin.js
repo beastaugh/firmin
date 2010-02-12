@@ -15,7 +15,8 @@ Firmin = (function() {
     
     // Transforms are the basic building blocks of Firmin.
     Transform = function() {
-        this.ctm = [1, 0, 0, 1, 0, 0];
+        this.ctm    = [1, 0, 0, 1, 0, 0];
+        this.centre = ["50%", "50%"];
         
         return this;
     };
@@ -57,15 +58,18 @@ Firmin = (function() {
             hash += "-" + this.ctm[i].toString().replace(/\D/g, "_");
         }
         
+        hash += "-" + this.centre.join("-").replace(/\D/g, "_");
+        
         return hash;
     };
     
     Transform.prototype.build = function() {
-        var prefixes = ["-webkit-transform:"],
+        var prefixes = ["-webkit-transform"],
             rule     = "";
         
         for (var i = 0, len = prefixes.length; i < len; i++) {
-            rule += prefixes[i] + "matrix(" + this.ctm.join(",") + ")" + ";"
+            rule += prefixes[i] + ":matrix(" + this.ctm.join(",") + ")" + ";"
+            rule += prefixes[i] + "-origin:" + this.centre.join(" ") + ";"
         }
         
         return rule;
@@ -137,6 +141,10 @@ Firmin = (function() {
     };
     
     Transform.prototype.matrix = Transform.prototype.merge;
+    
+    Transform.prototype.origin = function(origin) {
+        this.centre = [origin.x || "50%", origin.y || "50%"];
+    };
     
     // Transforms can be composed with transitions to produce animation.
     // Transitions have much the same API as Transforms.

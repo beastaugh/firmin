@@ -109,6 +109,16 @@
             }, 0.3);
         });
         
+        test("Rotate it 90 degrees around a corner", function() {
+            Firmin.animate(redBox, {
+                rotate: -165,
+                origin: {
+                    x: 0,
+                    y: 0
+                }
+            }, 0.4);
+        });
+        
         test("Transform it with a matrix", function() {
             Firmin.animate(redBox, {
                 matrix: [3, 1, 0, 2, 1, 1]
