@@ -21,7 +21,7 @@ Firmin = (function() {
         return this;
     };
     
-    Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix)/;
+    Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix|origin)/;
     
     Transform.DEG_TO_RAD_RATIO  = Math.PI / 180;
     
