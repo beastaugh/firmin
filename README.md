@@ -14,8 +14,7 @@ Firmin is a JavaScript animation library based on [WebKit transforms][wkt].
 Roadmap
 -------
 
-* Implement a merge function that creates a current transformation matrix by
-  concatenating the various transforms applied.
+* Decide on the merge order semantics for multiple simultaneous transforms.
 * Add a testing DSL to make it easier to gauge whether or not animations are
   executing as expected.
 * Add support for stateful animations, where each new transformation applied

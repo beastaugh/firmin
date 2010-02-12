@@ -31,6 +31,13 @@
             timeout += interval;
         };
         
+        test("Translate right 200px and skew vertically 25 degrees", function() {
+           Firmin.animate(redBox, {
+               translateX: 200,
+               skewY:      25
+           }, 0.4);
+        });
+        
         test("Translate right 300px, down 200px", function() {
             Firmin.animate(redBox, {
                 translate: {x: 300, y: 200}
