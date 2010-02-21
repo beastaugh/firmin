@@ -1,7 +1,8 @@
 Firmin.js
 =========
 
-Firmin is a JavaScript animation library based on [WebKit transforms][wkt].
+Firmin is a JavaScript animation library based on CSS [transforms][tf] and
+[transitions][ts].
 
     var box = document.getElementById("box");
     
@@ -11,16 +12,5 @@ Firmin is a JavaScript animation library based on [WebKit transforms][wkt].
     }, 0.5);
 
 
-Roadmap
--------
-
-* Decide on the merge order semantics for multiple simultaneous transforms.
-* Add a testing DSL to make it easier to gauge whether or not animations are
-  executing as expected.
-* Add support for stateful animations, where each new transformation applied
-  takes the _current_ state of the object as its origin, rather than its
-  initial state.
-* Add support for 3D transforms.
-* Add parser to support different value types, e.g. radians as well as degrees.
-
-  [wkt]: http://webkit.org/blog/130/css-transforms/
+  [tf]: http://webkit.org/blog/130/css-transforms/
+  [ts]: http://www.w3.org/TR/css3-transitions/
