@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Firmin.js</title>
+    
+    <style type="text/css">
+        body {
+            margin: 0; border: none; padding: 30px;
+            background: #fafafa; color: #404040;
+            font-family: Helvetica, sans-serif;
+            font-size: 14px; line-height: 1.5;
+        }
+        #wrapper {
+            width: 600px; margin: 0 auto;
+        }
+        h1, h2, h3 {
+            margin: 0 0 12px 0;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        h2 {
+            font-size: 18px;
+        }
+        h3 {
+            font-size: 16px;
+        }
+        p {
+            margin: 0 0 12px 0;
+        }
+        a {
+            background: #e5e5e5; color: #404040;
+            text-transform: underline;
+        }
+        em {
+            font-style:normal; font-weight:bold;
+        }
+        pre {
+            margin: 0 0 12px 0; border-left: 6px solid #e5e5e5; padding: 0 12px;
+        }
+        .function h3 {
+            margin-bottom: 6px;
+        }
+        .function h3 em {
+            margin-right: 12px;
+        }
+        .function h3 code {
+            font-size: 14px; font-weight: normal;
+        }
+    </style>
+</head><body><div id="wrapper">
+    
+    <h1>Firmin.js</h1>
+    
+    <p>
+        <a href="http://github.com/ionfish/firmin">Firmin</a> is a JavaScript
+        animation library that uses CSS transforms and transitions to create
+        smooth, hardware-accelerated animations.
+    </p>
+    
+    
+    <h2>Supported platforms</h2>
+    
+    <p>
+        Currently, the only supported platforms are those that use a recent
+        version of the WebKit engine: <em>Safari 4</em>, <em>Mobile Safari</em>
+        (i.e. iPhone and iPad) and <em>Google Chrome</em>. This is because CSS
+        transitions are only available for WebKit browsers. Once this feature
+        is more widely suppored an effort will be made to make Firmin
+        compatible with other browsers.
+    </p>
+    
+    
+    <h2>Reference</h2>
+    
+    <div class="function" id="animate">
+        <h3>
+            <em>animate</em>
+            <code>Firmin.animate(element, transform, [duration])</code>
+        </h3>
+        
+        <p>
+            The <em>transform</em> object should be a description of the
+            transformation to be carried out on the element. For example, this
+            transform would move the element 400 pixels to the right and double
+            its height.
+        </p>
+        
+        <pre>var el = document.getElementById("test"),
+    tf = {
+        translateX: "400px",
+        scaleY:     2
+    };
+
+Firmin.animate(el, tf);</pre>
+        
+        <p>
+            Instead of using <em>animate</em> with a <code>transform</code>
+            argument, one can use the transform functions directly. Each
+            transform function (e.g. <em>translateX</em>, <em>skewY</em>)
+            accepts a transform value as its second argument. This value is
+            also what should be used in the <code>transform</code> object
+            when calling <em>animate</em>. In other words,
+        </p>
+        
+        <pre>Firmin.animate(el, {skewX: "1rad"});</pre>
+        
+        <p>is equivalent to</p>
+        
+        <pre>Firmin.skewX(el, "1rad");</pre>
+        
+        <p>
+            The optional <code>duration</code> argument specifies the duration
+            of the animation in seconds; the default value is <code>0.2</code>.
+        </p>
+    </div>
+    
+</div><body></html>
