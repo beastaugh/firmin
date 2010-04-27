@@ -1,14 +1,3 @@
-var transitions = {},
-    style = (function() {
-    var head = document.getElementsByTagName("head")[0],
-        tag  = document.createElement("style");
-    
-    tag.setAttribute("type", "text/css");
-    head.appendChild(tag);
-    
-    return document.styleSheets[document.styleSheets.length - 1];
-})();
-
 Firmin = {};
 
 Firmin.CTM = function(vector) {
@@ -42,10 +31,6 @@ Firmin.CTM.prototype.multiply = function(t) {
                                              // M33 | Always 1
 
     this.vector = n;
-};
-
-Firmin.CTM.prototype.hash = function() {
-    return this.vector.join("-").replace(/\D/g, "_");
 };
 
 Firmin.CTM.prototype.build = function() {
@@ -89,32 +74,12 @@ Firmin.Transform.prototype.merge = function(vector) {
     this.ctm.multiply(vector);
 };
 
-Firmin.Transform.prototype.hash = function() {
-    var ctm_hash    = this.ctm.hash(),
-        origin_hash = this.centre.join("-").replace(/\D/g, "_");
-    
-    return ctm_hash + "-" + origin_hash;
+Firmin.Transform.prototype.getOrigin = function() {
+    return this.centre.join(" ");
 };
 
 Firmin.Transform.prototype.build = function() {
-    var prefixes = ["-webkit-transform", "-moz-transform", "transform"],
-        rule     = "";
-    
-    for (var i = 0, len = prefixes.length; i < len; i++) {
-        rule += prefixes[i] + ":" + this.ctm.build() + ";";
-        rule += prefixes[i] + "-origin:" + this.centre.join(" ") + ";";
-    }
-    
-    return rule;
-};
-
-Firmin.Transform.prototype.exec = function(el) {
-    var className    = el.className.replace(/\s*firmin-transform-[a-f0-9]+\s*/, ''),
-        tranformName = this.save();
-    
-    el.className = (name.length > 0 ? (name + ' ') : '')  + tranformName;
-    
-    return el;
+    return this.ctm.build();
 };
 
 Firmin.Transform.prototype.translate = function(distances) {
@@ -182,7 +147,7 @@ Firmin.Transform.prototype.origin = function(origin) {
 // Firmin.Transforms can be composed with transitions to produce animation.
 // Transitions have much the same API as Firmin.Transforms.
 Firmin.Transition = function() {
-    this.properties     = ['all'];
+    this.properties     = ["all"];
     this.duration       = 0;
     this.delay          = 0;
     this.timingFunction = null;
@@ -192,71 +157,36 @@ Firmin.Transition = function() {
     return this;
 };
 
-Firmin.Transition.prototype.hash = function() {
-    var hash = "";
-    
-    hash += "ps" + this.properties.join("-");
-    hash += "du" + this.duration;
-    hash += "de" + this.delay;
-    
-    if (this.timingFunction) {
-        hash += "tf" + this.timingFunction;
-    }
-    
-    if (this.opacity) {
-        hash += "op" + this.opacity;
-    }
-    
-    if (this.transform) {
-        hash += "tr" + this.transform.hash();
-    }
-    
-    hash = hash.replace(/[^\w]/g, "_");
-    return hash;
-};
-
 Firmin.Transition.prototype.build = function() {
-    var rules = [];
-    
-    rules.push("-webkit-transition-property: " + this.properties.join(", "));
-    rules.push("-webkit-transition-duration: " + this.duration);
-    rules.push("-webkit-transition-delay: " + this.delay);
+    var properties = {
+        webkitTransitionProperty: this.properties.join(", "),
+        webkitTransitionDuration: this.duration,
+        webkitTransitionDelay:    this.delay
+    };
     
     if (this.timingFunction) {
-        rules.push("-webkit-transition-timing_function: " + this.timingFunction);
+        properties.webkitTransitionTimingFunction = this.timingFunction;
     }
     
     if (this.opacity) {
-        rules.push("opacity: " + this.opacity);
+        properties.opacity = this.opacity;
     }
     
     if (this.transform) {
-        rules.push(this.transform.build());
+        properties.webkitTransform       = this.transform.build();
+        properties.webkitTransformOrigin = this.transform.getOrigin();
     }
     
-    return rules.join("; ") + ";";
-};
-
-Firmin.Transition.prototype.save = function() {
-    var hash = this.hash(),
-        name = 'firmin-transition-' + hash,
-        rule = transitions[hash];
-    
-    if (!rule) {
-        rule = this.build();
-        transitions[hash] = rule;
-        
-        style.addRule('.' + name, rule);
-    }
-    
-    return name;
+    return properties;
 };
 
 Firmin.Transition.prototype.exec = function(el) {
-    var className    = el.className.replace(/\s*firmin-transition[a-f0-9]+\s*/, ''),
-        tranformName = this.save();
+    var style = this.build(),
+        prop;
     
-    el.className = (name.length > 0 ? (name + ' ') : '')  + tranformName;
+    for (prop in style) {
+        el.style[prop] = style[prop];
+    }
     
     return el;
 };
@@ -266,7 +196,7 @@ Firmin.animate = function(el, transformation, duration) {
     
     transition.transform = Firmin.Transform.create(transformation);
     
-    transition.duration = typeof duration === 'number'
+    transition.duration = typeof duration === "number"
         ? duration + "s"
         : duration;
     
