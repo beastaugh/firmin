@@ -126,7 +126,8 @@ Firmin.Transform.prototype.skewY = function(magnitude) {
 };
 
 Firmin.Transform.prototype.rotate = function(angle) {
-    angle = angle * Firmin.Transform.DEG_TO_RAD_RATIO;
+    var a = Firmin.Parser.parseAngle(angle);
+    angle = a[0] === "deg" ? a[1] * Firmin.Transform.DEG_TO_RAD_RATIO : a[1];
     
     this.merge([
         Math.cos(angle),
@@ -201,4 +202,43 @@ Firmin.animate = function(el, transformation, duration) {
         : duration;
     
     transition.exec(el);
+};
+
+/*
+CSS data types
+
+There are numerous CSS data types. We are mainly interested in the various
+numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
+50%), but there are a few functions which allow or require a keyword instead.
+
+The various parsers implemented below all have a common pattern: they accept
+a string (or, if the type can be numeric and has a default unit, a number) and
+return a pair consisting of the unit and the magnitude.
+*/
+Firmin.Parser = {};
+
+Firmin.Parser.ParseError = function(message) {
+    this.message = message;
+};
+
+Firmin.Parser.parseAngle = function(input) {
+    var magnitude, unit;
+    
+    if (typeof input === "number") {
+        return ["deg", input];
+    }
+    
+    if (!(typeof input === "string" &&
+          input.match(/^\d+(\.\d+)?(deg|rad)?$/))) {
+        throw new Firmin.Parser.ParseError(input +
+            " is not a valid CSS angle.");
+    }
+    
+    magnitude = input.match(/^\d+[^\.]/)
+              ? Math.parseInt(input)
+              : Math.parseFloat(input);
+    
+    unit = input.match(/\d+deg$/) ? "deg" : "rad";
+    
+    return [unit, magnitude];
 };
