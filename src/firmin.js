@@ -250,3 +250,24 @@ Firmin.Parser.parseAngle = function(input) {
     
     return [unit, magnitude];
 };
+
+Firmin.Parser.parsePercentage = function(input) {
+    var magnitude, unit = "%";
+    
+    if (typeof input === "number") {
+        return [unit, input];
+    }
+    
+    if (!(typeof input === "string" && input.match(/^\d+(\.\d+)?%?$/))) {
+        throw new Firmin.Parser.ParseError("'" + input +
+            "' is not a valid percentage");
+    }
+    
+    if (input[input.length - 1] === "%") {
+        input = input.substr(0, input.length - 1);
+    }
+    
+    magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
+    
+    return [unit, magnitude];
+};
