@@ -48,15 +48,18 @@ Firmin.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|mat
 
 Firmin.Transform.DEG_TO_RAD_RATIO  = Math.PI / 180;
 
-// Firmin.Transform.create is a factory method that allows a new Firmin.Transform
-// to be created with any of the available operations, rather than adding
-// them one by one.
-//
-//         var t = Firmin.Transform.create({
-//             scale:     {x: 2,   y: 1.5},
-//             translate: {x: 150, y: 450},
-//         });
-//
+/*
+Transform.create is a factory method that allows a new Transform
+to be created with any of the available operations, rather than adding
+them one by one.
+
+        var t = Firmin.Transform.create({
+            scale:     {x: 2,   y: 1.5},
+            translate: {x: 150, y: 450},
+        });
+
+*/
+
 Firmin.Transform.create = function(transforms) {
     var transform = new Firmin.Transform(),
         type;
@@ -145,8 +148,11 @@ Firmin.Transform.prototype.origin = function(origin) {
     this.centre = [origin.x || "50%", origin.y || "50%"];
 };
 
-// Firmin.Transforms can be composed with transitions to produce animation.
-// Transitions have much the same API as Firmin.Transforms.
+/*
+Transforms can be composed with transitions to produce animation.
+Transitions have much the same API as Transforms.
+*/
+
 Firmin.Transition = function() {
     this.properties     = ["all"];
     this.duration       = 0;
@@ -215,6 +221,7 @@ The various parsers implemented below all have a common pattern: they accept
 a string (or, if the type can be numeric and has a default unit, a number) and
 return a pair consisting of the unit and the magnitude.
 */
+
 Firmin.Parser = {};
 
 Firmin.Parser.ParseError = function(message) {
