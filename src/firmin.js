@@ -246,7 +246,7 @@ Firmin.Parser.parseAngle = function(input) {
               ? parseInt(input)
               : parseFloat(input);
     
-    unit = input.match(/\d+deg$/) ? "deg" : "rad";
+    unit = input.match(/\d+rad$/) ? "rad" : "deg";
     
     return [unit, magnitude];
 };
