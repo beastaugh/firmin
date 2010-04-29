@@ -225,6 +225,7 @@ return a pair consisting of the unit and the magnitude.
 Firmin.Parser = {};
 
 Firmin.Parser.ParseError = function(message) {
+    this.name    = "Firmin.Parser.ParseError";
     this.message = message;
 };
 
@@ -237,8 +238,8 @@ Firmin.Parser.parseAngle = function(input) {
     
     if (!(typeof input === "string" &&
           input.match(/^\d+(\.\d+)?(deg|rad)?$/))) {
-        throw new Firmin.Parser.ParseError(input +
-            " is not a valid CSS angle.");
+        throw new Firmin.Parser.ParseError("'" + input +
+            "' is not a valid CSS angle.");
     }
     
     magnitude = input.match(/^\d+[^\.]/)
