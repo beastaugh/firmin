@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin.js parser tests</title>
+    
+    <script type="text/javascript" src="../src/firmin.js"></script>
+</head><body>
+    
+    <script type="text/javascript">
+        ThrowingError = function(klass) {
+            var e = new klass();
+            
+            this.name = 'ThrowingError';
+            this.message = '`' + e.name + '` not thrown';
+        };
+        
+        assertEqual = function(p1, p2) {
+            if (!(p1[0] === p2[0] && p1[1] === p2[1])) {
+                throw new Error(p1.toString() + ' is not equal to ' + p2.toString());
+            }
+        };
+        
+        assertThrows = function(error, test) {
+            try {
+                test();
+                throw new ThrowingError(error);
+            } catch(e) {
+                if (e instanceof ThrowingError) {
+                    throw new Error(e.message);
+                } else if (!(e instanceof error)) {
+                    throw new Error('Threw incorrect error: `' + e.name +
+                        '`, not `' + (new error()).name + '`');
+                }
+            }
+        };
+        
+        parseAngle    = Firmin.Parser.parseAngle;
+        parsePercent  = Firmin.Parser.parsePercentage;
+        parseDistance = Firmin.Parser.parseDistance;
+        ParseError    = Firmin.Parser.ParseError;
+        
+        assertEqual(["deg", 50], parseAngle(50));
+        assertEqual(["deg", 50.0], parseAngle(50.0));
+        assertEqual(["deg", 50], parseAngle("50"));
+        assertEqual(["deg", 50.0], parseAngle("50.0"));
+        assertEqual(["deg", 50], parseAngle("50deg"));
+        assertEqual(["deg", 50.0], parseAngle("50.0deg"));
+        assertEqual(["rad", 3], parseAngle("3rad"));
+        assertEqual(["rad", 3.0], parseAngle("3.0rad"));
+        assertThrows(ParseError, function() { parseAngle("3.rad"); });
+        assertThrows(ParseError, function() { parseAngle("3π"); });
+        assertThrows(ParseError, function() { parseAngle({}); });
+        
+        assertEqual(["%", 50], parsePercent(50));
+        assertEqual(["%", 50.0], parsePercent(50.0));
+        assertEqual(["%", 50], parsePercent("50"));
+        assertEqual(["%", 50.0], parsePercent("50.0"));
+        assertEqual(["%", 50], parsePercent("50%"));
+        assertEqual(["%", 50.0], parsePercent("50.0%"));
+        assertThrows(ParseError, function() { parsePercent("%"); });
+        assertThrows(ParseError, function() { parsePercent(null); });
+        
+        assertEqual(["px", 50], parseDistance(50));
+        assertEqual(["px", 50.0], parseDistance(50.0));
+        assertEqual(["px", 50], parseDistance("50"));
+        assertEqual(["px", 50.0], parseDistance("50.0"));
+        assertEqual(["px", 50], parseDistance("50px"));
+        assertEqual(["px", 50.0], parseDistance("50.0px"));
+        assertEqual(["pt", 50], parseDistance("50pt"));
+        assertEqual(["pt", 50.0], parseDistance("50.0pt"));
+        assertEqual(["cm", 50], parseDistance("50cm"));
+        assertEqual(["cm", 50.0], parseDistance("50.0cm"));
+        assertEqual(["em", 50], parseDistance("50em"));
+        assertEqual(["em", 50.0], parseDistance("50.0em"));
+        assertThrows(ParseError, function() { parseDistance("em"); });
+        assertThrows(ParseError, function() { parseDistance("5,px"); });
+        assertThrows(ParseError, function() { parseDistance("cm4"); });
+        assertThrows(ParseError, function() { parseDistance(function() {}); });
+    </script>
+    
+</body></html>

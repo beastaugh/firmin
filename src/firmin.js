@@ -48,15 +48,18 @@ Firmin.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|mat
 
 Firmin.Transform.DEG_TO_RAD_RATIO  = Math.PI / 180;
 
-// Firmin.Transform.create is a factory method that allows a new Firmin.Transform
-// to be created with any of the available operations, rather than adding
-// them one by one.
-//
-//         var t = Firmin.Transform.create({
-//             scale:     {x: 2,   y: 1.5},
-//             translate: {x: 150, y: 450},
-//         });
-//
+/*
+Transform.create is a factory method that allows a new Transform
+to be created with any of the available operations, rather than adding
+them one by one.
+
+        var t = Firmin.Transform.create({
+            scale:     {x: 2,   y: 1.5},
+            translate: {x: 150, y: 450},
+        });
+
+*/
+
 Firmin.Transform.create = function(transforms) {
     var transform = new Firmin.Transform(),
         type;
@@ -94,6 +97,10 @@ Firmin.Transform.prototype.translateY = function(distance) {
     this.translate({y: distance});
 };
 
+/*
+Changes of scale are pure magnitudes; they have no units.
+*/
+
 Firmin.Transform.prototype.scale = function(magnitudes) {
     this.merge([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
 };
@@ -126,7 +133,8 @@ Firmin.Transform.prototype.skewY = function(magnitude) {
 };
 
 Firmin.Transform.prototype.rotate = function(angle) {
-    angle = angle * Firmin.Transform.DEG_TO_RAD_RATIO;
+    var a = Firmin.Parser.parseAngle(angle);
+    angle = a[0] === "deg" ? a[1] * Firmin.Transform.DEG_TO_RAD_RATIO : a[1];
     
     this.merge([
         Math.cos(angle),
@@ -144,8 +152,11 @@ Firmin.Transform.prototype.origin = function(origin) {
     this.centre = [origin.x || "50%", origin.y || "50%"];
 };
 
-// Firmin.Transforms can be composed with transitions to produce animation.
-// Transitions have much the same API as Firmin.Transforms.
+/*
+Transforms can be composed with transitions to produce animation.
+Transitions have much the same API as Transforms.
+*/
+
 Firmin.Transition = function() {
     this.properties     = ["all"];
     this.duration       = 0;
@@ -201,4 +212,92 @@ Firmin.animate = function(el, transformation, duration) {
         : duration;
     
     transition.exec(el);
+};
+
+/*
+CSS data types
+
+There are numerous CSS data types. We are mainly interested in the various
+numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
+50%), but there are a few functions which allow or require a keyword instead.
+
+The various parsers implemented below all have a common pattern: they accept
+a string (or, if the type can be numeric and has a default unit, a number) and
+return a pair consisting of the unit and the magnitude.
+*/
+
+Firmin.Parser = {};
+
+Firmin.Parser.ParseError = function(message) {
+    this.name    = "Firmin.Parser.ParseError";
+    this.message = message;
+};
+
+Firmin.Parser.parseAngle = function(input) {
+    var magnitude, unit;
+    
+    if (typeof input === "number") {
+        return ["deg", input];
+    }
+    
+    if (!(typeof input === "string" &&
+          input.match(/^\d+(\.\d+)?(deg|rad)?$/))) {
+        throw new Firmin.Parser.ParseError("'" + input +
+            "' is not a valid CSS angle.");
+    }
+    
+    magnitude = input.match(/^\d+[^\.]/)
+              ? parseInt(input)
+              : parseFloat(input);
+    
+    unit = input.match(/\d+rad$/) ? "rad" : "deg";
+    
+    return [unit, magnitude];
+};
+
+Firmin.Parser.parsePercentage = function(input) {
+    var magnitude, unit = "%";
+    
+    if (typeof input === "number") {
+        return [unit, input];
+    }
+    
+    if (!(typeof input === "string" && input.match(/^\d+(\.\d+)?%?$/))) {
+        throw new Firmin.Parser.ParseError("'" + input +
+            "' is not a valid percentage");
+    }
+    
+    if (input[input.length - 1] === "%") {
+        input = input.substr(0, input.length - 1);
+    }
+    
+    magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
+    
+    return [unit, magnitude];
+};
+
+Firmin.Parser.parseDistance = function(input) {
+    var units       = ["cm", "em", "pt", "px"],
+        distPattern = new RegExp("^\\d+(\\.\\d+)?(" + units.join("|") + ")?$"),
+        unitPattern = new RegExp("(" + units.join("|") + ")$"),
+        magnitude, unit;
+    
+    if (typeof input === "number") {
+        return ["px", input];
+    }
+    
+    if (!(typeof input === "string" && input.match(distPattern))) {
+        throw new Firmin.Parser.ParseError("'" + input +
+            "' is not a valid distance");
+    }
+    
+    if (!input.match(unitPattern)) {
+        magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
+        return ["px", magnitude];
+    }
+    
+    unit      = input.substr(input.length - 2, input.length - 1);
+    magnitude = input.match(/^\d[^\.]/) ? parseInt(input) : parseFloat(input);
+    
+    return [unit, magnitude];
 };
