@@ -78,6 +78,18 @@
             padding:0 12px;
         }
         
+        sup, sub {
+            font-size:10px;
+        }
+        
+        sup {
+            vertical-align:super;
+        }
+        
+        sub {
+            vertical-align:sub;
+        }
+        
         .function h3 {
             margin-bottom:6px;
         }
@@ -89,6 +101,16 @@
         .function h3 code {
             font-size:14px;
             font-weight: normal;
+        }
+        
+        #footnotes ol {
+            margin:0 0 12px 0;
+            padding:0 0 0 20px;
+        }
+        
+        #footnotes li {
+            margin:5px 0;
+            padding:0;
         }
     </style>
 </head><body><div id="wrapper">
@@ -107,10 +129,14 @@
     <p>
         Currently, the only supported platforms are those that use a recent
         version of the WebKit engine: <em>Safari 4</em>, <em>Mobile Safari</em>
-        (i.e. iPhone and iPad) and <em>Google Chrome</em>. This is because CSS
-        transitions are only available for WebKit browsers. Once this feature
-        is more widely supported an effort will be made to make Firmin
-        compatible with other browsers.
+        (i.e. iPhone and iPad) and <em>Google Chrome</em>. While CSS transforms
+        and transitions are available for other browsers such as Opera 10.50
+        and Firefox 3.7 (not yet released), some important additional
+        features<sup><a class="fn-link" href="#fn1">1</a></sup> are not.
+        Furthermore, the CSS transforms and transitions API is experimental,
+        and varies between browsers. Once Firmin has reached a reasonable level
+        of stability, an effort will be made to make it compatible with a wider
+        range of browsers.
     </p>
     
     
@@ -156,6 +182,17 @@ Firmin.animate(el, tf);</pre>
             The optional <code>duration</code> argument specifies the duration
             of the animation in seconds; the default value is <code>0.2</code>.
         </p>
+    </div>
+    
+    <div id="footnotes">
+        <h2>Footnotes</h2>
+        
+        <ol>
+            <li id="fn1">
+                Such as an equivalent to the WebKit engine&#8217;s
+                <code>onWebkitTransitionEnd</code> event.
+            </li>
+        </ol>
     </div>
     
 </div><body></html>
