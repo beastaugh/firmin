@@ -46,81 +46,70 @@
         });
         
         test("Translate right 300px, down 200px", function() {
-            Firmin.animate(redBox, {
-                translate: {x: 300, y: 200}
+            Firmin.translate(redBox, {
+                x: 300,
+                y: 200
             }, 0.3);
         });
         
         test("Translate right 150px, down 100px", function() {
-            Firmin.animate(redBox, {
-                translate: {x: 150, y: 100}
+            Firmin.translate(redBox, {
+                x: 150,
+                y: 100
             }, 0.3);
         });
         
         test("Translate right 400px", function() {
-            Firmin.animate(redBox, {
-                translateX: 400
-            }, 0.3);
+            Firmin.translateX(redBox, 400, 0.3);
         });
         
         test("Translate down 50px", function() {
-            Firmin.animate(redBox, {
-                translateY: 50
-            }, 0.3);
+            Firmin.translateY(redBox, 50, 0.3);
         });
         
         test("Scale both dimensions to 150% of their original size", function() {
-            Firmin.animate(redBox, {
-                scale: {x: 1.5, y: 1.5}
+            Firmin.scale(redBox, {
+                x: 1.5,
+                y: 1.5
             }, 0.3);
         });
         
         test("Scale both dimensions to 50% of their original size", function() {
-            Firmin.animate(redBox, {
-                scale: {x: 0.5, y: 0.5}
+            Firmin.scale(redBox, {
+                x: 0.5,
+                y: 0.5
             }, 0.3);
         });
         
         test("Scale horizontally to twice its original size", function() {
-            Firmin.animate(redBox, {
-                scaleX: 2
-            }, 0.3);
+            Firmin.scaleX(redBox, 2, 0.3);
         });
         
         test("Scale vertically to three times its original size", function() {
-            Firmin.animate(redBox, {
-                scaleY: 3
-            }, 0.3);
+            Firmin.scaleY(redBox, 3, 0.3);
         });
         
         test("Skew it 30 degrees in both dimensions", function() {
-            Firmin.animate(redBox, {
-                skew: {x: 30, y: 30}
+            Firmin.skew(redBox, {
+                x: 30,
+                y: 30
             }, 0.3);
         });
         
         test("Skew it -25 degrees horizontally", function() {
-            Firmin.animate(redBox, {
-                skewX: -25
-            }, 0.3);
+            Firmin.skewX(redBox, -25, 0.3);
         });
         
         test("Skew it 45 degrees vertically", function() {
-            Firmin.animate(redBox, {
-                skewY: 45
-            }, 0.3);
+            Firmin.skewY(redBox, 45, 0.3);
         });
         
         test("Rotate it 45 degrees", function() {
-            Firmin.animate(redBox, {
-                rotate: 45
-            }, 0.3);
+            Firmin.rotate(redBox, 45, 0.3);
         });
         
         test("Rotate it -20 degrees", function() {
-            Firmin.animate(redBox, {
-                rotate: -20
-            }, 0.3);
+            Firmin.rotate(redBox, -20, 0.3);
         });
         
         test("Rotate it 90 degrees around a corner", function() {
@@ -134,9 +123,7 @@
         });
         
         test("Transform it with a matrix", function() {
-            Firmin.animate(redBox, {
-                matrix: [3, 1, 0, 2, 1, 1]
-            }, 0.3);
+            Firmin.matrix(redBox, [3, 1, 0, 2, 1, 1], 0.3);
         });
     })();
     </script>

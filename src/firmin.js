@@ -214,6 +214,22 @@ Firmin.animate = function(el, transformation, duration) {
     transition.exec(el);
 };
 
+Firmin.methods = [
+    "translate", "translateX", "translateY",
+    "scale", "scaleX", "scaleY",
+    "skew", "skewX", "skewY",
+    "rotate",
+    "matrix"
+];
+
+Firmin.methods.forEach(function(method) {
+    Firmin[method] = function(el, value, duration) {
+        var transform = {};
+        transform[method] = value;
+        Firmin.animate(el, transform, duration);
+    };
+});
+
 /*
 CSS data types
 
