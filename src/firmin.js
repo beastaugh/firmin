@@ -97,6 +97,10 @@ Firmin.Transform.prototype.translateY = function(distance) {
     this.translate({y: distance});
 };
 
+/*
+Changes of scale are pure magnitudes; they have no units.
+*/
+
 Firmin.Transform.prototype.scale = function(magnitudes) {
     this.merge([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
 };
@@ -268,6 +272,32 @@ Firmin.Parser.parsePercentage = function(input) {
     }
     
     magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
+    
+    return [unit, magnitude];
+};
+
+Firmin.Parser.parseDistance = function(input) {
+    var units       = ["cm", "em", "pt", "px"],
+        distPattern = new RegExp("^\\d+(\\.\\d+)?(" + units.join("|") + ")?$"),
+        unitPattern = new RegExp("(" + units.join("|") + ")$"),
+        magnitude, unit;
+    
+    if (typeof input === "number") {
+        return ["px", input];
+    }
+    
+    if (!(typeof input === "string" && input.match(distPattern))) {
+        throw new Firmin.Parser.ParseError("'" + input +
+            "' is not a valid distance");
+    }
+    
+    if (!input.match(unitPattern)) {
+        magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
+        return ["px", magnitude];
+    }
+    
+    unit      = input.substr(input.length - 2, input.length - 1);
+    magnitude = input.match(/^\d[^\.]/) ? parseInt(input) : parseFloat(input);
     
     return [unit, magnitude];
 };

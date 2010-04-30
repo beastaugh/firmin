@@ -33,9 +33,10 @@
             }
         };
         
-        parseAngle   = Firmin.Parser.parseAngle;
-        parsePercent = Firmin.Parser.parsePercentage;
-        ParseError   = Firmin.Parser.ParseError;
+        parseAngle    = Firmin.Parser.parseAngle;
+        parsePercent  = Firmin.Parser.parsePercentage;
+        parseDistance = Firmin.Parser.parseDistance;
+        ParseError    = Firmin.Parser.ParseError;
         
         assertEqual(["deg", 50], parseAngle(50));
         assertEqual(["deg", 50.0], parseAngle(50.0));
@@ -57,6 +58,23 @@
         assertEqual(["%", 50.0], parsePercent("50.0%"));
         assertThrows(ParseError, function() { parsePercent("%"); });
         assertThrows(ParseError, function() { parsePercent(null); });
+        
+        assertEqual(["px", 50], parseDistance(50));
+        assertEqual(["px", 50.0], parseDistance(50.0));
+        assertEqual(["px", 50], parseDistance("50"));
+        assertEqual(["px", 50.0], parseDistance("50.0"));
+        assertEqual(["px", 50], parseDistance("50px"));
+        assertEqual(["px", 50.0], parseDistance("50.0px"));
+        assertEqual(["pt", 50], parseDistance("50pt"));
+        assertEqual(["pt", 50.0], parseDistance("50.0pt"));
+        assertEqual(["cm", 50], parseDistance("50cm"));
+        assertEqual(["cm", 50.0], parseDistance("50.0cm"));
+        assertEqual(["em", 50], parseDistance("50em"));
+        assertEqual(["em", 50.0], parseDistance("50.0em"));
+        assertThrows(ParseError, function() { parseDistance("em"); });
+        assertThrows(ParseError, function() { parseDistance("5,px"); });
+        assertThrows(ParseError, function() { parseDistance("cm4"); });
+        assertThrows(ParseError, function() { parseDistance(function() {}); });
     </script>
     
 </body></html>
