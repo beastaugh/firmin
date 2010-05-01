@@ -214,7 +214,7 @@ Firmin.animate(el, tf);</pre>
         <div class="function" id="translateX">
             <h3>
                 <em>translateX</em>
-                <code>Firmin.translateX(element, magnitude, [duration])</code>
+                <code>Firmin.translateX(element, horizontalMagnitude, [duration])</code>
             </h3>
             
             <p>
@@ -230,7 +230,7 @@ Firmin.animate(el, tf);</pre>
         <div class="function" id="translateX">
             <h3>
                 <em>translateY</em>
-                <code>Firmin.translateY(element, magnitude, [duration])</code>
+                <code>Firmin.translateY(element, verticalMagnitude, [duration])</code>
             </h3>
             
             <p>
@@ -240,6 +240,57 @@ Firmin.animate(el, tf);</pre>
             </p>
             
             <pre>Firmin.translateY(el, 40);</pre>
+        </div>
+        
+        <div class="function" id="scale">
+            <h3>
+                <em>scale</em>
+                <code>Firmin.scale(element, magnitudes, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>magnitudes</em> object can have two properties: the
+                <code>x</code> (horizontal) and <code>y</code> values which
+                the element is to be scaled by. Changes of scale are pure
+                magnitudes; they have no units. As such, they should be
+                positive numbers. For example, to scale an element to twice its
+                width and two-thirds of its height:
+            </p>
+            
+            <pre>Firmin.scale(el, {
+    x: 2,
+    y: 2/3
+});</pre>
+        </div>
+        
+        <div class="function" id="scaleX">
+            <h3>
+                <em>scaleX</em>
+                <code>Firmin.scaleX(element, horizontalMagnitude, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>horizontal magnitude</em> by which the element should
+                be scaled by must be a positive number. To scale an element to
+                four times its width:
+            </p>
+            
+            <pre>Firmin.scaleX(el, 4);</pre>
+        </div>
+        
+        <div class="function" id="scaleY">
+            <h3>
+                <em>scaleY</em>
+                <code>Firmin.scaleY(element, verticalMagnitude, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>vertical magnitude</em> by which the element should be
+                scaled by must be a positive number. To scale an element to
+                half its height:
+            </p>
+            
+            <pre>Firmin.scaleY(el, 0.5);</pre>
         </div>
     </div>
     

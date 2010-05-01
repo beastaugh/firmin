@@ -97,10 +97,6 @@ Firmin.Transform.prototype.translateY = function(distance) {
     this.translate({y: distance});
 };
 
-/*
-Changes of scale are pure magnitudes; they have no units.
-*/
-
 Firmin.Transform.prototype.scale = function(magnitudes) {
     this.merge([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
 };
