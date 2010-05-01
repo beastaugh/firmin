@@ -163,7 +163,7 @@
             
             <pre>var el = document.getElementById("test"),
     tf = {
-        translateX: "400px",
+        translateX: 400,
         scaleY:     2
     };
 
@@ -186,8 +186,60 @@ Firmin.animate(el, tf);</pre>
             
             <p>
                 The optional <code>duration</code> argument specifies the duration
-                of the animation in seconds; the default value is <code>0.2</code>.
+                of the animation in seconds; the default value is <code>0</code>.
             </p>
+        </div>
+        
+        <div class="function" id="translate">
+            <h3>
+                <em>translate</em>
+                <code>Firmin.translate(element, translation, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>translation</em> object can have two properties: the
+                <code>x</code> (horizontal) and <code>y</code> distances which
+                the element should be translated by. Both distances must be
+                numbers&mdash;the units are pixels. For example, this
+                translation would move the element 200 pixels to the right and
+                100 pixels upwards.
+            </p>
+            
+            <pre>Firmin.translate(el, {
+    x: 200,
+    y: -100
+});</pre>
+        </div>
+        
+        <div class="function" id="translateX">
+            <h3>
+                <em>translateX</em>
+                <code>Firmin.translateX(element, magnitude, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>magnitude</em> of the translation must be a number,
+                representing the number of pixels the element is to be
+                translated by along the horizontal axis. E.g., shifting it 50
+                pixels to the left would be accomplished by:
+            </p>
+            
+            <pre>Firmin.translateX(el, -50);</pre>
+        </div>
+        
+        <div class="function" id="translateX">
+            <h3>
+                <em>translateY</em>
+                <code>Firmin.translateY(element, magnitude, [duration])</code>
+            </h3>
+            
+            <p>
+                Again, the <em>magnitude</em> of the translation is a number
+                stating the number of pixels the element should be translated
+                by along the vertical axis. To move it 40 pixels down:
+            </p>
+            
+            <pre>Firmin.translateY(el, 40);</pre>
         </div>
     </div>
     
