@@ -36,6 +36,7 @@
         parseAngle       = Firmin.Parser.parseAngle;
         parsePercent     = Firmin.Parser.parsePercentage;
         parseLength      = Firmin.Parser.parseLength;
+        parseTime        = Firmin.Parser.parseTime;
         parseTranslation = Firmin.Parser.parseTranslation;
         ParseError       = Firmin.Parser.ParseError;
         
@@ -82,6 +83,14 @@
         assertEqual(["%", 5], parseTranslation("5%"));
         assertEqual(["px", 5], parseTranslation("5px"));
         assertEqual(["em", 5], parseTranslation("5em"));
+        
+        assertEqual(["s", 0], parseTime(0));
+        assertEqual(["s", 0.0], parseTime(0.0));
+        assertEqual(["s", 0], parseTime("0s"));
+        assertEqual(["s", 0.0], parseTime("0.0s"));
+        assertEqual(["ms", 0], parseTime("0ms"));
+        assertEqual(["ms", 0.0], parseTime("0.0ms"));
+        assertEqual(["ms", -1], parseTime("-1ms"));
     </script>
     
 </body></html>

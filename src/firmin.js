@@ -203,13 +203,27 @@ Firmin.Transition.prototype.exec = function(el) {
 };
 
 Firmin.animate = function(el, transformation, duration) {
-    var transition = new Firmin.Transition();
+    var transition = new Firmin.Transition(), time;
     
     transition.transform = Firmin.Transform.create(transformation);
     
-    transition.duration = typeof duration === "number"
-        ? duration + "s"
-        : (duration || transition.duration);
+    if (typeof duration === "number" || typeof duration === "string") {
+        try {
+            time = Firmin.Parser.parseTime(duration);
+        } catch(e) {
+            if (!(e instanceof Firmin.Parser.ParseError)) {
+                throw new e.constructor(e.message);
+            }
+        }
+    } else {
+        time = ["s", transition.duration];
+    }
+    
+    if (time[1] < 0) {
+        time[1] = 0;
+    }
+    
+    transition.duration = time[1] + time[0];
     
     transition.exec(el);
 };
@@ -309,5 +323,5 @@ Firmin.Parser.parseEither = function() {
 Firmin.Parser.parseAngle       = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
 Firmin.Parser.parsePercentage  = Firmin.Parser.parseNumeric(["%"], "%");
 Firmin.Parser.parseLength      = Firmin.Parser.parseNumeric(["em", "ex", "px", "gd", "rem", "vw", "vh", "ch", "in", "cm", "mm", "pt", "pc"], "px");
-Firmin.Parser.parseTime        = Firmin.Parser.parseNumeric(["s", "ms"], "s");
+Firmin.Parser.parseTime        = Firmin.Parser.parseNumeric(["ms", "s"], "s");
 Firmin.Parser.parseTranslation = Firmin.Parser.parseEither(Firmin.Parser.parsePercentage, Firmin.Parser.parseLength);
