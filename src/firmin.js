@@ -209,7 +209,7 @@ Firmin.animate = function(el, transformation, duration) {
     
     transition.duration = typeof duration === "number"
         ? duration + "s"
-        : duration;
+        : (duration || transition.duration);
     
     transition.exec(el);
 };
@@ -244,76 +244,70 @@ return a pair consisting of the unit and the magnitude.
 
 Firmin.Parser = {};
 
+Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?$/
+
 Firmin.Parser.ParseError = function(message) {
     this.name    = "Firmin.Parser.ParseError";
     this.message = message;
 };
 
-Firmin.Parser.parseAngle = function(input) {
-    var magnitude, unit;
-    
-    if (typeof input === "number") {
-        return ["deg", input];
-    }
-    
-    if (!(typeof input === "string" &&
-          input.match(/^\d+(\.\d+)?(deg|rad)?$/))) {
-        throw new Firmin.Parser.ParseError("'" + input +
-            "' is not a valid CSS angle.");
-    }
-    
-    magnitude = input.match(/^\d+[^\.]/)
-              ? parseInt(input)
-              : parseFloat(input);
-    
-    unit = input.match(/\d+rad$/) ? "rad" : "deg";
-    
-    return [unit, magnitude];
+Firmin.Parser.parseNumeric = function(units, def) {
+    return function(input) {
+        var unit, magnitude;
+        
+        if (typeof input === "number") {
+            return [def, input];
+        }
+        
+        if (typeof input !== "string") {
+            throw new Firmin.Parser.ParseError("Input should be a string");
+        }
+        
+        unit = units.filter(function(u) {
+            var l = input.length;
+            return input.substr(l - u.length) === u;
+        })[0];
+        
+        if (typeof unit === "undefined") {
+            unit = def;
+        } else {
+            input = input.substr(0, input.length - unit.length);
+        }
+        
+        magnitude = parseFloat(input);
+        
+        if (isNaN(magnitude) || !input.match(Firmin.Parser.NUMBER_PATTERN)) {
+            throw new Firmin.Parser.ParseError("Input is not a valid number");
+        }
+        
+        return [unit, magnitude];
+    };
 };
 
-Firmin.Parser.parsePercentage = function(input) {
-    var magnitude, unit = "%";
+Firmin.Parser.parseEither = function() {
+    var parsers = Array.prototype.slice.apply(arguments),
+        last    = parsers.length - 1;
     
-    if (typeof input === "number") {
-        return [unit, input];
-    }
-    
-    if (!(typeof input === "string" && input.match(/^\d+(\.\d+)?%?$/))) {
-        throw new Firmin.Parser.ParseError("'" + input +
-            "' is not a valid percentage");
-    }
-    
-    if (input[input.length - 1] === "%") {
-        input = input.substr(0, input.length - 1);
-    }
-    
-    magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
-    
-    return [unit, magnitude];
+    return function() {
+        var output, i;
+        
+        for (i = 0; i <= last; i++) {
+            try {
+                output = parsers[i].apply(null, arguments);
+                break;
+            } catch (e) {
+                if (!(e instanceof Firmin.Parser.ParseError && i < last)) {
+                    throw new e.constructor(e.message);
+                }
+            }
+        }
+        
+        return output;
+    };
 };
 
-Firmin.Parser.parseDistance = function(input) {
-    var units       = ["cm", "em", "pt", "px"],
-        distPattern = new RegExp("^\\d+(\\.\\d+)?(" + units.join("|") + ")?$"),
-        unitPattern = new RegExp("(" + units.join("|") + ")$"),
-        magnitude, unit;
-    
-    if (typeof input === "number") {
-        return ["px", input];
-    }
-    
-    if (!(typeof input === "string" && input.match(distPattern))) {
-        throw new Firmin.Parser.ParseError("'" + input +
-            "' is not a valid distance");
-    }
-    
-    if (!input.match(unitPattern)) {
-        magnitude = input.match(/^\d$/) ? parseInt(input) : parseFloat(input);
-        return ["px", magnitude];
-    }
-    
-    unit      = input.substr(input.length - 2, input.length - 1);
-    magnitude = input.match(/^\d[^\.]/) ? parseInt(input) : parseFloat(input);
-    
-    return [unit, magnitude];
-};
+Firmin.Parser.parseAngle       = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
+Firmin.Parser.parsePercentage  = Firmin.Parser.parseNumeric(["%"], "%");
+Firmin.Parser.parseLength      = Firmin.Parser.parseNumeric(["em", "ex", "px", "gd", "rem", "vw", "vh", "ch", "in", "cm", "mm", "pt", "pc"], "px");
+Firmin.Parser.parseTime        = Firmin.Parser.parseNumeric(["s", "ms"], "s");
+Firmin.Parser.parseTranslation = Firmin.Parser.parseEither(Firmin.Parser.parsePercentage, Firmin.Parser.parseLength);

@@ -33,10 +33,11 @@
             }
         };
         
-        parseAngle    = Firmin.Parser.parseAngle;
-        parsePercent  = Firmin.Parser.parsePercentage;
-        parseDistance = Firmin.Parser.parseDistance;
-        ParseError    = Firmin.Parser.ParseError;
+        parseAngle       = Firmin.Parser.parseAngle;
+        parsePercent     = Firmin.Parser.parsePercentage;
+        parseLength      = Firmin.Parser.parseLength;
+        parseTranslation = Firmin.Parser.parseTranslation;
+        ParseError       = Firmin.Parser.ParseError;
         
         assertEqual(["deg", 50], parseAngle(50));
         assertEqual(["deg", 50.0], parseAngle(50.0));
@@ -48,6 +49,7 @@
         assertEqual(["rad", 3.0], parseAngle("3.0rad"));
         assertThrows(ParseError, function() { parseAngle("3.rad"); });
         assertThrows(ParseError, function() { parseAngle("3π"); });
+        assertThrows(ParseError, function() { parseAngle("rad"); });
         assertThrows(ParseError, function() { parseAngle({}); });
         
         assertEqual(["%", 50], parsePercent(50));
@@ -59,22 +61,27 @@
         assertThrows(ParseError, function() { parsePercent("%"); });
         assertThrows(ParseError, function() { parsePercent(null); });
         
-        assertEqual(["px", 50], parseDistance(50));
-        assertEqual(["px", 50.0], parseDistance(50.0));
-        assertEqual(["px", 50], parseDistance("50"));
-        assertEqual(["px", 50.0], parseDistance("50.0"));
-        assertEqual(["px", 50], parseDistance("50px"));
-        assertEqual(["px", 50.0], parseDistance("50.0px"));
-        assertEqual(["pt", 50], parseDistance("50pt"));
-        assertEqual(["pt", 50.0], parseDistance("50.0pt"));
-        assertEqual(["cm", 50], parseDistance("50cm"));
-        assertEqual(["cm", 50.0], parseDistance("50.0cm"));
-        assertEqual(["em", 50], parseDistance("50em"));
-        assertEqual(["em", 50.0], parseDistance("50.0em"));
-        assertThrows(ParseError, function() { parseDistance("em"); });
-        assertThrows(ParseError, function() { parseDistance("5,px"); });
-        assertThrows(ParseError, function() { parseDistance("cm4"); });
-        assertThrows(ParseError, function() { parseDistance(function() {}); });
+        assertEqual(["px", 50], parseLength(50));
+        assertEqual(["px", 50.0], parseLength(50.0));
+        assertEqual(["px", 50], parseLength("50"));
+        assertEqual(["px", 50.0], parseLength("50.0"));
+        assertEqual(["px", 50], parseLength("50px"));
+        assertEqual(["px", 50.0], parseLength("50.0px"));
+        assertEqual(["pt", 50], parseLength("50pt"));
+        assertEqual(["pt", 50.0], parseLength("50.0pt"));
+        assertEqual(["cm", 50], parseLength("50cm"));
+        assertEqual(["cm", 50.0], parseLength("50.0cm"));
+        assertEqual(["em", 50], parseLength("50em"));
+        assertEqual(["em", 50.0], parseLength("50.0em"));
+        assertThrows(ParseError, function() { parseLength("em"); });
+        assertThrows(ParseError, function() { parseLength("5,px"); });
+        assertThrows(ParseError, function() { parseLength("cm4"); });
+        assertThrows(ParseError, function() { parseLength(function() {}); });
+        
+        assertEqual(["%", 5], parseTranslation("5"));
+        assertEqual(["%", 5], parseTranslation("5%"));
+        assertEqual(["px", 5], parseTranslation("5px"));
+        assertEqual(["em", 5], parseTranslation("5em"));
     </script>
     
 </body></html>
