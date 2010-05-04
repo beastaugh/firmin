@@ -46,7 +46,29 @@ Firmin.Transform = function() {
 
 Firmin.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix|origin)/;
 
-Firmin.Transform.DEG_TO_RAD_RATIO  = Math.PI / 180;
+/*
+
+Angular conversion
+
+The transform operations assume that angles are given in radians. However,
+there are several other valid CSS angle types: degrees, grads and turns.
+We therefore need code to, at a minimum, convert values of all these types to
+values in radians.
+
+*/
+
+Firmin.angleToRadians = function(type, magnitude) {
+    var ratio;
+    
+    switch (type) {
+        case "rad":  return magnitude;
+        case "deg":  ratio = Math.PI / 180; break;
+        case "grad": ratio = Math.PI / 200; break;
+        case "turn": ratio = Math.PI * 2;   break;
+    }
+    
+    return ratio * magnitude;
+};
 
 /*
 
@@ -111,10 +133,22 @@ Firmin.Transform.prototype.scaleY = function(magnitude) {
 };
 
 Firmin.Transform.prototype.skew = function(magnitudes) {
+    var parseAngle = Firmin.Parser.parseAngle,
+        angle2rads = Firmin.angleToRadians,
+        x = 0, y = 0;
+    
+    if (typeof magnitudes.x === "number" || typeof magnitudes.x === "string") {
+        x = angle2rads.apply(null, parseAngle(magnitudes.x));
+    }
+    
+    if (typeof magnitudes.y === "number" || typeof magnitudes.y === "string") {
+        y = angle2rads.apply(null, parseAngle(magnitudes.y));
+    }
+    
     this.matrix([
         1,
-        Math.tan((magnitudes.y || 0) * Firmin.Transform.DEG_TO_RAD_RATIO),
-        Math.tan((magnitudes.x || 0) * Firmin.Transform.DEG_TO_RAD_RATIO),
+        Math.tan(y),
+        Math.tan(x),
         1,
         0,
         0
@@ -130,8 +164,7 @@ Firmin.Transform.prototype.skewY = function(magnitude) {
 };
 
 Firmin.Transform.prototype.rotate = function(angle) {
-    var a = Firmin.Parser.parseAngle(angle);
-    angle = a[0] === "deg" ? a[1] * Firmin.Transform.DEG_TO_RAD_RATIO : a[1];
+    angle = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(angle));
     
     this.matrix([
         Math.cos(angle),

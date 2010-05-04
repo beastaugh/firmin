@@ -112,6 +112,18 @@
             Firmin.rotate(redBox, -20, 0.3);
         });
         
+        test("Rotate it 1 radian", function() {
+            Firmin.rotate(redBox, "1rad", 0.3);
+        });
+        
+        test("Rotate it 20 grads", function() {
+            Firmin.rotate(redBox, "20grad", 0.3);
+        });
+        
+        test("Rotate it a 0.15 of a turn", function() {
+            Firmin.rotate(redBox, "0.15turn", 0.3);
+        });
+        
         test("Rotate it 90 degrees around a corner", function() {
             Firmin.animate(redBox, {
                 rotate: -165,
