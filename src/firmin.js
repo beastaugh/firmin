@@ -74,7 +74,7 @@ Firmin.Transform.create = function(transforms) {
     return transform;
 };
 
-Firmin.Transform.prototype.merge = function(vector) {
+Firmin.Transform.prototype.matrix = function(vector) {
     this.ctm.multiply(vector);
 };
 
@@ -87,7 +87,7 @@ Firmin.Transform.prototype.build = function() {
 };
 
 Firmin.Transform.prototype.translate = function(distances) {
-    this.merge([1, 0, 0, 1, distances.x || 0, distances.y || 0]);
+    this.matrix([1, 0, 0, 1, distances.x || 0, distances.y || 0]);
 };
 
 Firmin.Transform.prototype.translateX = function(distance) {
@@ -99,7 +99,7 @@ Firmin.Transform.prototype.translateY = function(distance) {
 };
 
 Firmin.Transform.prototype.scale = function(magnitudes) {
-    this.merge([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
+    this.matrix([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
@@ -111,7 +111,7 @@ Firmin.Transform.prototype.scaleY = function(magnitude) {
 };
 
 Firmin.Transform.prototype.skew = function(magnitudes) {
-    this.merge([
+    this.matrix([
         1,
         Math.tan((magnitudes.y || 0) * Firmin.Transform.DEG_TO_RAD_RATIO),
         Math.tan((magnitudes.x || 0) * Firmin.Transform.DEG_TO_RAD_RATIO),
@@ -133,7 +133,7 @@ Firmin.Transform.prototype.rotate = function(angle) {
     var a = Firmin.Parser.parseAngle(angle);
     angle = a[0] === "deg" ? a[1] * Firmin.Transform.DEG_TO_RAD_RATIO : a[1];
     
-    this.merge([
+    this.matrix([
         Math.cos(angle),
         Math.sin(angle),
         -Math.sin(angle),
@@ -142,8 +142,6 @@ Firmin.Transform.prototype.rotate = function(angle) {
         0
     ]);
 };
-
-Firmin.Transform.prototype.matrix = Firmin.Transform.prototype.merge;
 
 Firmin.Transform.prototype.origin = function(origin) {
     if (origin.x) this.centre.x = origin.x;
