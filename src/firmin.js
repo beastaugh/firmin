@@ -39,7 +39,7 @@ Firmin.CTM.prototype.build = function() {
 
 Firmin.Transform = function() {
     this.ctm    = new Firmin.CTM();
-    this.centre = ["50%", "50%"];
+    this.centre = {x: "50%", y: "50%"};
     
     return this;
 };
@@ -49,14 +49,15 @@ Firmin.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|mat
 Firmin.Transform.DEG_TO_RAD_RATIO  = Math.PI / 180;
 
 /*
+
 Transform.create is a factory method that allows a new Transform
 to be created with any of the available operations, rather than adding
 them one by one.
 
-        var t = Firmin.Transform.create({
-            scale:     {x: 2,   y: 1.5},
-            translate: {x: 150, y: 450},
-        });
+    var t = Firmin.Transform.create({
+        scale:     {x: 2,   y: 1.5},
+        translate: {x: 150, y: 450},
+    });
 
 */
 
@@ -78,7 +79,7 @@ Firmin.Transform.prototype.merge = function(vector) {
 };
 
 Firmin.Transform.prototype.getOrigin = function() {
-    return this.centre.join(" ");
+    return this.centre.x + " " + this.centre.y;
 };
 
 Firmin.Transform.prototype.build = function() {
@@ -145,12 +146,15 @@ Firmin.Transform.prototype.rotate = function(angle) {
 Firmin.Transform.prototype.matrix = Firmin.Transform.prototype.merge;
 
 Firmin.Transform.prototype.origin = function(origin) {
-    this.centre = [origin.x || "50%", origin.y || "50%"];
+    if (origin.x) this.centre.x = origin.x;
+    if (origin.y) this.centre.y = origin.y;
 };
 
 /*
+
 Transforms can be composed with transitions to produce animation.
 Transitions have much the same API as Transforms.
+
 */
 
 Firmin.Transition = function() {
