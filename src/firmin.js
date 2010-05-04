@@ -291,8 +291,6 @@ Current shortcomings of the parser library include:
 
 - An error is incorrectly thrown if a unit string is a subset of another valid
   unit string for that data type.
-- Exception-based parsing is slow, clunky and inelegant. It does not lend
-  itself particularly well to composition.
 - Compositional operations are limited to choice. There is no way to apply one
   parser and then another, based on the result of the first. CSS data types
   lend themselves particularly well to this style, so it should be better
@@ -322,10 +320,8 @@ Firmin.Parser.parseNumeric = function(units, def) {
         
         if (typeof input === "number") {
             return [def, input];
-        }
-        
-        if (typeof input !== "string") {
-            throw new Firmin.Parser.ParseError("Input should be a string");
+        } else if (typeof input !== "string") {
+            return null;
         }
         
         unit = units.filter(function(u) {
@@ -341,30 +337,21 @@ Firmin.Parser.parseNumeric = function(units, def) {
         
         magnitude = parseFloat(input);
         
-        if (isNaN(magnitude) || !input.match(Firmin.Parser.NUMBER_PATTERN)) {
-            throw new Firmin.Parser.ParseError("Input is not a valid number");
-        }
-        
-        return [unit, magnitude];
+        return (isNaN(magnitude) || !input.match(Firmin.Parser.NUMBER_PATTERN))
+            ? null
+            : [unit, magnitude];
     };
 };
 
 Firmin.Parser.parseEither = function() {
     var parsers = Array.prototype.slice.apply(arguments),
-        last    = parsers.length - 1;
+        total   = parsers.length;
     
     return function() {
-        var output, i;
+        var output = null, i = 0;
         
-        for (i = 0; i <= last; i++) {
-            try {
-                output = parsers[i].apply(null, arguments);
-                break;
-            } catch (e) {
-                if (!(e instanceof Firmin.Parser.ParseError && i < last)) {
-                    throw new e.constructor(e.message);
-                }
-            }
+        while (output === null && i <= total) {
+            output = parsers[i++].apply(null, arguments);
         }
         
         return output;
