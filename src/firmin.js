@@ -1,13 +1,15 @@
 Firmin = {};
 
 Firmin.CTM = function(vector) {
+    var i, c;
+    
     vector      = vector || [];
     this.vector = [1, 0, 0, 1, 0, 0];
-
-    for (var i = 0; i < 6; i++) {
-        this.vector[i] = vector[i] || this.vector[i];
+    
+    for (i = 0; i < 6; i++) {
+        this.vector[i] = typeof (c = vector[i]) === "number" ? c : this.vector[i];
     }
-
+    
     return this;
 };
 
@@ -109,14 +111,20 @@ Firmin.Transform.prototype.build = function() {
 };
 
 Firmin.Transform.prototype.translate = function(distances) {
+    var x, y;
+    
     if (typeof distances === "number" || typeof distances === "string") {
-        distances = {x: distances, y: distances};
+        x = distances;
+        y = distances;
+    } else {
+        x = distances.x;
+        y = distances.y;
+        
+        if (typeof x !== "number") x = parseInt(x) || 0;
+        if (typeof y !== "number") y = parseInt(y) || 0;
     }
     
-    if (distances.x) distances.x = parseInt(distances.x);
-    if (distances.y) distances.y = parseInt(distances.y);
-    
-    this.matrix([1, 0, 0, 1, distances.x || 0, distances.y || 0]);
+    this.matrix([1, 0, 0, 1, x, y]);
 };
 
 Firmin.Transform.prototype.translateX = function(distance) {
@@ -128,8 +136,20 @@ Firmin.Transform.prototype.translateY = function(distance) {
 };
 
 Firmin.Transform.prototype.scale = function(magnitudes) {
-    if (typeof magnitudes === "number") magnitudes = {x: magnitudes, y: magnitudes};
-    this.matrix([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
+    var x, y;
+    
+    if (typeof magnitudes === "number") {
+        x = magnitudes;
+        y = magnitudes;
+    } else {
+        x = magnitudes.x;
+        y = magnitudes.y;
+        
+        if (typeof x !== "number") x = 1;
+        if (typeof y !== "number") y = 1;
+    }
+    
+    this.matrix([x, 0, 0, y, 0, 0]);
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
