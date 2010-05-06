@@ -121,6 +121,7 @@ Firmin.Transform.prototype.translateY = function(distance) {
 };
 
 Firmin.Transform.prototype.scale = function(magnitudes) {
+    if (typeof magnitudes === "number") magnitudes = {x: magnitudes, y: magnitudes};
     this.matrix([magnitudes.x || 1, 0, 0, magnitudes.y || 1, 0, 0]);
 };
 
