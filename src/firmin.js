@@ -109,6 +109,13 @@ Firmin.Transform.prototype.build = function() {
 };
 
 Firmin.Transform.prototype.translate = function(distances) {
+    if (typeof distances === "number" || typeof distances === "string") {
+        distances = {x: distances, y: distances};
+    }
+    
+    if (distances.x) distances.x = parseInt(distances.x);
+    if (distances.y) distances.y = parseInt(distances.y);
+    
     this.matrix([1, 0, 0, 1, distances.x || 0, distances.y || 0]);
 };
 
