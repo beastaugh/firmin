@@ -3,14 +3,13 @@ Firmin = {};
 Firmin.CTM = function(vector) {
     var i, c;
     
-    vector      = vector || [];
     this.vector = [1, 0, 0, 1, 0, 0];
     
-    for (i = 0; i < 6; i++) {
-        this.vector[i] = typeof (c = vector[i]) === "number" ? c : this.vector[i];
+    if (typeof vector === "object") {
+        for (i = 0; i < 6; i++) {
+            this.vector[i] = typeof (c = vector[i]) === "number" ? c : this.vector[i];
+        }
     }
-    
-    return this;
 };
 
 Firmin.CTM.KEYS = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5};
