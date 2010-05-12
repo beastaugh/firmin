@@ -119,8 +119,8 @@ Firmin.Transform.prototype.translate = function(distances) {
         x = distances.x;
         y = distances.y;
         
-        if (typeof x !== "number") x = parseInt(x) || 0;
-        if (typeof y !== "number") y = parseInt(y) || 0;
+        if (typeof x !== "number") x = parseInt(x, 10) || 0;
+        if (typeof y !== "number") y = parseInt(y, 10) || 0;
     }
     
     this.matrix([1, 0, 0, 1, x, y]);
