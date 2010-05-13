@@ -355,23 +355,5 @@ Firmin.Parser.parseNumeric = function(units, def) {
     };
 };
 
-Firmin.Parser.parseEither = function() {
-    var parsers = Array.prototype.slice.apply(arguments),
-        total   = parsers.length;
-    
-    return function() {
-        var output = null, i = 0;
-        
-        while (output === null && i <= total) {
-            output = parsers[i++].apply(null, arguments);
-        }
-        
-        return output;
-    };
-};
-
-Firmin.Parser.parseAngle       = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
-Firmin.Parser.parsePercentage  = Firmin.Parser.parseNumeric(["%"], "%");
-Firmin.Parser.parseLength      = Firmin.Parser.parseNumeric(["em", "ex", "px", "gd", "rem", "vw", "vh", "ch", "in", "cm", "mm", "pt", "pc"], "px");
-Firmin.Parser.parseTime        = Firmin.Parser.parseNumeric(["ms", "s"], "s");
-Firmin.Parser.parseTranslation = Firmin.Parser.parseEither(Firmin.Parser.parsePercentage, Firmin.Parser.parseLength);
+Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
+Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["ms", "s"], "s");
