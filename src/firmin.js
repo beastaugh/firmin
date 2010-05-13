@@ -290,7 +290,7 @@ Firmin.methods.forEach(function(method) {
 
 /*
 
-CSS data types
+CSS data type parsing
 
 There are numerous CSS data types. We are mainly interested in the various
 numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
@@ -298,11 +298,12 @@ numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
 
 The parsers implemented below all have a common pattern: they accept a string
 (or, if the type can be numeric and has a default unit, a number) and return a
-pair consisting of the unit and the magnitude.
+pair consisting of the unit and the magnitude (or null, if the input was not of
+the expected format).
 
-Another major issue, albeit not with the parsing library itself, is that there
-is currently no straightforward way to convert between length units; users of
-the library must use pixels, rather than being able to use any length unit
+One major limitation, albeit not with the parsing library itself, is that there
+is currently no straightforward way to convert between length units. Users of
+this library must use pixels, rather than being able to use any length unit
 they like and relying on the library to perform an internal conversion to
 pixels. This limits the usefulness of the parsing library, essentially to
 angles and times.
