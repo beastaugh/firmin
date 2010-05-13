@@ -334,7 +334,7 @@ angles and times.
 
 Firmin.Parser = {};
 
-Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?$/
+Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?$/;
 
 Firmin.Parser.ParseError = function(message) {
     this.name    = "Firmin.Parser.ParseError";
