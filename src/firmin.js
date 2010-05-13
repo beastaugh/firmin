@@ -41,8 +41,6 @@ Firmin.CTM.prototype.build = function() {
 Firmin.Transform = function() {
     this.ctm    = new Firmin.CTM();
     this.centre = {x: "50%", y: "50%"};
-    
-    return this;
 };
 
 Firmin.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix|origin)/;
@@ -62,10 +60,10 @@ Firmin.angleToRadians = function(type, magnitude) {
     var ratio;
     
     switch (type) {
-        case "rad":  return magnitude;
-        case "deg":  ratio = Math.PI / 180; break;
-        case "grad": ratio = Math.PI / 200; break;
-        case "turn": ratio = Math.PI * 2;   break;
+        case "rad"  : return magnitude;
+        case "deg"  : ratio = Math.PI / 180; break;
+        case "grad" : ratio = Math.PI / 200; break;
+        case "turn" : ratio = Math.PI * 2;   break;
     }
     
     return ratio * magnitude;
@@ -222,8 +220,6 @@ Firmin.Transition = function() {
     this.timingFunction = null;
     this.transform      = null;
     this.opacity        = null;
-    
-    return this;
 };
 
 Firmin.Transition.prototype.build = function() {
