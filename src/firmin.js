@@ -265,11 +265,7 @@ Firmin.animate = function(el, transformation, duration) {
     
     transition.transform = Firmin.Transform.create(transformation);
     
-    if (typeof duration === "number" || typeof duration === "string") {
-        time = Firmin.Parser.parseTime(duration);
-    } else {
-        time = ["s", transition.duration];
-    }
+    time = Firmin.Parser.parseTime(duration) || ["s", transition.duration];
     
     if (time[1] < 0) {
         time[1] = 0;
