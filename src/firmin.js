@@ -261,17 +261,7 @@ Firmin.animate = function(el, transformation, duration) {
     
     transition.transform = Firmin.Transform.create(transformation);
     
-    if (typeof duration === "number" || typeof duration === "string") {
-        try {
-            time = Firmin.Parser.parseTime(duration);
-        } catch(e) {
-            if (!(e instanceof Firmin.Parser.ParseError)) {
-                throw new e.constructor(e.message);
-            }
-        }
-    } else {
-        time = ["s", transition.duration];
-    }
+    time = Firmin.Parser.parseTime(duration) || ["s", transition.duration];
     
     if (time[1] < 0) {
         time[1] = 0;
@@ -306,18 +296,16 @@ There are numerous CSS data types. We are mainly interested in the various
 numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
 50%), but there are a few functions which allow or require a keyword instead.
 
-The various parsers implemented below all have a common pattern: they accept
-a string (or, if the type can be numeric and has a default unit, a number) and
-return a pair consisting of the unit and the magnitude.
+The parsers implemented below all have a common pattern: they accept a string
+(or, if the type can be numeric and has a default unit, a number) and return a
+pair consisting of the unit and the magnitude.
 
 Current shortcomings of the parser library include:
 
-- An error is incorrectly thrown if a unit string is a subset of another valid
-  unit string for that data type.
-- Compositional operations are limited to choice. There is no way to apply one
-  parser and then another, based on the result of the first. CSS data types
-  lend themselves particularly well to this style, so it should be better
-  supported.
+- The parser may select an incorrect unit if a unit string is a substring of
+  another valid unit string for that data type, even if there is an
+  unambiguously correct choice. This is due to a lack of lookahead capability
+  in the parsing library.
 
 Another major issue, albeit not with the parsing library itself, is that there
 is currently no straightforward way to convert between length units; users of
@@ -331,11 +319,6 @@ angles and times.
 Firmin.Parser = {};
 
 Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?$/;
-
-Firmin.Parser.ParseError = function(message) {
-    this.name    = "Firmin.Parser.ParseError";
-    this.message = message;
-};
 
 Firmin.Parser.parseNumeric = function(units, def) {
     return function(input) {
@@ -368,23 +351,5 @@ Firmin.Parser.parseNumeric = function(units, def) {
     };
 };
 
-Firmin.Parser.parseEither = function() {
-    var parsers = Array.prototype.slice.apply(arguments),
-        total   = parsers.length;
-    
-    return function() {
-        var output = null, i = 0;
-        
-        while (output === null && i++ <= total) {
-            output = parsers[i].apply(null, arguments);
-        }
-        
-        return output;
-    };
-};
-
-Firmin.Parser.parseAngle       = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
-Firmin.Parser.parsePercentage  = Firmin.Parser.parseNumeric(["%"], "%");
-Firmin.Parser.parseLength      = Firmin.Parser.parseNumeric(["em", "ex", "px", "gd", "rem", "vw", "vh", "ch", "in", "cm", "mm", "pt", "pc"], "px");
-Firmin.Parser.parseTime        = Firmin.Parser.parseNumeric(["ms", "s"], "s");
-Firmin.Parser.parseTranslation = Firmin.Parser.parseEither(Firmin.Parser.parsePercentage, Firmin.Parser.parseLength);
+Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
+Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["ms", "s"], "s");

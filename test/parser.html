@@ -25,11 +25,8 @@
             }
         };
         
-        parseAngle       = Firmin.Parser.parseAngle;
-        parsePercent     = Firmin.Parser.parsePercentage;
-        parseLength      = Firmin.Parser.parseLength;
-        parseTime        = Firmin.Parser.parseTime;
-        parseTranslation = Firmin.Parser.parseTranslation;
+        parseAngle = Firmin.Parser.parseAngle;
+        parseTime  = Firmin.Parser.parseTime;
         
         assertEqual(["deg", 50], parseAngle(50));
         assertEqual(["deg", 50.0], parseAngle(50.0));
@@ -43,37 +40,6 @@
         assertNull(parseAngle("3π"));
         assertNull(parseAngle("rad"));
         assertNull(parseAngle({}));
-        
-        assertEqual(["%", 50], parsePercent(50));
-        assertEqual(["%", 50.0], parsePercent(50.0));
-        assertEqual(["%", 50], parsePercent("50"));
-        assertEqual(["%", 50.0], parsePercent("50.0"));
-        assertEqual(["%", 50], parsePercent("50%"));
-        assertEqual(["%", 50.0], parsePercent("50.0%"));
-        assertNull(parsePercent("%"));
-        assertNull(parsePercent(null));
-        
-        assertEqual(["px", 50], parseLength(50));
-        assertEqual(["px", 50.0], parseLength(50.0));
-        assertEqual(["px", 50], parseLength("50"));
-        assertEqual(["px", 50.0], parseLength("50.0"));
-        assertEqual(["px", 50], parseLength("50px"));
-        assertEqual(["px", 50.0], parseLength("50.0px"));
-        assertEqual(["pt", 50], parseLength("50pt"));
-        assertEqual(["pt", 50.0], parseLength("50.0pt"));
-        assertEqual(["cm", 50], parseLength("50cm"));
-        assertEqual(["cm", 50.0], parseLength("50.0cm"));
-        assertEqual(["em", 50], parseLength("50em"));
-        assertEqual(["em", 50.0], parseLength("50.0em"));
-        assertNull(parseLength("em"));
-        assertNull(parseLength("5,px"));
-        assertNull(parseLength("cm4"));
-        assertNull(parseLength(function() {}));
-        
-        assertEqual(["%", 5], parseTranslation("5"));
-        assertEqual(["%", 5], parseTranslation("5%"));
-        assertEqual(["px", 5], parseTranslation("5px"));
-        assertEqual(["em", 5], parseTranslation("5em"));
         
         assertEqual(["s", 0], parseTime(0));
         assertEqual(["s", 0.0], parseTime(0.0));
