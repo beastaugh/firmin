@@ -364,9 +364,11 @@ Firmin.Parser.parseNumeric = function(units, def) {
         
         magnitude = parseFloat(input);
         
-        return (isNaN(magnitude) || !input.match(Firmin.Parser.NUMBER_PATTERN))
-            ? null
-            : [unit, magnitude];
+        if (isNaN(magnitude) || !input.match(Firmin.Parser.NUMBER_PATTERN)) {
+            return null;
+        } else {
+            return [unit, magnitude];
+        }
     };
 };
 
@@ -377,8 +379,8 @@ Firmin.Parser.parseEither = function() {
     return function() {
         var output = null, i = 0;
         
-        while (output === null && i <= total) {
-            output = parsers[i++].apply(null, arguments);
+        while (output === null && i++ <= total) {
+            output = parsers[i].apply(null, arguments);
         }
         
         return output;
