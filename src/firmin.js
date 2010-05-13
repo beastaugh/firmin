@@ -300,18 +300,16 @@ There are numerous CSS data types. We are mainly interested in the various
 numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
 50%), but there are a few functions which allow or require a keyword instead.
 
-The various parsers implemented below all have a common pattern: they accept
-a string (or, if the type can be numeric and has a default unit, a number) and
-return a pair consisting of the unit and the magnitude.
+The parsers implemented below all have a common pattern: they accept a string
+(or, if the type can be numeric and has a default unit, a number) and return a
+pair consisting of the unit and the magnitude.
 
 Current shortcomings of the parser library include:
 
-- An error is incorrectly thrown if a unit string is a subset of another valid
-  unit string for that data type.
-- Compositional operations are limited to choice. There is no way to apply one
-  parser and then another, based on the result of the first. CSS data types
-  lend themselves particularly well to this style, so it should be better
-  supported.
+- The parser may select an incorrect unit if a unit string is a substring of
+  another valid unit string for that data type, even if there is an
+  unambiguously correct choice. This is due to a lack of lookahead capability
+  in the parsing library.
 
 Another major issue, albeit not with the parsing library itself, is that there
 is currently no straightforward way to convert between length units; users of
