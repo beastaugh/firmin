@@ -266,13 +266,7 @@ Firmin.animate = function(el, transformation, duration) {
     transition.transform = Firmin.Transform.create(transformation);
     
     if (typeof duration === "number" || typeof duration === "string") {
-        try {
-            time = Firmin.Parser.parseTime(duration);
-        } catch(e) {
-            if (!(e instanceof Firmin.Parser.ParseError)) {
-                throw new e.constructor(e.message);
-            }
-        }
+        time = Firmin.Parser.parseTime(duration);
     } else {
         time = ["s", transition.duration];
     }
@@ -335,11 +329,6 @@ angles and times.
 Firmin.Parser = {};
 
 Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?$/
-
-Firmin.Parser.ParseError = function(message) {
-    this.name    = "Firmin.Parser.ParseError";
-    this.message = message;
-};
 
 Firmin.Parser.parseNumeric = function(units, def) {
     return function(input) {
