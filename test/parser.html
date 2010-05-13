@@ -21,7 +21,7 @@
         
         assertNull = function(input) {
             if (input !== null) {
-                throw new Error(input.toString() + 'is not null');
+                throw new Error(input.toString() + ' is not null');
             }
         };
         
@@ -41,12 +41,12 @@
         assertNull(parseAngle("rad"));
         assertNull(parseAngle({}));
         
-        assertEqual(["s", 0], parseTime(0));
-        assertEqual(["s", 0.0], parseTime(0.0));
-        assertEqual(["s", 0], parseTime("0s"));
-        assertEqual(["s", 0.0], parseTime("0.0s"));
-        assertEqual(["ms", 0], parseTime("0ms"));
-        assertEqual(["ms", 0.0], parseTime("0.0ms"));
+        assertEqual(["s", 2], parseTime(2));
+        assertEqual(["s", 0.5], parseTime(0.5));
+        assertEqual(["s", 12], parseTime("12s"));
+        assertEqual(["s", 1.2], parseTime("1.2s"));
+        assertEqual(["ms", 40], parseTime("40ms"));
+        assertEqual(["ms", 192.4], parseTime("192.4ms"));
         assertEqual(["ms", -1], parseTime("-1ms"));
     </script>
     

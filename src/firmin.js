@@ -300,13 +300,6 @@ The parsers implemented below all have a common pattern: they accept a string
 (or, if the type can be numeric and has a default unit, a number) and return a
 pair consisting of the unit and the magnitude.
 
-Current shortcomings of the parser library include:
-
-- The parser may select an incorrect unit if a unit string is a substring of
-  another valid unit string for that data type, even if there is an
-  unambiguously correct choice. This is due to a lack of lookahead capability
-  in the parsing library.
-
 Another major issue, albeit not with the parsing library itself, is that there
 is currently no straightforward way to convert between length units; users of
 the library must use pixels, rather than being able to use any length unit
@@ -318,7 +311,7 @@ angles and times.
 
 Firmin.Parser = {};
 
-Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?$/;
+Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?/;
 
 Firmin.Parser.parseNumeric = function(units, def) {
     return function(input) {
@@ -330,26 +323,19 @@ Firmin.Parser.parseNumeric = function(units, def) {
             return null;
         }
         
-        unit = units.filter(function(u) {
-            var l = input.length;
-            return input.substr(l - u.length) === u;
-        })[0];
+        magnitude = (input.match(Firmin.Parser.NUMBER_PATTERN) || [""])[0];
         
-        if (typeof unit === "undefined") {
+        if (magnitude.length === input.length) {
             unit = def;
         } else {
-            input = input.substr(0, input.length - unit.length);
+            unit = units.filter(function(u) {
+                return input.substr(magnitude.length) === u;
+            })[0];
         }
         
-        magnitude = parseFloat(input);
-        
-        if (isNaN(magnitude) || !input.match(Firmin.Parser.NUMBER_PATTERN)) {
-            return null;
-        } else {
-            return [unit, magnitude];
-        }
+        return unit && magnitude ? [unit, parseFloat(magnitude)] : null;
     };
 };
 
 Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
-Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["ms", "s"], "s");
+Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["s", "ms"], "s");
