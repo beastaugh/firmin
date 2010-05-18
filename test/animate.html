@@ -137,6 +137,13 @@
         test("Transform it with a matrix", function() {
             Firmin.matrix(redBox, [3, 1, 0, 2, 1, 1], 0.3);
         });
+        
+        test("Skew 20 degrees horizontally and 40 vertically, then rotate it through 2 radians", function() {
+            Firmin.skew(redBox, {
+                x: 20,
+                y: 40
+            }, 0.3).rotate("2rad", 0.5);
+        });
     })();
     </script>
     

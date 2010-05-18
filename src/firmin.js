@@ -256,20 +256,52 @@ Firmin.Transition.prototype.exec = function(el) {
     return el;
 };
 
-Firmin.animate = function(el, transformation, duration) {
-    var transition = new Firmin.Transition(), time;
+Firmin.Animation = function(description, duration) {
+    this.transition = new Firmin.Transition();
+    this.transition.transform = Firmin.Transform.create(description);
+    this.transition.duration  = duration;
+};
+
+Firmin.Animation.prototype.exec = function(element) {
+    this.transition.exec(element);
+};
+
+Firmin.Animated = function(element) {
+    this.element = element;
+    this.stack   = [];
     
-    transition.transform = Firmin.Transform.create(transformation);
+    var self = this;
+    
+    this.element.addEventListener('webkitTransitionEnd', function() {
+        if (self.stack.length > 0) {
+            self.run();
+        }
+    }, false);
+};
+
+Firmin.Animated.prototype.run = function() {
+    var animation = this.stack.shift();
+    
+    animation.exec(this.element);
+    
+    return this;
+};
+
+Firmin.Animated.prototype.animate = function(description, duration) {
+    this.stack.push(new Firmin.Animation(description, duration));
+    
+    return this;
+};
+
+Firmin.animate = function(el, description, duration) {
+    var animated = new Firmin.Animated(el), time;
     
     time = Firmin.Parser.parseTime(duration) || ["s", transition.duration];
+    if (time[1] < 0) time[1] = 0;
     
-    if (time[1] < 0) {
-        time[1] = 0;
-    }
+    animated.animate(description, time[1] + time[0]);
     
-    transition.duration = time[1] + time[0];
-    
-    transition.exec(el);
+    return animated.run();
 };
 
 Firmin.methods = [
@@ -282,9 +314,15 @@ Firmin.methods = [
 
 Firmin.methods.forEach(function(method) {
     Firmin[method] = function(el, value, duration) {
-        var transform = {};
-        transform[method] = value;
-        Firmin.animate(el, transform, duration);
+        var description = {};
+        description[method] = value;
+        return Firmin.animate(el, description, duration);
+    };
+    
+    Firmin.Animated.prototype[method] = function(value, duration) {
+        var description = {};
+        description[method] = value;
+        return this.animate(description, duration);
     };
 });
 
