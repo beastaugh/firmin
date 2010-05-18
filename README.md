@@ -1,5 +1,5 @@
-Firmin.js
-=========
+Firmin
+======
 
 Firmin is a JavaScript animation library based on CSS [transforms][tf] and
 [transitions][ts].
