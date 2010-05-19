@@ -269,18 +269,19 @@ Firmin.Animation.prototype.exec = function(element) {
 Firmin.Animated = function(element) {
     var self = this;
     
-    this.element = element;
-    this.stack   = [];
+    this.element    = element;
+    this.operations = [];
+    this.index      = 0;
     
     this.element.addEventListener('webkitTransitionEnd', function() {
-        if (self.stack.length > 0) {
+        if (self.index < self.operations.length) {
             self.run();
         }
     }, false);
 };
 
 Firmin.Animated.prototype.run = function() {
-    var animation = this.stack.shift();
+    var animation = this.operations[this.index++];
     
     animation.exec(this.element);
     
@@ -288,7 +289,16 @@ Firmin.Animated.prototype.run = function() {
 };
 
 Firmin.Animated.prototype.animate = function(description, duration) {
-    this.stack.push(new Firmin.Animation(description, duration));
+    var animation = new Firmin.Animation(description, duration),
+        transform;
+    
+    if (this.index > 0 && animation.transform) {
+        transform = this.operations[this.index - 1].transform;
+        transform.matrix(animation.transform.ctm.vector);
+        animation.transform = transform;
+    }
+    
+    this.operations.push(animation);
     
     return this;
 };

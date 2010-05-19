@@ -5,16 +5,18 @@
     <style type="text/css" media="screen">
         html, body {font-family:Helvetica, Arial, sans-serif; color:#000; background:#fff; margin:0; border:none; padding:0;}
         body {padding:100px;}
-        #description {text-align:right; font-size:36px; font-weight:normal;}
+        #container {position:relative; padding-top:200px;}
+        #description {text-align:right; font-size:36px; font-weight:normal; position:absolute; top:0; right:0;}
         #red-box {background:#f00; width:200px; height:166px;}
     </style>
     
     <script type="text/javascript" src="../src/firmin.js"></script>
 </head><body>
-    
-    <h1 id="description">Animation tests</h1>
-    
-    <div id="red-box"></div>
+    <div id="container">
+        <h1 id="description">Animation tests</h1>
+        
+        <div id="red-box"></div>
+    </div>
     
     <script type="text/javascript">
     (function() {
@@ -144,6 +146,18 @@
                 y: 40
             }, 0.3).rotate("2rad", 0.5);
         });
+        
+        test("Stateful transform test: element shouldn't deform from its last state", function() {
+            Firmin.animate(redBox, {
+                skew: {
+                    x: 20,
+                    y: 40
+                },
+                
+                rotate: "2rad"
+            }, 0.5);
+        });
+        
     })();
     </script>
     
