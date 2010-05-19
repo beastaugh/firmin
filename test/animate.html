@@ -22,16 +22,35 @@
     (function() {
         var redBox   = document.getElementById('red-box'),
             title    = document.getElementById('description'),
-            interval = 1000,
+            interval = 1200,
             timeout  = 0,
         
-        test = function(description, block) {
+        test = function(description, block, time) {
             setTimeout(function() {
                 title.innerHTML = description;
                 block();
             }, timeout);
             timeout += interval;
         };
+        
+        test("Fade from red to blue", function() {
+            Firmin.animate(redBox, {
+                backgroundColor: '#00f'
+            }, 0.8);
+        });
+        
+        test("Fade out", function() {
+            Firmin.animate(redBox, {
+                opacity: 0
+            }, 0.8);
+        });
+        
+        test("Fade back in to red", function() {
+            Firmin.animate(redBox, {
+                opacity: 1,
+                backgroundColor: '#f00'
+            }, 0.8);
+        });
         
         test("Translate right 200px and skew vertically 25 degrees", function() {
            Firmin.animate(redBox, {
