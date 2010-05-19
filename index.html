@@ -361,6 +361,29 @@ Firmin.animate(el, tf);</pre>
             
             <pre>Firmin.skewY(el, "30deg");</pre>
         </div>
+        
+        <div class="function" id="matrix">
+            <h3>
+                <em>matrix</em>
+                <code>Firmin.matrix(element, vector, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>vector</em> supplied expresses a two-dimensional
+                <a href="http://www.w3.org/TR/SVG/coords.html#TransformMatrixDefined">transformation
+                matrix</a>. As only six values of the matrix are needed to
+                compute the transformation, the 3x3 matrix can be represented
+                as a six-element vector.
+            </p>
+            
+            <pre>Firmin.matrix(element, [3, 1, 0, 2, 1, 1]);</pre>
+            
+            <p>
+                All other transformations can be represented in terms of a
+                transformation matrix&mdash;this is what the library does
+                internally.
+            </p>
+        </div>
     </div>
     
     
