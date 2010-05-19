@@ -38,6 +38,7 @@
         
         h2 {
             font-size:18px;
+            margin-top:24px;
         }
         
         h3 {
@@ -88,6 +89,10 @@
         
         sub {
             vertical-align:sub;
+        }
+        
+        .function {
+            margin-bottom:36px;
         }
         
         .function h3 {
@@ -291,6 +296,52 @@ Firmin.animate(el, tf);</pre>
             </p>
             
             <pre>Firmin.scaleY(el, 0.5);</pre>
+        </div>
+        
+        <div class="function" id="skew">
+            <h3>
+                <em>skew</em>
+                <code>Firmin.skew(element, magnitudes, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>skew</em> function specifies a skew transformation
+                along the X and Y axes, via a <em>magnitudes</em> object with
+                two properties: the <code>x</code> and <code>y</code> angles.
+            </p>
+            
+            <pre>Firmin.skew(el, {
+    x: "20deg",
+    y: "1rad"
+});</pre>
+        </div>
+        
+        <div class="function" id="skewX">
+            <h3>
+                <em>skewX</em>
+                <code>Firmin.skewX(element, xAngle, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>skewX</em> function specifies a skew transformation
+                along the X axis.
+            </p>
+            
+            <pre>Firmin.skewX(el, "45deg");</pre>
+        </div>
+        
+        <div class="function" id="skewX">
+            <h3>
+                <em>skewY</em>
+                <code>Firmin.skewY(element, yAngle, [duration])</code>
+            </h3>
+            
+            <p>
+                The <em>skewY</em> function specifies a skew transformation
+                along the X axis.
+            </p>
+            
+            <pre>Firmin.skewY(el, "30deg");</pre>
         </div>
     </div>
     
