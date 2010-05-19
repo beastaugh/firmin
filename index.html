@@ -306,7 +306,7 @@ Firmin.animate(el, tf);</pre>
                 <em>rotate</em>
                 <code>Firmin.rotate(element, angle, [duration])</code>
             </h3>
-
+            
             <p>
                 The <em>angle</em> by which the element will be rotated can be
                 specified as a string, in which case it will be parsed as a
@@ -316,7 +316,7 @@ Firmin.animate(el, tf);</pre>
                 which case it is assumed that the angle is given in degrees.
             </p>
         </div>
-
+        
         <div class="function" id="skew">
             <h3>
                 <em>skew</em>
@@ -324,9 +324,10 @@ Firmin.animate(el, tf);</pre>
             </h3>
             
             <p>
-                The <em>skew</em> function specifies a skew transformation
-                along the X and Y axes, via a <em>magnitudes</em> object with
-                two properties: the <code>x</code> and <code>y</code> angles.
+                A skew transformation along the X and Y axes is specified via a
+                <em>magnitudes</em> object with two properties: the
+                <code>x</code> and <code>y</code> angles by which the element
+                will be skewed.
             </p>
             
             <pre>Firmin.skew(el, {
@@ -342,8 +343,7 @@ Firmin.animate(el, tf);</pre>
             </h3>
             
             <p>
-                The <em>skewX</em> function specifies a skew transformation
-                along the X axis.
+                The element will be skewed along the X axis by the angle given.
             </p>
             
             <pre>Firmin.skewX(el, "45deg");</pre>
@@ -356,8 +356,7 @@ Firmin.animate(el, tf);</pre>
             </h3>
             
             <p>
-                The <em>skewY</em> function specifies a skew transformation
-                along the X axis.
+                The element will be skewed along the Y axis by the angle given.
             </p>
             
             <pre>Firmin.skewY(el, "30deg");</pre>

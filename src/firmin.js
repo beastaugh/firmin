@@ -46,8 +46,8 @@ Firmin.Transform = function() {
 Firmin.Transform.methods = [
     "translate", "translateX", "translateY",
     "scale", "scaleX", "scaleY",
-    "skew", "skewX", "skewY",
     "rotate",
+    "skew", "skewX", "skewY",
     "matrix"
 ];
 
