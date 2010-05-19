@@ -43,56 +43,28 @@ Firmin.Transform = function() {
     this.centre = {x: "50%", y: "50%"};
 };
 
-Firmin.Transform.OPERATION_PATTERN = /((translate|scale|skew)(X|Y)?)|(rotate|matrix|origin)/;
+Firmin.Transform.methods = [
+    "translate", "translateX", "translateY",
+    "scale", "scaleX", "scaleY",
+    "skew", "skewX", "skewY",
+    "rotate",
+    "matrix"
+];
 
-/*
-
-Angular conversion
-
-The transform operations assume that angles are given in radians. However,
-there are several other valid CSS angle types: degrees, grads and turns.
-We therefore need code to, at a minimum, convert values of all these types to
-values in radians.
-
-*/
-
-Firmin.angleToRadians = function(type, magnitude) {
-    var ratio;
-    
-    switch (type) {
-        case "rad"  : return magnitude;
-        case "deg"  : ratio = Math.PI / 180; break;
-        case "grad" : ratio = Math.PI / 200; break;
-        case "turn" : ratio = Math.PI * 2;   break;
-    }
-    
-    return ratio * magnitude;
-};
-
-/*
-
-Transform.create is a factory method that allows a new Transform
-to be created with any of the available operations, rather than adding
-them one by one.
-
-    var t = Firmin.Transform.create({
-        scale:     {x: 2,   y: 1.5},
-        translate: {x: 150, y: 450},
-    });
-
-*/
-
-Firmin.Transform.create = function(transforms) {
+Firmin.Transform.parse = function(description) {
     var transform = new Firmin.Transform(),
-        type;
+        rest      = {},
+        methods   = Firmin.Transform.methods;
     
-    for (type in transforms) {
-        if (type.match(Firmin.Transform.OPERATION_PATTERN)) {
-            transform[type](transforms[type]);
+    for (property in description) {
+        if (methods.indexOf(property) !== -1) {
+            transform[property](description[property]);
+        } else {
+            rest[property] = description[property];
         }
     }
     
-    return transform;
+    return {result: transform, remainder: rest};
 };
 
 Firmin.Transform.prototype.matrix = function(vector) {
@@ -103,8 +75,13 @@ Firmin.Transform.prototype.getOrigin = function() {
     return this.centre.x + " " + this.centre.y;
 };
 
-Firmin.Transform.prototype.build = function() {
-    return this.ctm.build();
+Firmin.Transform.prototype.build = function(properties) {
+    properties = properties || {};
+    
+    properties.webkitTransform       = this.ctm.build();
+    properties.webkitTransformOrigin = this.getOrigin();
+    
+    return properties;
 };
 
 Firmin.Transform.prototype.translate = function(distances) {
@@ -222,55 +199,78 @@ Firmin.Transition = function() {
     this.opacity        = null;
 };
 
-Firmin.Transition.prototype.build = function() {
-    var properties = {
-        webkitTransitionProperty: this.properties.join(", "),
-        webkitTransitionDuration: this.duration,
-        webkitTransitionDelay:    this.delay
-    };
+Firmin.Transition.methods = [
+    "properties",
+    "timingFunction",
+    "duration",
+    "delay"
+];
+
+Firmin.Transition.parse = function(description) {
+    var transition = new Firmin.Transition(),
+        rest       = {},
+        methods    = Firmin.Transition.methods;
+    
+    for (property in description) {
+        if (methods.indexOf(property) !== -1) {
+            transition[property] = description[property];
+        } else {
+            rest[property] = description[property];
+        }
+    }
+    
+    return {result: transition, remainder: rest};
+};
+
+Firmin.Transition.prototype.build = function(properties) {
+    properties = properties || {};
+    
+    if (typeof this.properties === "string") {
+        properties.webkitTransitionProperty = this.properties;
+    } else {
+        properties.webkitTransitionProperty = this.properties.join(", ");
+    }
+    
+    properties.webkitTransitionDuration = this.duration;
+    properties.webkitTransitionDelay    = this.delay;
     
     if (this.timingFunction) {
         properties.webkitTransitionTimingFunction = this.timingFunction;
     }
     
-    if (this.opacity) {
-        properties.opacity = this.opacity;
-    }
-    
-    if (this.transform) {
-        properties.webkitTransform       = this.transform.build();
-        properties.webkitTransformOrigin = this.transform.getOrigin();
-    }
-    
     return properties;
 };
 
-Firmin.Transition.prototype.exec = function(el) {
-    var style = this.build(),
-        prop;
-    
-    for (prop in style) {
-        el.style[prop] = style[prop];
-    }
-    
-    return el;
-};
-
 Firmin.Animation = function(description, duration) {
-    this.transition = new Firmin.Transition();
-    this.transition.transform = Firmin.Transform.create(description);
+    var transitionParsed, transformParsed;
+    
+    transitionParsed = Firmin.Transition.parse(description);
+    this.transition  = transitionParsed.result;
+    
     this.transition.duration  = duration;
+    
+    transformParsed  = Firmin.Transform.parse(transitionParsed.remainder);
+    this.transform   = transformParsed.result;
+    
+    this.style       = transformParsed.remainder;
 };
 
 Firmin.Animation.prototype.exec = function(element) {
-    this.transition.exec(element);
+    var properties = this.style, property;
+    
+    properties = this.transition.build(properties);
+    properties = this.transform.build(properties);
+    
+    for (property in properties) {
+        element.style[property] = properties[property];
+    }
 };
 
 Firmin.Animated = function(element) {
+    var self = this;
+    
     this.element = element;
     this.stack   = [];
-    
-    var self = this;
     
     this.element.addEventListener('webkitTransitionEnd', function() {
         if (self.stack.length > 0) {
@@ -304,15 +304,13 @@ Firmin.animate = function(el, description, duration) {
     return animated.run();
 };
 
-Firmin.methods = [
-    "translate", "translateX", "translateY",
-    "scale", "scaleX", "scaleY",
-    "skew", "skewX", "skewY",
-    "rotate",
-    "matrix"
-];
+/*
 
-Firmin.methods.forEach(function(method) {
+Animation function aliases
+
+*/
+
+Firmin.Transform.methods.forEach(function(method) {
     Firmin[method] = function(el, value, duration) {
         var description = {};
         description[method] = value;
@@ -378,3 +376,27 @@ Firmin.Parser.parseNumeric = function(units, def) {
 
 Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
 Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["s", "ms"], "s");
+
+/*
+
+Angular conversion
+
+The transform operations assume that angles are given in radians. However,
+there are several other valid CSS angle types: degrees, grads and turns.
+We therefore need code to, at a minimum, convert values of all these types to
+values in radians.
+
+*/
+
+Firmin.angleToRadians = function(type, magnitude) {
+    var ratio;
+    
+    switch (type) {
+        case "rad"  : return magnitude;
+        case "deg"  : ratio = Math.PI / 180; break;
+        case "grad" : ratio = Math.PI / 200; break;
+        case "turn" : ratio = Math.PI * 2;   break;
+    }
+    
+    return ratio * magnitude;
+};
