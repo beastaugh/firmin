@@ -38,9 +38,9 @@ Firmin.CTM.prototype.build = function() {
     return "matrix(" + this.vector.join(",") + ")";
 };
 
-Firmin.Transform = function() {
-    this.ctm    = new Firmin.CTM();
-    this.centre = {x: "50%", y: "50%"};
+Firmin.Transform = function(vector, origin) {
+    this.ctm    = new Firmin.CTM(vector);
+    this.centre = origin || {x: "50%", y: "50%"};
 };
 
 Firmin.Transform.methods = [
@@ -51,13 +51,23 @@ Firmin.Transform.methods = [
     "matrix"
 ];
 
-Firmin.Transform.parse = function(description) {
-    var transform = new Firmin.Transform(),
-        rest      = {},
-        methods   = Firmin.Transform.methods;
+Firmin.Transform.parse = function(description, context) {
+    var methods = Firmin.Transform.methods,
+        rest    = {},
+        transform, vector, origin;
+    
+    if (context.transform) {
+        vector    = context.transform.toVector();
+        origin    = context.transform.getOrigin();
+        transform = new Firmin.Transform(vector, origin);
+    } else {
+        transform = new Firmin.Transform();
+    }
     
     for (property in description) {
         if (methods.indexOf(property) !== -1) {
+            transform[property](description[property]);
+        } else if (property === 'origin') {
             transform[property](description[property]);
         } else {
             rest[property] = description[property];
@@ -69,6 +79,10 @@ Firmin.Transform.parse = function(description) {
 
 Firmin.Transform.prototype.matrix = function(vector) {
     this.ctm.multiply(vector);
+};
+
+Firmin.Transform.prototype.toVector = function() {
+    return this.ctm.vector;
 };
 
 Firmin.Transform.prototype.getOrigin = function() {
@@ -195,8 +209,6 @@ Firmin.Transition = function() {
     this.duration       = 0;
     this.delay          = 0;
     this.timingFunction = null;
-    this.transform      = null;
-    this.opacity        = null;
 };
 
 Firmin.Transition.methods = [
@@ -206,7 +218,7 @@ Firmin.Transition.methods = [
     "delay"
 ];
 
-Firmin.Transition.parse = function(description) {
+Firmin.Transition.parse = function(description, context) {
     var transition = new Firmin.Transition(),
         rest       = {},
         methods    = Firmin.Transition.methods;
@@ -241,18 +253,16 @@ Firmin.Transition.prototype.build = function(properties) {
     return properties;
 };
 
-Firmin.Animation = function(description, duration) {
-    var transitionParsed, transformParsed;
+Firmin.Animation = function(description, context) {
+    var tsp, trp;
     
-    transitionParsed = Firmin.Transition.parse(description);
-    this.transition  = transitionParsed.result;
+    tsp = Firmin.Transition.parse(description, context);
+    this.transition = tsp.result;
     
-    this.transition.duration  = duration;
+    trp = Firmin.Transform.parse(tsp.remainder, context);
+    this.transform  = trp.result;
     
-    transformParsed  = Firmin.Transform.parse(transitionParsed.remainder);
-    this.transform   = transformParsed.result;
-    
-    this.style       = transformParsed.remainder;
+    this.style = trp.remainder;
 };
 
 Firmin.Animation.prototype.exec = function(element) {
@@ -288,28 +298,25 @@ Firmin.Animated.prototype.run = function() {
     return this;
 };
 
-Firmin.Animated.prototype.animate = function(description, duration) {
-    var animation = new Firmin.Animation(description, duration),
-        transform;
+Firmin.Animated.prototype.animate = function(description) {
+    var previous = this.operations[this.operations.length - 1] || {};
     
-    if (this.index > 0 && animation.transform) {
-        transform = this.operations[this.index - 1].transform;
-        transform.matrix(animation.transform.ctm.vector);
-        animation.transform = transform;
-    }
-    
-    this.operations.push(animation);
+    this.operations.push(new Firmin.Animation(description, previous));
     
     return this;
 };
 
 Firmin.animate = function(el, description, duration) {
-    var animated = new Firmin.Animated(el), time;
+    var animated = new Firmin.Animated(el),
+        time     = Firmin.Parser.parseTime(duration);
     
-    time = Firmin.Parser.parseTime(duration) || ["s", transition.duration];
-    if (time[1] < 0) time[1] = 0;
+    if (time) {
+        if (time[1] < 0) time[1] = 0;
+        
+        description.duration = time.reverse().join("");
+    }
     
-    animated.animate(description, time[1] + time[0]);
+    animated.animate(description);
     
     return animated.run();
 };
