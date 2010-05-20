@@ -1,5 +1,19 @@
 Firmin = {};
 
+Firmin.prefix = (function() {
+    var test     = document.createElement("div"),
+        prefixes = ["o", "Moz", "webkit"],
+        prefix, i;
+    
+    for (i = 0; i < 3; i++) {
+        prefix = prefixes[i];
+        test.style.cssText = "-" + prefix + "-transition-property: opacity;";
+        if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") break;
+    }
+    
+    return prefix;
+})();
+
 Firmin.CTM = function(vector) {
     var i, c;
     
@@ -67,7 +81,7 @@ Firmin.Transform.parse = function(description, context) {
         if (methods.indexOf(property) !== -1) {
             transform = transform || new Firmin.Transform();
             transform[property](description[property]);
-        } else if (property === 'origin') {
+        } else if (property === "origin") {
             transform = transform || new Firmin.Transform();
             transform[property](description[property]);
         } else {
@@ -93,8 +107,8 @@ Firmin.Transform.prototype.getOrigin = function() {
 Firmin.Transform.prototype.build = function(properties) {
     properties = properties || {};
     
-    properties.webkitTransform       = this.ctm.build();
-    properties.webkitTransformOrigin = this.getOrigin();
+    properties[Firmin.prefix + "Transform"]       = this.ctm.build();
+    properties[Firmin.prefix + "TransformOrigin"] = this.getOrigin();
     
     return properties;
 };
@@ -240,16 +254,16 @@ Firmin.Transition.prototype.build = function(properties) {
     properties = properties || {};
     
     if (typeof this.properties === "string") {
-        properties.webkitTransitionProperty = this.properties;
+        properties[Firmin.prefix + "TransitionProperty"] = this.properties;
     } else {
-        properties.webkitTransitionProperty = this.properties.join(", ");
+        properties[Firmin.prefix + "TransitionProperty"] = this.properties.join(", ");
     }
     
-    properties.webkitTransitionDuration = this.duration;
-    properties.webkitTransitionDelay    = this.delay;
+    properties[Firmin.prefix + "TransitionDuration"] = this.duration;
+    properties[Firmin.prefix + "TransitionDelay"]    = this.delay;
     
     if (this.timingFunction) {
-        properties.webkitTransitionTimingFunction = this.timingFunction;
+        properties[Firmin.prefix + "TransitionTimingFunction"] = this.timingFunction;
     }
     
     return properties;
@@ -285,7 +299,7 @@ Firmin.Animated = function(element) {
     this.operations = [];
     this.index      = 0;
     
-    this.element.addEventListener('webkitTransitionEnd', function() {
+    this.element.addEventListener(Firmin.prefix + "TransitionEnd", function() {
         if (self.index < self.operations.length) {
             self.run();
         }
