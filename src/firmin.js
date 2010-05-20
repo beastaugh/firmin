@@ -52,22 +52,23 @@ Firmin.Transform.methods = [
 ];
 
 Firmin.Transform.parse = function(description, context) {
-    var methods = Firmin.Transform.methods,
-        rest    = {},
-        transform, vector, origin;
+    var methods   = Firmin.Transform.methods,
+        rest      = {},
+        transform = null,
+        vector, origin;
     
     if (context.transform) {
         vector    = context.transform.toVector();
         origin    = context.transform.getOrigin();
         transform = new Firmin.Transform(vector, origin);
-    } else {
-        transform = new Firmin.Transform();
     }
     
     for (property in description) {
         if (methods.indexOf(property) !== -1) {
+            transform = transform || new Firmin.Transform();
             transform[property](description[property]);
         } else if (property === 'origin') {
+            transform = transform || new Firmin.Transform();
             transform[property](description[property]);
         } else {
             rest[property] = description[property];
@@ -219,12 +220,13 @@ Firmin.Transition.methods = [
 ];
 
 Firmin.Transition.parse = function(description, context) {
-    var transition = new Firmin.Transition(),
+    var methods    = Firmin.Transition.methods,
         rest       = {},
-        methods    = Firmin.Transition.methods;
+        transition = null;
     
     for (property in description) {
         if (methods.indexOf(property) !== -1) {
+            transition = transition || new Firmin.Transition();
             transition[property] = description[property];
         } else {
             rest[property] = description[property];
@@ -268,8 +270,8 @@ Firmin.Animation = function(description, context) {
 Firmin.Animation.prototype.exec = function(element) {
     var properties = this.style, property;
     
-    properties = this.transition.build(properties);
-    properties = this.transform.build(properties);
+    if (this.transition) properties = this.transition.build(properties);
+    if (this.transform)  properties = this.transform.build(properties);
     
     for (property in properties) {
         element.style[property] = properties[property];
