@@ -2,12 +2,13 @@ Firmin = {};
 
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
-        prefixes = ["o", "Moz", "webkit"],
+        prefixes = ["o", "moz", "webkit"],
         prefix, i;
     
     for (i = 0; i < 3; i++) {
         prefix = prefixes[i];
         test.style.cssText = "-" + prefix + "-transition-property: opacity;";
+        if (prefix === "moz") prefix = "Moz";
         if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") break;
     }
     
