@@ -1,3 +1,10 @@
+/*
+
+Firmin, a JavaScript animation library using CSS transforms and transitions.
+
+<%= license %>
+*/
+
 Firmin = {};
 
 Firmin.prefix = (function() {
