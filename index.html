@@ -135,6 +135,67 @@
     </div>
     
     
+    <div id="usage">
+        <h2>Using Firmin</h2>
+        
+        <p>
+            Firmin&#8217;s API is not large, and mainly consists of convenience
+            methods which make performing particular transforms easier. All of
+            these methods are based on two core operations: the
+            <code>animate</code> function and the <code>animate</code> method.
+        </p>
+        
+        <p>
+            The <code>animate</code> function takes three arguments: the
+            element to be animated; a description of the animation to be run;
+            and the duration of the animation. For example,
+        </p>
+        
+        <pre>Firmin.animate(document.getElementById('box'), {
+    skew: {
+        x: "45deg",
+        y: "30deg"
+    }
+}, "2.1s");</pre>
+        
+        <p>
+            The <code>animate</code> function returns an object with a
+            complementary <code>animate</code> method. This method takes two
+            arguments, an animation description and a duration, and will be
+            applied to the same element. This allows animations to be chained,
+            applying the transformations in sequence.
+        </p>
+        
+        <pre>Firmin.animate(document.getElementById('box'), {
+    translateX: "200px"
+}, "1.6s").animate({
+    translateY: "100px"
+}, "0.8s");</pre>
+        
+        <p>
+            There are a number of shortcut methods with the same names as the
+            CSS transform functions. These provide a convenient way to perform
+            single transformations without passing a verbose description to
+            <code>animate</code>. Detailed documentation can be found in the
+            <a href="#reference">reference</a>.
+        </p>
+        
+        <ul>
+            <li><code>translate</code>, <code>translateX</code>,
+                <code>translateY</code>;</li>
+            <li><code>scale</code>, <code>scaleX</code>, <code>scaleY</code>;
+            <li><code>rotate</code>;</li>
+            <li><code>skew</code>, <code>skewX</code>, <code>skewY</code>;
+            <li><code>matrix</code>.</li>
+        </ul>
+        
+        <p>
+            All of Firmin&#8217;s objects and methods fall under the
+            <code>Firmin</code> namespace.
+        </p>
+    </div>
+    
+    
     <div id="platforms">
         <h2>Supported platforms</h2>
         
