@@ -350,11 +350,18 @@ Firmin.Animated = function(element) {
 
 Firmin.Animated.prototype.run = function() {
     var animation = this.operations[this.index++],
-        next      = this.operations[this.index];
+        next      = this.operations[this.index],
+        self      = this;
     
     animation.exec(this.element);
     
-    return next && (!animation.hasDuration() || next.hasDuration()) ? this.run() : this;
+    if (next && !animation.hasDuration()) {
+        setTimeout(function() {
+            self.run();
+        }, 1);
+    }
+    
+    return this;
 };
 
 Firmin.Animated.prototype.animate = function(description, duration) {
