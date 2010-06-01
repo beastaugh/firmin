@@ -246,12 +246,19 @@ Firmin.Transition.parse = function(description, context) {
         rest       = {},
         transition = null;
     
-    for (property in description) {
-        if (methods.indexOf(property) !== -1) {
+    for (p in description) {
+        if (methods.indexOf(p) !== -1) {
             transition = transition || new Firmin.Transition();
-            transition[property] = description[property];
+
+            if (p === "properties" && typeof p === "string") {
+                transition[p] = [description[p]];
+            } else if (p === "timingFunction" && typeof p !== "string") {
+                transition[p] = "cubic-bezier(" + description[p].join(",") + ")";
+            } else {
+                transition[p] = description[p];
+            }
         } else {
-            rest[property] = description[property];
+            rest[p] = description[p];
         }
     }
     
