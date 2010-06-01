@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Firmin &mdash; a JavaScript animation library using CSS transforms and transitions</title>
+    <title>Firmin, a JavaScript animation library using CSS transforms and transitions</title>
     
     <style type="text/css">
         body {
@@ -150,6 +150,80 @@
             of stability, an effort will be made to make it compatible with a wider
             range of browsers.
         </p>
+        
+        <h3>Hardware acceleration</h3>
+        
+        <p>
+            One advantage of combining CSS transforms and transitions is that
+            together they provide hardware-accelerated animation on
+            WebKit-based browsers such as Safari on the Mac and Mobile Safari
+            on the iPhone. Transitions which change the <code>opacity</code>
+            property are also hardware accelerated on these platforms.
+        </p>
+    </div>
+    
+    
+    <div id="transitions">
+        <h2>Transition properties</h2>
+        
+        <p>
+            The description object passed to the <code>animate</code> function
+            allows for the customisation of the transition. The properties that
+            can be used to do this are:
+        </p>
+        
+        <ul>
+            <li><code>properties</code></li>
+            <li><code>timingFunction</code></li>
+            <li><code>duration</code></li>
+            <li><code>delay</code></li>
+        </ul>
+        
+        <h3><code>properties</code></h3>
+        
+        <p>
+            This allows for the filtering of properties which the transition
+            will be applied to. It defaults to <code>"all"</code> and can be
+            set to the string <code>"none"</code> or an array of CSS property
+            names. It's described in detail in the CSS Transitions Module
+            specification <a href="http://www.w3.org/TR/css3-transitions/#the-transition-property-property-">section 2.1</a>.
+        </p>
+        
+        <h3><code>duration</code></h3>
+        
+        <p>
+            The time taken by the transition. It can be specified in either
+            seconds (<code>"1.5s"</code>) or milliseconds (<code>"300ms"</code>).
+            If a number is given, rather than a string, it will be interpreted
+            as a value in seconds. Negative values are interpreted as
+            <code>0</code>, i.e. executing immediately.
+        </p>
+        
+        <h3><code>timingFunction</code></h3>
+        
+        <p>
+            This allows for control over how intermediate values used during
+            a transition will be calculated. It accepts the name of a timing
+            function as a string, or an array of numbers to be passed to the
+            <code>cubic-bezier</code> function. There are five timing functions
+            defined in the spec: <code>ease</code>, <code>linear</code>,
+            <code>ease-in</code>, <code>ease-out</code> and
+            <code>ease-in-out</code>. The default is <code>ease</code>. See
+            <a href="http://www.w3.org/TR/css3-transitions/#transition-timing-function_tag">section 2.3</a>
+            of the CSS Transitions Module specification for details.
+        </p>
+        
+        
+        <h3><code>delay</code></h3>
+        
+        <p>
+            This accepts a time in the same way as <code>duration</code>, and
+            specifies an interval to delay the execution of the transition by.
+            Negative values will result in the transition executing immediately,
+            but will begin part-way through the play cycle. This is explained
+            further in <a href="http://www.w3.org/TR/css3-transitions/#the-transition-delay-property-">section 2.4</a>
+            of the specification.
+        </p>
     </div>
     
     
@@ -159,14 +233,13 @@
         <div class="function" id="animate">
             <h3>
                 <em>animate</em>
-                <code>Firmin.animate(element, transform, [duration])</code>
+                <code>Firmin.animate(element, description, [duration])</code>
             </h3>
             
             <p>
-                The <em>transform</em> object should be a description of the
-                transformation to be carried out on the element. For example, this
-                transform would move the element 400 pixels to the right and double
-                its height.
+                The <em>description</em> object describes the animation to be
+                carried out. For example, this animation would move the element
+                400 pixels to the right and double its height.
             </p>
             
             <pre>var el = document.getElementById("test"),

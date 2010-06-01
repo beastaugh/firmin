@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin transition tests</title>
+    
+    <style type="text/css" media="screen">
+        html, body {font-family:Helvetica, Arial, sans-serif; color:#000; background:#fff; margin:0; border:none; padding:0;}
+        body {padding:100px;}
+        #container {position:relative; padding-top:200px;}
+        #description {text-align:right; font-size:36px; font-weight:normal; position:absolute; top:0; right:0;}
+        .box {width:200px; height:50px; margin-bottom:20px; padding:20px; color:#fff; font-size:24px;}
+        #red-box {background:#c00000;}
+        #green-box {background:#20c000;}
+        #blue-box {background:#006cc0;}
+        #orange-box {background:#ff7f00;}
+        #purple-box {background:#7b2cbd;}
+        #pink-box {background:#cc5f86;}
+    </style>
+    
+    <script type="text/javascript" src="lib/firmin-min.js"></script>
+</head><body>
+    <div id="container">
+        <h1 id="description">Transition tests</h1>
+        
+        <div class="box" id="red-box">ease</div>
+        
+        <div class="box" id="green-box">linear</div>
+        
+        <div class="box" id="blue-box">ease-in</div>
+        
+        <div class="box" id="orange-box">ease-out</div>
+        
+        <div class="box" id="purple-box">ease-in-out</div>
+        
+        <div class="box" id="pink-box">cubic-bezier<br>(0.5, 0.2, 0.3, 1.0)</div>
+    </div>
+    
+    <script type="text/javascript">
+    (function() {
+        var redBox    = document.getElementById('red-box'),
+            greenBox  = document.getElementById('green-box'),
+            blueBox   = document.getElementById('blue-box'),
+            orangeBox = document.getElementById('orange-box'),
+            purpleBox = document.getElementById('purple-box'),
+            pinkBox   = document.getElementById('pink-box'),
+            title     = document.getElementById('description'),
+            interval  = 500,
+            timeout   = 0,
+            shift     = 800,
+        
+        test = function(description, block, time, sync) {
+            setTimeout(function() {
+                title.innerHTML = description;
+                block(time);
+            }, timeout);
+            
+            timeout += (time || 0) + interval;
+        };
+        
+        test("Test timing functions: ease vs. linear", function(t) {
+            Firmin.animate(redBox, {
+                translateX:     shift,
+                timingFunction: 'ease'
+            }, t + 'ms');
+            
+            Firmin.animate(greenBox, {
+                translateX:     shift,
+                timingFunction: 'linear'
+            }, t + 'ms');
+            
+            Firmin.animate(blueBox, {
+                translateX:     shift,
+                timingFunction: 'ease-in'
+            }, t + 'ms');
+            
+            Firmin.animate(orangeBox, {
+                translateX:     shift,
+                timingFunction: 'ease-out'
+            }, t + 'ms');
+            
+            Firmin.animate(purpleBox, {
+                translateX:     shift,
+                timingFunction: 'ease-in-out'
+            }, t + 'ms');
+            
+            Firmin.animate(pinkBox, {
+                translateX:     shift,
+                timingFunction: [0.5, 0.2, 0.3, 1.0]
+            }, t + 'ms');
+        }, 2000);
+    })();
+    </script>
+    
+</body></html>

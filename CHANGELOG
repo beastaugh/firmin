@@ -1,0 +1,4 @@
+Version 0.1.0
+
+* Initial release. Features include chained animations using CSS transitions
+  and transforms.

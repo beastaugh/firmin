@@ -1,0 +1,15 @@
+---
+source_directory: src
+build_directory:  build
+layout:           together
+
+builds:
+  src:
+    suffix:       false
+    packer:       false
+  min:
+    shrink_vars:  true
+    private:      true
+
+packages:
+  firmin:         firmin
