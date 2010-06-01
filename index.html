@@ -148,10 +148,16 @@
         <p>
             The <code>animate</code> function takes three arguments: the
             element to be animated; a description of the animation to be run;
-            and the duration of the animation. For example,
+            and the duration of the animation. Durations can be given as a
+            string ending in <code>s</code> (meaning a time in seconds) or
+            <code>ms</code> (meaning milliseconds). They can also be given as
+            plain numbers, in which case they are assumed to denote a time in
+            seconds.
         </p>
         
-        <pre>Firmin.animate(document.getElementById('box'), {
+        <pre>var box = document.getElementById('box');
+
+Firmin.animate(box, {
     skew: {
         x: "45deg",
         y: "30deg"
@@ -166,7 +172,7 @@
             applying the transformations in sequence.
         </p>
         
-        <pre>Firmin.animate(document.getElementById('box'), {
+        <pre>Firmin.animate(box, {
     translateX: "200px"
 }, "1.6s").animate({
     translateY: "100px"
@@ -177,7 +183,8 @@
             CSS transform functions. These provide a convenient way to perform
             single transformations without passing a verbose description to
             <code>animate</code>. Detailed documentation can be found in the
-            <a href="#reference">reference</a>.
+            <a href="#reference">reference</a>. All of Firmin&#8217;s objects
+            and methods fall under the <code>Firmin</code> namespace.
         </p>
         
         <ul>
@@ -190,9 +197,30 @@
         </ul>
         
         <p>
-            All of Firmin&#8217;s objects and methods fall under the
-            <code>Firmin</code> namespace.
+            Aside from the transforms themselves, there is a further
+            transform-related property which can be given in an animation
+            description: the <code>origin</code> from which the transform
+            will be performed. This should be supplied as an object with
+            <code>x</code> and <code>y</code> properties (both CSS lengths).
         </p>
+        
+        <pre>Firmin.animate(box, {
+    rotate: "1.5rad",
+    origin: {x: "10%", y: 0}
+}, "400ms");</pre>
+        
+        <p>
+            CSS transitions will also animate other properties, not merely
+            transforms. For example, one could animate the opacity, background
+            colour or height of an element. CSS property names are given in
+            camelCase as is usual when modifying them with JavaScript.
+        </p>
+        
+        <pre>Firmin.animate(box, {
+    opacity:         0.8,
+    height:          "200px",
+    backgroundColor: "#000"
+}, 0.5);</pre>
     </div>
     
     
