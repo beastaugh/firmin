@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin chained animation tests</title>
+    
+    <style type="text/css" media="screen">
+        html, body {font-family:Helvetica, Arial, sans-serif; color:#000; background:#fff; margin:0; border:none; padding:0;}
+        body {padding:100px;}
+        #container {position:relative; padding-top:200px;}
+        #description {text-align:right; font-size:36px; font-weight:normal; position:absolute; top:0; right:0;}
+        #box {background:#f00; width:200px; height:166px;}
+    </style>
+    
+    <script type="text/javascript" src="lib/firmin-min.js"></script>
+</head><body>
+    <div id="container">
+        <h1 id="description">Chained animation tests</h1>
+        
+        <div id="box"></div>
+    </div>
+    
+    <script type="text/javascript">
+    (function() {
+        var box      = document.getElementById('box'),
+            title    = document.getElementById('description'),
+            interval = 1200,
+            timeout  = 0,
+        
+        test = function(description, block, time) {
+            setTimeout(function() {
+                title.innerHTML = description;
+                block();
+            }, timeout);
+            timeout += interval;
+        };
+        
+        test("Test chained animation", function() {
+            Firmin.animate(box, {
+                backgroundColor: '#00f'
+            }, 0.8)
+            .translateX(400, 0.5)
+            .translateX(-400)
+            .skew({x: 45, y: 30}, 1.0);
+        });
+    })();
+    </script>
+    
+</body></html>

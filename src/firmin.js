@@ -229,9 +229,9 @@ Transitions have much the same API as Transforms.
 
 Firmin.Transition = function() {
     this.properties     = ["all"];
-    this.duration       = 0;
-    this.delay          = 0;
-    this.timingFunction = null;
+    this.duration       = ["s", 0];
+    this.delay          = ["s", 0];
+    this.timingFunction = "ease";
 };
 
 Firmin.Transition.methods = [
@@ -244,16 +244,21 @@ Firmin.Transition.methods = [
 Firmin.Transition.parse = function(description, context) {
     var methods    = Firmin.Transition.methods,
         rest       = {},
-        transition = null;
+        transition = new Firmin.Transition(),
+        duration, delay;
     
     for (p in description) {
         if (methods.indexOf(p) !== -1) {
-            transition = transition || new Firmin.Transition();
-
             if (p === "properties" && typeof p === "string") {
                 transition[p] = [description[p]];
             } else if (p === "timingFunction" && typeof description[p] !== "string") {
                 transition[p] = "cubic-bezier(" + description[p].join(",") + ")";
+            } else if (p === "duration") {
+                duration = Firmin.Parser.parseTime(description[p]);
+                if (duration) { transition[p] = duration; }
+            } else if (p === "delay") {
+                delay = Firmin.Parser.parseTime(description[p]);
+                if (delay) { transition[p] = delay; }
             } else {
                 transition[p] = description[p];
             }
@@ -265,6 +270,24 @@ Firmin.Transition.parse = function(description, context) {
     return {result: transition, remainder: rest};
 };
 
+Firmin.Transition.prototype.hasDuration = function() {
+    return this.duration[1] !== 0;
+};
+
+Firmin.Transition.prototype.getDuration = function() {
+    var duration = this.duration;
+    return duration[1] === 0 ? 0 : duration.reverse().join("");
+};
+
+Firmin.Transition.prototype.hasDelay = function() {
+    return this.delay[1] !== 0;
+};
+
+Firmin.Transition.prototype.getDelay = function() {
+    var delay = this.delay;
+    return delay[1] === 0 ? 0 : duration.reverse().join("");
+};
+
 Firmin.Transition.prototype.build = function(properties) {
     properties = properties || {};
     
@@ -274,8 +297,8 @@ Firmin.Transition.prototype.build = function(properties) {
         properties[Firmin.prefix + "TransitionProperty"] = this.properties.join(", ");
     }
     
-    properties[Firmin.prefix + "TransitionDuration"] = this.duration;
-    properties[Firmin.prefix + "TransitionDelay"]    = this.delay;
+    properties[Firmin.prefix + "TransitionDuration"] = this.getDuration();
+    properties[Firmin.prefix + "TransitionDelay"]    = this.getDelay();
     
     if (this.timingFunction) {
         properties[Firmin.prefix + "TransitionTimingFunction"] = this.timingFunction;
@@ -294,6 +317,10 @@ Firmin.Animation = function(description, context) {
     this.transform  = trp.result;
     
     this.style = trp.remainder;
+};
+
+Firmin.Animation.prototype.hasDuration = function() {
+    return this.transition && this.transition.hasDuration();
 };
 
 Firmin.Animation.prototype.exec = function(element) {
@@ -322,15 +349,20 @@ Firmin.Animated = function(element) {
 };
 
 Firmin.Animated.prototype.run = function() {
-    var animation = this.operations[this.index++];
+    var animation = this.operations[this.index++],
+        next      = this.operations[this.index];
     
     animation.exec(this.element);
     
-    return this;
+    return next && (!animation.hasDuration() || next.hasDuration()) ? this.run() : this;
 };
 
-Firmin.Animated.prototype.animate = function(description) {
+Firmin.Animated.prototype.animate = function(description, duration) {
     var previous = this.operations[this.operations.length - 1] || {};
+    
+    if (["string", "number"].indexOf(typeof description.duration) === -1) {
+        description.duration = duration;
+    }
     
     this.operations.push(new Firmin.Animation(description, previous));
     
@@ -338,13 +370,10 @@ Firmin.Animated.prototype.animate = function(description) {
 };
 
 Firmin.animate = function(el, description, duration) {
-    var animated = new Firmin.Animated(el),
-        time     = Firmin.Parser.parseTime(duration);
+    var animated = new Firmin.Animated(el);
     
-    if (time) {
-        if (time[1] < 0) time[1] = 0;
-        
-        description.duration = time.reverse().join("");
+    if (["string", "number"].indexOf(typeof description.duration) === -1) {
+        description.duration = duration;
     }
     
     animated.animate(description);
