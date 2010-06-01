@@ -252,7 +252,7 @@ Firmin.Transition.parse = function(description, context) {
 
             if (p === "properties" && typeof p === "string") {
                 transition[p] = [description[p]];
-            } else if (p === "timingFunction" && typeof p !== "string") {
+            } else if (p === "timingFunction" && typeof description[p] !== "string") {
                 transition[p] = "cubic-bezier(" + description[p].join(",") + ")";
             } else {
                 transition[p] = description[p];
