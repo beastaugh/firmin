@@ -62,7 +62,7 @@ Firmin.CTM.prototype.build = function() {
 
 Firmin.Transform = function(vector, origin) {
     this.ctm    = new Firmin.CTM(vector);
-    this.centre = origin || {x: "50%", y: "50%"};
+    this.centre = Firmin.pointToVector(origin) || ["50%", "50%"];
 };
 
 Firmin.Transform.methods = [
@@ -109,7 +109,7 @@ Firmin.Transform.prototype.toVector = function() {
 };
 
 Firmin.Transform.prototype.getOrigin = function() {
-    return this.centre.x + " " + this.centre.y;
+    return this.centre.join(" ");
 };
 
 Firmin.Transform.prototype.build = function(properties) {
@@ -122,14 +122,14 @@ Firmin.Transform.prototype.build = function(properties) {
 };
 
 Firmin.Transform.prototype.translate = function(distances) {
-    var x, y;
+    var vector, x, y;
     
     if (typeof distances === "number" || typeof distances === "string") {
-        x = distances;
-        y = distances;
+        x = y = distances;
     } else {
-        x = distances.x;
-        y = distances.y;
+        vector = Firmin.pointToVector(distances);
+        x      = vector[0];
+        y      = vector[1];
         
         if (typeof x !== "number") x = parseInt(x, 10) || 0;
         if (typeof y !== "number") y = parseInt(y, 10) || 0;
@@ -139,22 +139,22 @@ Firmin.Transform.prototype.translate = function(distances) {
 };
 
 Firmin.Transform.prototype.translateX = function(distance) {
-    this.translate({x: distance});
+    this.translate([distance, 0]);
 };
 
 Firmin.Transform.prototype.translateY = function(distance) {
-    this.translate({y: distance});
+    this.translate([0, distance]);
 };
 
 Firmin.Transform.prototype.scale = function(magnitudes) {
-    var x, y;
+    var vector, x, y;
     
     if (typeof magnitudes === "number") {
-        x = magnitudes;
-        y = magnitudes;
+        x = y = magnitudes;
     } else {
-        x = magnitudes.x;
-        y = magnitudes.y;
+        vector = Firmin.pointToVector(magnitudes);
+        x      = vector[0];
+        y      = vector[1];
         
         if (typeof x !== "number") x = 1;
         if (typeof y !== "number") y = 1;
@@ -164,24 +164,24 @@ Firmin.Transform.prototype.scale = function(magnitudes) {
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
-    this.scale({x: magnitude});
+    this.scale([magnitude, 1]);
 };
 
 Firmin.Transform.prototype.scaleY = function(magnitude) {
-    this.scale({y: magnitude});
+    this.scale([1, magnitude]);
 };
 
 Firmin.Transform.prototype.skew = function(magnitudes) {
     var parseAngle = Firmin.Parser.parseAngle,
         angle2rads = Firmin.angleToRadians,
-        x = 0, y = 0;
+        vector, x, y;
     
-    if (typeof magnitudes.x === "number" || typeof magnitudes.x === "string") {
-        x = angle2rads.apply(null, parseAngle(magnitudes.x));
-    }
-    
-    if (typeof magnitudes.y === "number" || typeof magnitudes.y === "string") {
-        y = angle2rads.apply(null, parseAngle(magnitudes.y));
+    if (typeof magnitudes === "number" || typeof magnitudes === "string") {
+        x = y = angle2rads.apply(null, parseAngle(magnitudes));
+    } else {
+        vector = Firmin.pointToVector(magnitudes);
+        x      = angle2rads.apply(null, parseAngle(vector[0])) || 0;
+        y      = angle2rads.apply(null, parseAngle(vector[1])) || 0;
     }
     
     this.matrix([
@@ -195,11 +195,11 @@ Firmin.Transform.prototype.skew = function(magnitudes) {
 };
 
 Firmin.Transform.prototype.skewX = function(magnitude) {
-    this.skew({x: magnitude});
+    this.skew([magnitude, 0]);
 };
 
 Firmin.Transform.prototype.skewY = function(magnitude) {
-    this.skew({y: magnitude});
+    this.skew([0, magnitude]);
 };
 
 Firmin.Transform.prototype.rotate = function(angle) {
@@ -216,8 +216,10 @@ Firmin.Transform.prototype.rotate = function(angle) {
 };
 
 Firmin.Transform.prototype.origin = function(origin) {
-    if (origin.x) this.centre.x = origin.x;
-    if (origin.y) this.centre.y = origin.y;
+    var vector = Firmin.pointToVector(origin);
+    
+    if (vector[0]) this.centre[0] = vector[0];
+    if (vector[1]) this.centre[1] = vector[1];
 };
 
 /*
@@ -483,4 +485,20 @@ Firmin.angleToRadians = function(type, magnitude) {
     }
     
     return ratio * magnitude;
+};
+
+/*
+
+Point to vector conversion
+
+Points are used as a convenient and meaningful way for users to specify
+origins, translations etc., but a vector is a more convenient internal format,
+so in general points are converted to vectors on the way in.
+
+*/
+
+Firmin.pointToVector = function(point) {
+    if (!point) return null;
+    
+    return point instanceof Array ? point : [point.x, point.y, point.z];
 };
