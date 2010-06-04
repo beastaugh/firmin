@@ -71,6 +71,19 @@ Firmin.CTM.prototype.build = function() {
     return "matrix(" + this.vector.join(",") + ")";
 };
 
+/*
+
+Instances of Firmin.Transform represent CSS transforms to be applied to a
+given DOM element. As well as encapsulating a transformation matrix, they also
+contain the transform origin, and methods for translating API methods such as
+translate and rotate to lower-level matrix methods.
+
+Transform objects have methods corresponding to all the CSS 2D transform
+functions; this list is also used to add generate higher-level wrapper
+functions and methods that wrap the more general animation functionality.
+
+*/
+
 Firmin.Transform = function(vector, origin) {
     this.ctm    = new Firmin.CTM(vector);
     this.centre = Firmin.pointToVector(origin) || ["50%", "50%"];
