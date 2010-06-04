@@ -4,6 +4,7 @@ Version 0.1.1
   internally, but continue to allow point objects to be used at the API level.
 * Better inline documentation for core objects and functions.
 * Rename Firmin.CTM to Firmin.TransformMatrix.
+* Remove unused accessor method for elements of Firmin.TransformMatrix.
 
 2010.06.01, Version 0.1.0
 

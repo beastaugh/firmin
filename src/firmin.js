@@ -66,12 +66,6 @@ Firmin.TransformMatrix = function(vector) {
     }
 };
 
-Firmin.TransformMatrix.KEYS = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5};
-
-Firmin.TransformMatrix.prototype.get = function(index) {
-    return this.vector[typeof index === "string" ? Firmin.TransformMatrix.KEYS[index] : index];
-};
-
 Firmin.TransformMatrix.prototype.multiply = function(t) {
     var n = new Array(6), c = this.vector;
     
