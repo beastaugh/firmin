@@ -29,9 +29,30 @@ Firmin.prefix = (function() {
         prefix = prefixes[i];
         test.style.cssText = "-" + prefix + "-transition-property: opacity;";
         if (prefix === "moz") prefix = "Moz";
-        if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") return prefix;
+        if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") {
+            return prefix;
+        }
     }
 })();
+
+/*
+
+Transformation matrices
+
+The CSS transform modules provide a way to create a new local coordinate system
+for a given element and its descendants. All transform functions (rotate, skew,
+translate, scale etc.) are defined in terms of a transformation matrix. Firmin
+translates each use of these API-level transform functions into a matrix and
+then concatenates them to determine the final value. By performing these
+operations internally rather than deferring them to the browser, it is possible
+to introduce stateful transforms, where each new state of the element is based
+on the previous state.
+
+While WebKit provides a native CSS matrix class which could be used instead of
+the Firmin.CTM class, other browsers do not expose this functionality via a
+JavaScript API.
+
+*/
 
 Firmin.CTM = function(vector) {
     var i, c;

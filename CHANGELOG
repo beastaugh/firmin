@@ -2,6 +2,7 @@ Version 0.1.1
 
 * Use vectors instead of point objects to represent points and transformations
   internally, but continue to allow point objects to be used at the API level.
+* Better inline documentation for core objects and functions.
 
 2010.06.01, Version 0.1.0
 
