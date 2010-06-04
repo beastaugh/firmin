@@ -49,12 +49,12 @@ to introduce stateful transforms, where each new state of the element is based
 on the previous state.
 
 While WebKit provides a native CSS matrix class which could be used instead of
-the Firmin.CTM class, other browsers do not expose this functionality via a
-JavaScript API.
+the Firmin.TransformMatrix class, other browsers do not expose this
+functionality via a JavaScript API.
 
 */
 
-Firmin.CTM = function(vector) {
+Firmin.TransformMatrix = function(vector) {
     var i, c;
     
     this.vector = [1, 0, 0, 1, 0, 0];
@@ -66,15 +66,15 @@ Firmin.CTM = function(vector) {
     }
 };
 
-Firmin.CTM.KEYS = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5};
+Firmin.TransformMatrix.KEYS = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5};
 
-Firmin.CTM.prototype.get = function(index) {
-    return this.vector[typeof index === "string" ? Firmin.CTM.KEYS[index] : index];
+Firmin.TransformMatrix.prototype.get = function(index) {
+    return this.vector[typeof index === "string" ? Firmin.TransformMatrix.KEYS[index] : index];
 };
 
-Firmin.CTM.prototype.multiply = function(t) {
+Firmin.TransformMatrix.prototype.multiply = function(t) {
     var n = new Array(6), c = this.vector;
-
+    
     n[0] = c[0] * t[0] + c[2] * t[1];        // M11 | Last term = x * 0
     n[1] = c[1] * t[0] + c[3] * t[1];        // M21 | Last term = x * 0
                                              // M31 | Always 0
@@ -84,11 +84,11 @@ Firmin.CTM.prototype.multiply = function(t) {
     n[4] = c[0] * t[4] + c[2] * t[5] + c[4]; // M13 | Last term = x * 1
     n[5] = c[1] * t[4] + c[3] * t[5] + c[5]; // M23 | Last term = x * 1
                                              // M33 | Always 1
-
+    
     this.vector = n;
 };
 
-Firmin.CTM.prototype.build = function() {
+Firmin.TransformMatrix.prototype.build = function() {
     return "matrix(" + this.vector.join(",") + ")";
 };
 
@@ -106,7 +106,7 @@ functions and methods that wrap the more general animation functionality.
 */
 
 Firmin.Transform = function(vector, origin) {
-    this.ctm    = new Firmin.CTM(vector);
+    this.ctm    = new Firmin.TransformMatrix(vector);
     this.centre = Firmin.pointToVector(origin) || ["50%", "50%"];
 };
 
