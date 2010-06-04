@@ -12,4 +12,10 @@ builds:
     private:      true
 
 packages:
-  firmin:         firmin
+  firmin:
+    files:
+      - firmin
+    meta:
+      requires:
+      provides:
+        - Firmin
