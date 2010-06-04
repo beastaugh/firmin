@@ -2,6 +2,9 @@
 
 Firmin, a JavaScript animation library using CSS transforms and transitions.
 
+Documentation:  http://extralogical.net/projects/firmin
+GitHub project: http://github.com/ionfish/firmin
+
 <%= license %>
 */
 
