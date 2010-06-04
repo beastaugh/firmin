@@ -8,7 +8,7 @@ GitHub project: http://github.com/ionfish/firmin
 <%= license %>
 */
 
-Firmin = {};
+var Firmin = {};
 
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
