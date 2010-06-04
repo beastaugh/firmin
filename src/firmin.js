@@ -359,6 +359,32 @@ Firmin.Transition.prototype.build = function(properties) {
     return properties;
 };
 
+/*
+
+Animations in Firmin consist of three components: a Transform object,
+representing the how the target element's local coordinate space will be
+transformed when the animation is run; a Transition object, determining how
+the element's state will evolve; and a bundle of other CSS properties, which
+represent the final state of the element when the animation completes, and
+which will be modified incrementally as the animation progresses, just as the
+transformation matrix will.
+
+It is these additional CSS properties which allow Firmin to operate as a
+replacement for existing JavaScript animation libraries: the visual properties
+of the element can be modified over an interval, with the evolution of their
+state unfolding in accord with the provided transition function. For example,
+an element's background might be set to animate from one colour to another.
+
+When an Animation object is created, it must be given a description object
+describing the properties of the animation. This description will be passed to
+Transition and Transform parsers in turn, and they will return result objects
+and any remaining, unconsumed description properties, which will "fall through"
+to become style properties. For example, if the description has a
+backgroundColor property then that will not be removed by either parser, and
+will thus be set as a normal CSS property.
+
+*/
+
 Firmin.Animation = function(description, context) {
     var tsp, trp;
     
