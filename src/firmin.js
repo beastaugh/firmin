@@ -266,8 +266,16 @@ Firmin.Transform.prototype.origin = function(origin) {
 
 /*
 
-Transforms can be composed with transitions to produce animation.
-Transitions have much the same API as Transforms.
+CSS transitions are the basic mechanism behind animation in Firmin, and
+Firmin.Transition objects encapsulate specific CSS transition properties. As
+well as those properties, Transition objects feature various utility methods
+allowing other objects to alter their behaviour based on the state of the
+Transition object they are concerned with.
+
+For example, if the duration of a Transition is 0, any animation using that
+Transition should execute immediately and then trigger the next state directly,
+as at least in WebKit-based browsers, the transitionEnd event is not triggered
+when the transition duration is 0.
 
 */
 
