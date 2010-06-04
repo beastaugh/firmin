@@ -1,3 +1,8 @@
+Version 0.1.1
+
+* Use vectors instead of point objects to represent points and transformations
+  internally, but continue to allow point objects to be used at the API level.
+
 2010.06.01, Version 0.1.0
 
 * Initial release. Features chained animations using CSS transitions and
