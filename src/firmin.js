@@ -10,6 +10,16 @@ GitHub project: http://github.com/ionfish/firmin
 
 var Firmin = {};
 
+/*
+
+Currently, several browsers support (to varying degrees) the CSS transform and
+transition functionality which Firmin is based upon. However, they each use
+vendor-specific prefixes for the various CSS properties involved. Consequently,
+for Firmin to work on these different browsers it must detect which of these
+prefixes is in use.
+
+*/
+
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
         prefixes = ["o", "moz", "webkit"],
