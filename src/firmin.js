@@ -19,10 +19,8 @@ Firmin.prefix = (function() {
         prefix = prefixes[i];
         test.style.cssText = "-" + prefix + "-transition-property: opacity;";
         if (prefix === "moz") prefix = "Moz";
-        if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") break;
+        if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") return prefix;
     }
-    
-    return prefix;
 })();
 
 Firmin.CTM = function(vector) {
