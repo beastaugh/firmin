@@ -97,6 +97,24 @@ Firmin.Transform.methods = [
     "matrix"
 ];
 
+/*
+
+The Firmin.Transform.parse method follows the standard Firmin animation
+description-parsing API. It accepts a description object and a context
+(generally the previous animation applied), and returns an object with two
+properties: the result (a Transform object, or null) and the remainder (an
+object containing any unparsed properties of the description, to be passed to
+other parsers).
+
+The resultant Transform object wraps a transformation matrix formed by
+cumulatively applying the transform options in the description to either the
+identity matrix, or the transformation matrix given by the context's transform
+property. This feature is what enables stateful transforms, as otherwise
+applying a new transform to an element would simply overwrite its previous
+state with the new state.
+
+*/
+
 Firmin.Transform.parse = function(description, context) {
     var methods   = Firmin.Transform.methods,
         rest      = {},
