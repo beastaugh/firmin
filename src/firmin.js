@@ -442,7 +442,20 @@ Firmin.animate = function(el, description, duration) {
 
 /*
 
-Animation function aliases
+For convenience, all the transform functions are provided as wrappers around
+the animate function and method. Without these wrappers, one would have to
+call animate and pass in a description, even if that description only contained
+one transform function:
+
+    Firmin.animate(el, {rotate: "45deg"});
+
+By effectively aliasing rotate to this call, one can effectively use rotate (or
+any other transform function) directly:
+
+    Firmin.rotate(el, "45deg");
+
+The abbreviated notation expresses intention more directly in such scenarios,
+and thus should be preferred.
 
 */
 
