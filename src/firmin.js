@@ -412,6 +412,30 @@ Firmin.Animation.prototype.exec = function(element) {
     }
 };
 
+/*
+
+Instances of Firmin.Animated allow for the construction of chained sequences of
+animations: they contain a list of Animation objects, and as soon as one
+animation completes, it fires the next. Because Animated objects are returned
+by the Firmin.animate function, and calling the animate method on an Animated
+object returns the object itself, one can call animate (or one of the transform
+function aliases) any number of times in a chain of method calls.
+
+    Firmin.animate(el, {color: "#f00"}, "1.0s")
+        .translateX("500px", "0.4s")
+        .scale(2, "0.5s")
+        .rotate("30deg", "0.1s");
+
+Because of the callback-based nature of the animations, the method chain will
+run synchronously, but firing the animations will not block the execution of
+the next statement. For examples of prior art in this area, take a look at
+JS.MethodChain and Ojay's animation module.
+
+* http://jsclass.jcoglan.com/methodchain.html
+* http://ojay.othermedia.org/articles/animation.html
+
+*/
+
 Firmin.Animated = function(element) {
     var self = this;
     
@@ -467,6 +491,8 @@ Firmin.animate = function(el, description, duration) {
 };
 
 /*
+
+Transform function aliases
 
 For convenience, all the transform functions are provided as wrappers around
 the animate function and method. Without these wrappers, one would have to
