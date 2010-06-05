@@ -12,5 +12,5 @@ Firmin is a JavaScript animation library based on CSS [transforms][tf] and
     }, 0.5);
 
 
-  [tf]: http://webkit.org/blog/130/css-transforms/
+  [tf]: http://www.w3.org/TR/css3-2d-transforms/
   [ts]: http://www.w3.org/TR/css3-transitions/
