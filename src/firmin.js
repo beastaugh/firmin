@@ -296,8 +296,8 @@ when the transition duration is 0.
 
 Firmin.Transition = function() {
     this.properties     = ["all"];
-    this.duration       = ["s", 0];
-    this.delay          = ["s", 0];
+    this.duration       = ["ms", 0];
+    this.delay          = ["ms", 0];
     this.timingFunction = "ease";
 };
 
@@ -343,7 +343,7 @@ Firmin.Transition.prototype.hasDuration = function() {
 
 Firmin.Transition.prototype.getDuration = function() {
     var duration = this.duration;
-    return duration[1] === 0 ? 0 : duration.reverse().join("");
+    return duration[0] === "s" ? duration[1] * 1000 : duration[1];
 };
 
 Firmin.Transition.prototype.hasDelay = function() {
@@ -352,7 +352,7 @@ Firmin.Transition.prototype.hasDelay = function() {
 
 Firmin.Transition.prototype.getDelay = function() {
     var delay = this.delay;
-    return delay[1] === 0 ? 0 : duration.reverse().join("");
+    return delay[0] === "s" ? delay[1] * 1000 : delay[1];
 };
 
 Firmin.Transition.prototype.build = function(properties) {
@@ -364,8 +364,8 @@ Firmin.Transition.prototype.build = function(properties) {
         properties[Firmin.prefix + "TransitionProperty"] = this.properties.join(", ");
     }
     
-    properties[Firmin.prefix + "TransitionDuration"] = this.getDuration();
-    properties[Firmin.prefix + "TransitionDelay"]    = this.getDelay();
+    properties[Firmin.prefix + "TransitionDuration"] = this.duration[1] + this.duration[0];
+    properties[Firmin.prefix + "TransitionDelay"]    = this.delay[1] + this.delay[0];
     
     if (this.timingFunction) {
         properties[Firmin.prefix + "TransitionTimingFunction"] = this.timingFunction;
@@ -403,6 +403,12 @@ will thus be set as a normal CSS property.
 Firmin.Animation = function(description, context) {
     var tsp, trp;
     
+    if (typeof description.callback === "function") {
+        this.callback = description.callback;
+    }
+    
+    delete description.callback;
+    
     tsp = Firmin.Transition.parse(description, context);
     this.transition = tsp.result;
     
@@ -414,6 +420,11 @@ Firmin.Animation = function(description, context) {
 
 Firmin.Animation.prototype.hasDuration = function() {
     return this.transition && this.transition.hasDuration();
+};
+
+Firmin.Animation.prototype.getTotalDuration = function() {
+    return this.transition ?
+        this.transition.getDuration() + this.transition.getDelay() : 0;
 };
 
 Firmin.Animation.prototype.exec = function(element) {
@@ -457,50 +468,50 @@ Firmin.Animated = function(element) {
     this.element    = element;
     this.operations = [];
     this.index      = 0;
-    
-    this.element.addEventListener(Firmin.prefix + "TransitionEnd", function() {
-        if (self.index < self.operations.length) {
-            self.run();
-        }
-    }, false);
 };
 
 Firmin.Animated.prototype.run = function() {
-    var animation = this.operations[this.index++],
-        next      = this.operations[this.index],
+    var animation = this.operations[this.index],
         self      = this;
+    
+    if (!animation) return this;
     
     animation.exec(this.element);
     
-    if (next && !animation.hasDuration()) {
-        setTimeout(function() {
-            self.run();
-        }, 1);
-    }
+    setTimeout(function() {
+        self.fireCallback();
+        self.run();
+    }, animation.getTotalDuration() || 1);
+    
+    this.index++;
     
     return this;
 };
 
-Firmin.Animated.prototype.animate = function(description, duration) {
+Firmin.Animated.prototype.fireCallback = function() {
+    var last     = this.operations[this.index - 1],
+        callback = last ? last.callback : null;
+    
+    if (typeof callback === "function") {
+        callback.call(null, this.element);
+    }
+};
+
+Firmin.Animated.prototype.animate = function(description, duration, callback) {
     var previous = this.operations[this.operations.length - 1] || {};
     
-    if (["string", "number"].indexOf(typeof description.duration) === -1) {
-        description.duration = duration;
-    }
+    description.duration = duration;
+    description.callback = callback || null;
     
     this.operations.push(new Firmin.Animation(description, previous));
     
     return this;
 };
 
-Firmin.animate = function(el, description, duration) {
+Firmin.animate = function(el, description, duration, callback) {
     var animated = new Firmin.Animated(el);
     
-    if (["string", "number"].indexOf(typeof description.duration) === -1) {
-        description.duration = duration;
-    }
-    
-    animated.animate(description);
+    animated.animate(description, duration, callback);
     
     return animated.run();
 };
@@ -527,16 +538,16 @@ and thus should be preferred.
 */
 
 Firmin.Transform.methods.forEach(function(method) {
-    Firmin[method] = function(el, value, duration) {
+    Firmin[method] = function(el, value, duration, callback) {
         var description = {};
         description[method] = value;
-        return Firmin.animate(el, description, duration);
+        return Firmin.animate(el, description, duration, callback);
     };
     
-    Firmin.Animated.prototype[method] = function(value, duration) {
+    Firmin.Animated.prototype[method] = function(value, duration, callback) {
         var description = {};
         description[method] = value;
-        return this.animate(description, duration);
+        return this.animate(description, duration, callback);
     };
 });
 

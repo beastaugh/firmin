@@ -102,11 +102,7 @@
             margin-bottom:6px;
         }
         
-        .function h3 em {
-            margin-right:12px;
-        }
-        
-        .function h3 code {
+        .function .signature code {
             font-size:14px;
             font-weight: normal;
         }
@@ -262,11 +258,10 @@ Firmin.animate(box, {
             version of the WebKit engine: <em>Safari 4</em>, <em>Mobile Safari</em>
             (i.e. iPhone and iPad) and <em>Google Chrome</em>. While CSS transforms
             and transitions are available for other browsers such as Opera 10.50
-            and Firefox 3.7 (not yet released), some important additional
-            features<sup><a class="fn-link" href="#fn1">1</a></sup> are not.
-            Furthermore, the CSS transforms and transitions API is experimental,
-            and varies between browsers. Once Firmin has reached a reasonable level
-            of stability, an effort will be made to make it compatible with a wider
+            and Firefox 3.7 (not yet released), their implementations are less than
+            complete. The CSS transforms and transitions API is experimental, and
+            varies between browsers. Once Firmin has reached a reasonable level of
+            stability, an effort will be made to make it compatible with a wider
             range of browsers.
         </p>
         
@@ -350,10 +345,11 @@ Firmin.animate(box, {
         <h2>Reference</h2>
         
         <div class="function" id="animate">
-            <h3>
-                <em>animate</em>
-                <code>Firmin.animate(element, description, [duration])</code>
-            </h3>
+            <h3>animate</h3>
+            
+            <p class="signature">
+                <code>Firmin.animate(element, description, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>description</em> object describes the animation to be
@@ -388,13 +384,27 @@ Firmin.animate(el, tf);</pre>
                 The optional <code>duration</code> argument specifies the duration
                 of the animation in seconds; the default value is <code>0</code>.
             </p>
+            
+            <p>
+                A callback function can also be supplied. It will be executed when
+                the animation is complete. For example, running the following would
+                rotate the element through 135&deg; and then change its contents to
+                the string "Hello, world" when the animation completed after 0.7
+                seconds. Callbacks can be passed to all animation functions and
+                methods.
+            </p>
+            
+            <pre>Firmin.rotate(el, "135deg", "0.7s", function(elem) {
+    elem.innerHTML = "Hello, world";
+});</pre>
         </div>
         
         <div class="function" id="translate">
-            <h3>
-                <em>translate</em>
-                <code>Firmin.translate(element, translation, [duration])</code>
-            </h3>
+            <h3>translate</h3>
+            
+            <p class="signature">
+                <code>Firmin.translate(element, translation, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>translation</em> object can have two properties: the
@@ -412,10 +422,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="translateX">
-            <h3>
-                <em>translateX</em>
-                <code>Firmin.translateX(element, horizontalMagnitude, [duration])</code>
-            </h3>
+            <h3>translateX</h3>
+            
+            <p class"signature">
+                <code>Firmin.translateX(element, horizontalMagnitude, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>magnitude</em> of the translation must be a number,
@@ -428,9 +439,10 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="translateX">
-            <h3>
-                <em>translateY</em>
-                <code>Firmin.translateY(element, verticalMagnitude, [duration])</code>
+            <h3>translateY</h3>
+            
+            <p class="signature">
+                <code>Firmin.translateY(element, verticalMagnitude, [duration], [callback])</code>
             </h3>
             
             <p>
@@ -443,10 +455,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="scale">
-            <h3>
-                <em>scale</em>
-                <code>Firmin.scale(element, magnitudes, [duration])</code>
-            </h3>
+            <h3>scale</h3>
+            
+            <p class="signature">
+                <code>Firmin.scale(element, magnitudes, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>magnitudes</em> object can have two properties: the
@@ -464,10 +477,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="scaleX">
-            <h3>
-                <em>scaleX</em>
-                <code>Firmin.scaleX(element, horizontalMagnitude, [duration])</code>
-            </h3>
+            <h3>scaleX</h3>
+            
+            <p class="signature">
+                <code>Firmin.scaleX(element, horizontalMagnitude, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>horizontal magnitude</em> by which the element should
@@ -479,10 +493,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="scaleY">
-            <h3>
-                <em>scaleY</em>
-                <code>Firmin.scaleY(element, verticalMagnitude, [duration])</code>
-            </h3>
+            <h3>scaleY</h3>
+            
+            <p class="signature">
+                <code>Firmin.scaleY(element, verticalMagnitude, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>vertical magnitude</em> by which the element should be
@@ -494,10 +509,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="rotate">
-            <h3>
-                <em>rotate</em>
-                <code>Firmin.rotate(element, angle, [duration])</code>
-            </h3>
+            <h3>rotate</h3>
+            
+            <p class="signature">
+                <code>Firmin.rotate(element, angle, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>angle</em> by which the element will be rotated can be
@@ -510,10 +526,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="skew">
-            <h3>
-                <em>skew</em>
-                <code>Firmin.skew(element, magnitudes, [duration])</code>
-            </h3>
+            <h3>skew</h3>
+            
+            <p class="signature">
+                <code>Firmin.skew(element, magnitudes, [duration], [callback])</code>
+            </p>
             
             <p>
                 A skew transformation along the X and Y axes is specified via a
@@ -529,10 +546,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="skewX">
-            <h3>
-                <em>skewX</em>
-                <code>Firmin.skewX(element, xAngle, [duration])</code>
-            </h3>
+            <h3>skewX</h3>
+            
+            <p class="signature">
+                <code>Firmin.skewX(element, xAngle, [duration], [callback])</code>
+            </p>
             
             <p>
                 The element will be skewed along the X axis by the angle given.
@@ -542,10 +560,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="skewX">
-            <h3>
-                <em>skewY</em>
-                <code>Firmin.skewY(element, yAngle, [duration])</code>
-            </h3>
+            <h3>skewY</h3>
+            
+            <p class="signature">
+                <code>Firmin.skewY(element, yAngle, [duration], [callback])</code>
+            </p>
             
             <p>
                 The element will be skewed along the Y axis by the angle given.
@@ -555,10 +574,11 @@ Firmin.animate(el, tf);</pre>
         </div>
         
         <div class="function" id="matrix">
-            <h3>
-                <em>matrix</em>
-                <code>Firmin.matrix(element, vector, [duration])</code>
-            </h3>
+            <h3>matrix</h3>
+            
+            <p class="signature">
+                <code>Firmin.matrix(element, vector, [duration], [callback])</code>
+            </p>
             
             <p>
                 The <em>vector</em> supplied expresses a two-dimensional
@@ -576,18 +596,6 @@ Firmin.animate(el, tf);</pre>
                 internally.
             </p>
         </div>
-    </div>
-    
-    
-    <div id="footnotes">
-        <h2>Footnotes</h2>
-        
-        <ol>
-            <li id="fn1">
-                Such as an equivalent to the WebKit engine&#8217;s
-                <code>onWebkitTransitionEnd</code> event.
-            </li>
-        </ol>
     </div>
     
 </div><body></html>
