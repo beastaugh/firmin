@@ -474,7 +474,10 @@ Firmin.Animated.prototype.run = function() {
     var animation = this.operations[this.index],
         self      = this;
     
-    if (!animation) return this;
+    if (!animation) {
+        this.fired = true;
+        return this;
+    }
     
     animation.exec(this.element);
     
@@ -504,6 +507,11 @@ Firmin.Animated.prototype.animate = function(description, duration, callback) {
     description.callback = callback || null;
     
     this.operations.push(new Firmin.Animation(description, previous));
+    
+    if (this.fired) {
+        this.fired = false;
+        this.run();
+    }
     
     return this;
 };
