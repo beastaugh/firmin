@@ -468,6 +468,7 @@ Firmin.Animated = function(element) {
     this.element    = element;
     this.operations = [];
     this.index      = 0;
+    this.callback   = null;
 };
 
 Firmin.Animated.prototype.run = function() {
@@ -486,14 +487,15 @@ Firmin.Animated.prototype.run = function() {
         self.run();
     }, animation.getTotalDuration() || 1);
     
+    this.callback = animation.callback;
+    
     this.index++;
     
     return this;
 };
 
 Firmin.Animated.prototype.fireCallback = function() {
-    var last     = this.operations[this.index - 1],
-        callback = last ? last.callback : null;
+    var callback = this.callback;
     
     if (typeof callback === "function") {
         callback.call(null, this.element);
