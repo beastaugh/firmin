@@ -1,4 +1,4 @@
-Version 0.1.1
+2010.06.09, Version 0.1.1
 
 * Add callbacks to animation methods.
 * Use vectors instead of point objects to represent points and transformations
