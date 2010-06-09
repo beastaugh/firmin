@@ -341,6 +341,50 @@ Firmin.animate(box, {
     </div>
     
     
+    <div id="units">
+        <h2>Units</h2>
+        
+        <p>
+            Most CSS properties, including transform functions and transition
+            durations, have a magnitude and a unit. Angles are given in
+            degrees, or radians; lengths in pixels or ems; times in seconds or
+            milliseconds. In order to be as flexible as possible, Firmin
+            accepts (with a couple of restrictions) the same CSS datatype
+            values as a stylesheet. Keywords are not currently accepted as
+            arguments to transform functions.
+        </p>
+        
+        <h3>Angles</h3>
+        
+        <p>
+            Angles can be given as strings in <em>radians</em> (e.g.
+            <code>"2rad"</code>), <em>grads</em> (e.g. <code>"1grad"</code>),
+            <em>turns</em> (e.g. <code>"0.5turn"</code>) and <em>degrees</em>
+            (e.g. <code>"45deg"</code>). The default is degrees, so if you
+            provide a number as an angle argument, it is assumed to be in
+            degrees.
+        </p>
+        
+        <h3>Lengths</h3>
+        
+        <p>
+            Because lengths in CSS are generally relative to the current
+            browser and operating system environment, Firmin only accepts
+            <em>pixel</em> lengths, e.g. <code>"340px"</code> or
+            <code>340</code>.
+        </p>
+        
+        <h3>Times</h3>
+        
+        <p>
+            Times can be given as strings in <em>seconds</em> (e.g.
+            <code>"2s"</code>) or <em>milliseconds</em> (e.g.
+            <code>"300ms"</code>). The default is seconds, so if you provide
+            a numeric argument, Firmin will assume it is in seconds.
+        </p>
+    </div>
+    
+    
     <div id="reference">
         <h2>Reference</h2>
         
