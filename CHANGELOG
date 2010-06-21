@@ -1,5 +1,7 @@
-Version 0.1.2
+2010.06.21, Version 0.1.2
 
+* Make absolute transformations the default.
+* Add separate relative animation functions with R-postfixed names.
 * Store a separate reference to the next callback to be fired.
 
 2010.06.09, Version 0.1.1

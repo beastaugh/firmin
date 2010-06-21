@@ -136,7 +136,7 @@ Firmin.Transform.parse = function(description, context) {
         transform = null,
         vector, origin;
     
-    if (context.transform) {
+    if (typeof context === "object" && context.transform) {
         vector    = context.transform.toVector();
         origin    = context.transform.getOrigin();
         transform = new Firmin.Transform(vector, origin);
@@ -502,13 +502,8 @@ Firmin.Animated.prototype.fireCallback = function() {
     }
 };
 
-Firmin.Animated.prototype.animate = function(description, duration, callback) {
-    var previous = this.operations[this.operations.length - 1] || {};
-    
-    description.duration = duration;
-    description.callback = callback || null;
-    
-    this.operations.push(new Firmin.Animation(description, previous));
+Firmin.Animated.prototype.__animate__ = function(animation) {
+    this.operations.push(animation);
     
     if (this.fired) {
         this.fired = false;
@@ -518,10 +513,34 @@ Firmin.Animated.prototype.animate = function(description, duration, callback) {
     return this;
 };
 
+Firmin.Animated.prototype.animate = function(description, duration, callback) {
+    description.duration = duration;
+    description.callback = callback;
+    
+    return this.__animate__(new Firmin.Animation(description));
+};
+
+Firmin.Animated.prototype.animateR = function(description, duration, callback) {
+    var previous = this.operations[this.operations.length - 1] || {};
+    
+    description.duration = duration;
+    description.callback = callback;
+    
+    return this.__animate__(new Firmin.Animation(description, previous));
+};
+
 Firmin.animate = function(el, description, duration, callback) {
     var animated = new Firmin.Animated(el);
     
     animated.animate(description, duration, callback);
+    
+    return animated.run();
+};
+
+Firmin.animateR = function(el, description, duration, callback) {
+    var animated = new Firmin.Animated(el);
+    
+    animated.animateR(description, duration, callback);
     
     return animated.run();
 };
@@ -548,16 +567,30 @@ and thus should be preferred.
 */
 
 Firmin.Transform.methods.forEach(function(method) {
+    var relativeMethod = method + "R";
+    
     Firmin[method] = function(el, value, duration, callback) {
         var description = {};
         description[method] = value;
         return Firmin.animate(el, description, duration, callback);
     };
     
+    Firmin[relativeMethod] = function(el, value, duration, callback) {
+        var description = {};
+        description[method] = value;
+        return Firmin.animateR(el, description, duration, callback);
+    };
+    
     Firmin.Animated.prototype[method] = function(value, duration, callback) {
         var description = {};
         description[method] = value;
         return this.animate(description, duration, callback);
+    };
+    
+    Firmin.Animated.prototype[relativeMethod] = function(value, duration, callback) {
+        var description = {};
+        description[method] = value;
+        return this.animateR(description, duration, callback);
     };
 });
 

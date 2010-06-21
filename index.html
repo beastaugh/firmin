@@ -250,6 +250,49 @@ Firmin.animate(box, {
     </div>
     
     
+    <div id="relative">
+        <h2>Relative transforms</h2>
+        
+        <p>
+            Every animation function in Firmin has a complementary
+            <em>relative</em> version; these can be used simply by appending an
+            uppercase <code>R</code> to the function name, e.g.
+            <code>Firmin.animateR</code> or <code>Firmin.translateXR</code>.
+        </p>
+        
+        <p>
+            When using a relative animation, any transform functions called
+            will use the element&#8217;s current transformation matrix as a
+            basis for the new transformation being generated, rather than the
+            identity or origin matrix.
+        </p>
+        
+        <p>
+            For example, if one wanted to move an element 100 pixels to the
+            right, and then return it to its original position, using
+            Firmin&#8217;s normal, absolute animation functions one would write
+            code like this:
+        </p>
+        
+        <pre>Firmin.translateX(el, 100).translateX(el, 0);</pre>
+        
+        <p>
+            In many contexts, this can be expressed more naturally using a
+            relative transformation: move the element 100 pixels to the right,
+            and then move it 100 pixels left to return it to its origin.
+        </p>
+        
+        <pre>Firmin.translateX(el, 100).translateXR(el, -100);</pre>
+        
+        <p>
+            Relative animations can be used at any time; Firmin maintains an
+            internal list of previous animations which can be referred to when
+            necessary, so one can call a series of absolute transforms and then
+            a relative transform, or vice versa.
+        </p>
+    </div>
+    
+    
     <div id="platforms">
         <h2>Supported platforms</h2>
         
