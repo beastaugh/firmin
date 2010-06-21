@@ -569,28 +569,28 @@ and thus should be preferred.
 Firmin.Transform.methods.forEach(function(method) {
     var relativeMethod = method + "R";
     
-    Firmin[method] = function(el, value, duration, callback) {
+    Firmin[method] = function(el, value, t, cb) {
         var description = {};
         description[method] = value;
-        return Firmin.animate(el, description, duration, callback);
+        return Firmin.animate(el, description, t, cb);
     };
     
-    Firmin[relativeMethod] = function(el, value, duration, callback) {
+    Firmin[relativeMethod] = function(el, value, t, cb) {
         var description = {};
         description[method] = value;
-        return Firmin.animateR(el, description, duration, callback);
+        return Firmin.animateR(el, description, t, cb);
     };
     
-    Firmin.Animated.prototype[method] = function(value, duration, callback) {
+    Firmin.Animated.prototype[method] = function(value, t, cb) {
         var description = {};
         description[method] = value;
-        return this.animate(description, duration, callback);
+        return this.animate(description, t, cb);
     };
     
-    Firmin.Animated.prototype[relativeMethod] = function(value, duration, callback) {
+    Firmin.Animated.prototype[relativeMethod] = function(value, t, cb) {
         var description = {};
         description[method] = value;
-        return this.animateR(description, duration, callback);
+        return this.animateR(description, t, cb);
     };
 });
 
