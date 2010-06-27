@@ -151,12 +151,13 @@ Firmin.Transform.prototype.matrix3d = function(m) {
     this.ctm = Firmin.Transform.multiply(this.ctm, m);
 };
 
-Firmin.Transform.prototype.matrix = function(m) {
-    var _m   = [m[0], m[1], 0, 0,
-                m[2], m[3], 0, 0,
-                0,    0,    1, 0,
-                m[4], m[5], 0, 1];
-    this.ctm = Firmin.Transform.multiply(this.ctm, _m);
+Firmin.Transform.prototype.matrix = function(a, b, c, d, e, f) {
+    if (typeof a === "object") return this.matrix.apply(this, a);
+    
+    this.matrix3d([a, b, 0, 0,
+                   c, d, 0, 0,
+                   0, 0, 1, 0,
+                   e, f, 0, 1]);
 };
 
 Firmin.Transform.prototype.build = function(properties) {
@@ -185,7 +186,7 @@ Firmin.Transform.prototype.translate = function(distances) {
         if (typeof y !== "number") y = parseInt(y, 10) || 0;
     }
     
-    this.matrix([1, 0, 0, 1, x, y]);
+    this.matrix(1, 0, 0, 1, x, y);
 };
 
 Firmin.Transform.prototype.translateX = function(distance) {
@@ -210,7 +211,7 @@ Firmin.Transform.prototype.scale = function(magnitudes) {
         if (typeof y !== "number") y = 1;
     }
     
-    this.matrix([x, 0, 0, y, 0, 0]);
+    this.matrix(x, 0, 0, y, 0, 0);
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
@@ -234,14 +235,14 @@ Firmin.Transform.prototype.skew = function(magnitudes) {
         y      = angle2rads.apply(null, parseAngle(vector[1])) || 0;
     }
     
-    this.matrix([
+    this.matrix(
         1,
         Math.tan(y),
         Math.tan(x),
         1,
         0,
         0
-    ]);
+    );
 };
 
 Firmin.Transform.prototype.skewX = function(magnitude) {
@@ -255,14 +256,14 @@ Firmin.Transform.prototype.skewY = function(magnitude) {
 Firmin.Transform.prototype.rotate = function(angle) {
     angle = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(angle));
     
-    this.matrix([
+    this.matrix(
         Math.cos(angle),
         Math.sin(angle),
         -Math.sin(angle),
         Math.cos(angle),
         0,
         0
-    ]);
+    );
 };
 
 Firmin.Transform.prototype.origin = function(origin) {
