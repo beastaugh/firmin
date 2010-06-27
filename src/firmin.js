@@ -37,57 +37,6 @@ Firmin.prefix = (function() {
 
 /*
 
-Transformation matrices
-
-The CSS transform modules provide a way to create a new local coordinate system
-for a given element and its descendants. All transform functions (rotate, skew,
-translate, scale etc.) are defined in terms of a transformation matrix. Firmin
-translates each use of these API-level transform functions into a matrix and
-then concatenates them to determine the final value. By performing these
-operations internally rather than deferring them to the browser, it is possible
-to introduce stateful transforms, where each new state of the element is based
-on the previous state.
-
-While WebKit provides a native CSS matrix class which could be used instead of
-the Firmin.TransformMatrix class, other browsers do not expose this
-functionality via a JavaScript API.
-
-*/
-
-Firmin.TransformMatrix = function(vector) {
-    var i, c;
-    
-    this.vector = [1, 0, 0, 1, 0, 0];
-    
-    if (typeof vector === "object") {
-        for (i = 0; i < 6; i++) {
-            this.vector[i] = typeof (c = vector[i]) === "number" ? c : this.vector[i];
-        }
-    }
-};
-
-Firmin.TransformMatrix.prototype.multiply = function(t) {
-    var n = new Array(6), c = this.vector;
-    
-    n[0] = c[0] * t[0] + c[2] * t[1];        // M11 | Last term = x * 0
-    n[1] = c[1] * t[0] + c[3] * t[1];        // M21 | Last term = x * 0
-                                             // M31 | Always 0
-    n[2] = c[0] * t[2] + c[2] * t[3];        // M12 | Last term = x * 0
-    n[3] = c[1] * t[2] + c[3] * t[3];        // M22 | Last term = x * 0
-                                             // M32 | Always 0
-    n[4] = c[0] * t[4] + c[2] * t[5] + c[4]; // M13 | Last term = x * 1
-    n[5] = c[1] * t[4] + c[3] * t[5] + c[5]; // M23 | Last term = x * 1
-                                             // M33 | Always 1
-    
-    this.vector = n;
-};
-
-Firmin.TransformMatrix.prototype.build = function() {
-    return "matrix(" + this.vector.join(",") + ")";
-};
-
-/*
-
 Instances of Firmin.Transform represent CSS transforms to be applied to a
 given DOM element. As well as encapsulating a transformation matrix, they also
 contain the transform origin, and methods for translating API methods such as
@@ -100,8 +49,49 @@ functions and methods that wrap the more general animation functionality.
 */
 
 Firmin.Transform = function(vector, origin) {
-    this.ctm    = new Firmin.TransformMatrix(vector);
-    this.centre = Firmin.pointToVector(origin) || ["50%", "50%"];
+    this.ctm    = vector || [1, 0, 0, 0,
+                             0, 1, 0, 0,
+                             0, 0, 1, 0,
+                             0, 0, 0, 1];
+    this.centre = Firmin.pointToVector(origin) || ["50%", "50%", 0];
+};
+
+/*
+
+Transformation matrices
+
+The CSS transform modules provide a way to create a new local coordinate system
+for a given element and its descendants. All transform functions (rotate, skew,
+translate, scale etc.) are defined in terms of a transformation matrix. Firmin
+translates each use of these API-level transform functions into a matrix and
+then concatenates them to determine the final value. By performing these
+operations internally rather than deferring them to the browser, it is possible
+to introduce stateful transforms, where each new state of the element is based
+on the previous state.
+
+*/
+
+Firmin.Transform.multiply = function(a, b) {
+    var c = [];
+    
+    c[0]  = a[0]  * b[0] + a[1]  * b[4] + a[2]  * b[8]  + a[3]  * b[12];
+    c[1]  = a[0]  * b[1] + a[1]  * b[5] + a[2]  * b[9]  + a[3]  * b[13];
+    c[2]  = a[0]  * b[2] + a[1]  * b[6] + a[2]  * b[10] + a[3]  * b[14];
+    c[3]  = a[0]  * b[3] + a[1]  * b[7] + a[2]  * b[11] + a[3]  * b[15];
+    c[4]  = a[4]  * b[0] + a[5]  * b[4] + a[6]  * b[8]  + a[7]  * b[12];
+    c[5]  = a[4]  * b[1] + a[5]  * b[5] + a[6]  * b[9]  + a[7]  * b[13];
+    c[6]  = a[4]  * b[2] + a[5]  * b[6] + a[6]  * b[10] + a[7]  * b[14];
+    c[7]  = a[4]  * b[3] + a[5]  * b[7] + a[6]  * b[11] + a[7]  * b[15];
+    c[8]  = a[8]  * b[0] + a[9]  * b[4] + a[10] * b[8]  + a[11] * b[12];
+    c[9]  = a[8]  * b[1] + a[9]  * b[5] + a[10] * b[9]  + a[11] * b[13];
+    c[10] = a[8]  * b[2] + a[9]  * b[6] + a[10] * b[10] + a[11] * b[14];
+    c[11] = a[8]  * b[3] + a[9]  * b[7] + a[10] * b[11] + a[11] * b[15];
+    c[12] = a[12] * b[0] + a[13] * b[4] + a[14] * b[8]  + a[15] * b[12];
+    c[13] = a[12] * b[1] + a[13] * b[5] + a[14] * b[9]  + a[15] * b[13];
+    c[14] = a[12] * b[2] + a[13] * b[6] + a[14] * b[10] + a[15] * b[14];
+    c[15] = a[12] * b[3] + a[13] * b[7] + a[14] * b[11] + a[15] * b[15];
+    
+    return c;
 };
 
 Firmin.Transform.methods = [
@@ -137,8 +127,8 @@ Firmin.Transform.parse = function(description, context) {
         vector, origin;
     
     if (typeof context === "object" && context.transform) {
-        vector    = context.transform.toVector();
-        origin    = context.transform.getOrigin();
+        vector    = context.transform.ctm;
+        origin    = context.transform.centre;
         transform = new Firmin.Transform(vector, origin);
     }
     
@@ -157,23 +147,26 @@ Firmin.Transform.parse = function(description, context) {
     return {result: transform, remainder: rest};
 };
 
-Firmin.Transform.prototype.matrix = function(vector) {
-    this.ctm.multiply(vector);
+Firmin.Transform.prototype.matrix3d = function(m) {
+    this.ctm = Firmin.Transform.multiply(this.ctm, m);
 };
 
-Firmin.Transform.prototype.toVector = function() {
-    return this.ctm.vector;
-};
-
-Firmin.Transform.prototype.getOrigin = function() {
-    return this.centre.join(" ");
+Firmin.Transform.prototype.matrix = function(m) {
+    var _m   = [m[0], m[1], 0, 0,
+                m[2], m[3], 0, 0,
+                0,    0,    1, 0,
+                m[4], m[5], 0, 1];
+    this.ctm = Firmin.Transform.multiply(this.ctm, _m);
 };
 
 Firmin.Transform.prototype.build = function(properties) {
+    var transformProperty = "matrix3d(" + this.ctm.join(",") + ")",
+        originProperty    = this.centre.join(" ");
+    
     properties = properties || {};
     
-    properties[Firmin.prefix + "Transform"]       = this.ctm.build();
-    properties[Firmin.prefix + "TransformOrigin"] = this.getOrigin();
+    properties[Firmin.prefix + "Transform"]       = transformProperty;
+    properties[Firmin.prefix + "TransformOrigin"] = originProperty;
     
     return properties;
 };
@@ -277,6 +270,7 @@ Firmin.Transform.prototype.origin = function(origin) {
     
     if (vector[0]) this.centre[0] = vector[0];
     if (vector[1]) this.centre[1] = vector[1];
+    if (vector[2]) this.centre[2] = vector[2];
 };
 
 /*
