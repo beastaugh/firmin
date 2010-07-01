@@ -27,8 +27,15 @@ Firmin.prefix = (function() {
     
     for (i = 0; i < 3; i++) {
         prefix = prefixes[i];
+        
         test.style.cssText = "-" + prefix + "-transition-property: opacity;";
-        if (prefix === "moz") prefix = "Moz";
+        
+        if (prefix === "moz") {
+            prefix = "Moz";
+        } else if (prefix === "o") {
+            prefix = "O";
+        }
+        
         if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") {
             return prefix;
         }
