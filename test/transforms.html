@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin transform tests</title>
+    
+    <style type="text/css" media="screen">
+        html, body {font-family:Helvetica, Arial, sans-serif; color:#000; background:#fff; margin:0; border:none; padding:0;}
+        body {margin:50px;}
+        
+        .container {
+            position:relative;
+            float:left;
+            width:200px;
+            height:200px;
+            margin:0 20px 20px 0;
+            border:1px solid #ccc;
+            padding:50px;
+        }
+        
+        .legend {
+            margin:0;
+            position:absolute;
+            top:10px;
+            left:10px;
+            font-weight:bold;
+            background:#fff;
+        }
+        
+        .transform-css, .transform-js {
+            position:absolute;
+            top:50px;
+            left:50px;
+            width:200px;
+            height:200px;
+            opacity:0.5;
+        }
+        
+        .transform-css {
+            background:#f00;
+        }
+        
+        .transform-js {
+            background:#00f;
+        }
+        
+        #test-translate .transform-css {
+            -webkit-transform:translate(10px, 10px);
+            -moz-transform:translate(10px, 10px);
+            -o-transform:translate(10px, 10px);
+            -ms-transform:translate(10px, 10px);
+            transform:translate(10px, 10px);
+        }
+        
+        #test-scale .transform-css {
+            -webkit-transform:scale(1.2, 0.8);
+            -moz-transform:scale(1.2, 0.8);
+            -o-transform:scale(1.2, 0.8);
+            -ms-transform:scale(1.2, 0.8);
+            transform:scale(1.2, 0.8);
+        }
+        
+        #test-rotate .transform-css {
+            -webkit-transform:rotate(1rad);
+            -moz-transform:rotate(1rad);
+            -o-transform:rotate(1rad);
+            -ms-transform:rotate(1rad);
+            transform:rotate(1rad);
+        }
+        
+        #test-skew .transform-css {
+            -webkit-transform:skew(-15deg, -15deg);
+            -moz-transform:skew(-15deg, -15deg);
+            -o-transform:skew(-15deg, -15deg);
+            -ms-transform:skew(-15deg, -15deg);
+            transform:skew(-15deg, -15deg);
+        }
+        
+        #test-matrix .transform-css {
+            -webkit-transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
+            -moz-transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
+            -o-transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
+            -ms-transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
+            transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
+        }
+    </style>
+    
+    <script type="text/javascript" src="lib/firmin-min.js"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+        window.$ = function(query) {
+            return document.querySelector(query);
+        };
+    </script>
+</head><body>
+    <h1 id="description">Transform tests</h1>
+    
+    <p>Red boxes are transformed with CSS, blue boxes with Firmin.</p>
+        
+    <p>
+        Boxes not lining up exactly (producing a purple box) indicates a
+        regression.
+    </p>
+    
+    <div class="container" id="test-translate">
+        <div class="transform-css"></div>
+        <div class="transform-js"></div>
+        <p class="legend">Translate</p>
+    </div>
+    
+    <script type="text/javascript">
+        Firmin.translate($('#test-translate .transform-js'), ["10px", "10px"]);
+    </script>
+    
+    <div class="container" id="test-scale">
+        <div class="transform-css"></div>
+        <div class="transform-js"></div>
+        <p class="legend">Scale</p>
+    </div>
+    
+    <script type="text/javascript">
+        Firmin.scale($('#test-scale .transform-js'), [1.2, 0.8]);
+    </script>
+    
+    <div class="container" id="test-rotate">
+        <div class="transform-css"></div>
+        <div class="transform-js"></div>
+        <p class="legend">Rotate</p>
+    </div>
+    
+    <script type="text/javascript">
+        Firmin.rotate($('#test-rotate .transform-js'), "1rad");
+    </script>
+    
+    <div class="container" id="test-skew">
+        <div class="transform-css"></div>
+        <div class="transform-js"></div>
+        <p class="legend">Skew</p>
+    </div>
+    
+    <script type="text/javascript">
+        Firmin.skew($('#test-skew .transform-js'), ["-15deg", "-15deg"]);
+    </script>
+    
+    <div class="container" id="test-matrix">
+        <div class="transform-css"></div>
+        <div class="transform-js"></div>
+        <p class="legend">Matrix</p>
+    </div>
+    
+    <script type="text/javascript">
+        Firmin.matrix($('#test-matrix .transform-js'), [0.8, -0.1, -0.5, 0.7, 10, 20]);
+    </script>
+</body></html>
