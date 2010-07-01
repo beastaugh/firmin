@@ -467,12 +467,11 @@ Firmin.Animated = function(element) {
     
     this.element    = element;
     this.operations = [];
-    this.index      = 0;
     this.callback   = null;
 };
 
 Firmin.Animated.prototype.run = function() {
-    var animation = this.operations[this.index],
+    var animation = this.operations.shift(),
         self      = this;
     
     if (!animation) {
@@ -489,8 +488,6 @@ Firmin.Animated.prototype.run = function() {
     
     this.callback = animation.callback;
     
-    this.index++;
-    
     return this;
 };
 
@@ -504,6 +501,7 @@ Firmin.Animated.prototype.fireCallback = function() {
 
 Firmin.Animated.prototype.__animate__ = function(animation) {
     this.operations.push(animation);
+    this.__lastAnim = animation;
     
     if (this.fired) {
         this.fired = false;
@@ -521,12 +519,10 @@ Firmin.Animated.prototype.animate = function(description, duration, callback) {
 };
 
 Firmin.Animated.prototype.animateR = function(description, duration, callback) {
-    var previous = this.operations[this.operations.length - 1] || {};
-    
     description.duration = duration;
     description.callback = callback;
     
-    return this.__animate__(new Firmin.Animation(description, previous));
+    return this.__animate__(new Firmin.Animation(description, this.__lastAnim));
 };
 
 Firmin.animate = function(el, description, duration, callback) {
