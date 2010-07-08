@@ -90,7 +90,15 @@ Firmin.TransformMatrix.prototype.multiply = function(t) {
 };
 
 Firmin.TransformMatrix.prototype.build = function() {
-    return "matrix(" + this.vector.join(",") + ")";
+    var v = this.vector, body;
+    
+    if (Firmin.prefix === "Moz") {
+        body = v.slice(0,4).join(",") + "," + v[4] + "px," + v[5] + "px";
+    } else {
+        body = v.join(",");
+    }
+    
+    return "matrix(" + body + ")";
 };
 
 /*
