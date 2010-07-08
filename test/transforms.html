@@ -82,6 +82,13 @@
             -ms-transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
             transform:matrix(0.8, -0.1, -0.5, 0.7, 10, 20);
         }
+        
+        #test-skew-rotate-scale .transform-css {
+            -webkit-transform:skew(20deg, 40deg) rotate(2rad) scale(0.6);
+            -moz-transform:skew(20deg, 40deg) rotate(2rad) scale(0.6);
+            -o-transform:skew(20deg, 40deg) rotate(2rad) scale(0.6);
+            -ms-transform:skew(20deg, 40deg) rotate(2rad) scale(0.6);
+        }
     </style>
     
     <script type="text/javascript" src="lib/firmin-min.js"></script>
@@ -108,7 +115,7 @@
     </div>
     
     <script type="text/javascript">
-        Firmin.translate($('#test-translate .transform-js'), ["10px", "10px"]);
+        Firmin.translate($('#test-translate .transform-js'), ["10px", "10px"], 1);
     </script>
     
     <div class="container" id="test-scale">
@@ -118,7 +125,7 @@
     </div>
     
     <script type="text/javascript">
-        Firmin.scale($('#test-scale .transform-js'), [1.2, 0.8]);
+        Firmin.scale($('#test-scale .transform-js'), [1.2, 0.8], 1);
     </script>
     
     <div class="container" id="test-rotate">
@@ -128,7 +135,7 @@
     </div>
     
     <script type="text/javascript">
-        Firmin.rotate($('#test-rotate .transform-js'), "1rad");
+        Firmin.rotate($('#test-rotate .transform-js'), "1rad", 1);
     </script>
     
     <div class="container" id="test-skew">
@@ -138,7 +145,7 @@
     </div>
     
     <script type="text/javascript">
-        Firmin.skew($('#test-skew .transform-js'), ["-15deg", "-15deg"]);
+        Firmin.skew($('#test-skew .transform-js'), ["-15deg", "-15deg"], 1);
     </script>
     
     <div class="container" id="test-matrix">
@@ -148,6 +155,24 @@
     </div>
     
     <script type="text/javascript">
-        Firmin.matrix($('#test-matrix .transform-js'), [0.8, -0.1, -0.5, 0.7, 10, 20]);
+        Firmin.matrix($('#test-matrix .transform-js'), [0.8, -0.1, -0.5, 0.7, 10, 20], 1);
+    </script>
+    
+    <div class="container" id="test-skew-rotate-scale">
+        <div class="transform-css"></div>
+        <div class="transform-js"></div>
+        <p class="legend">Skew, rotate &amp; scale</p>
+    </div>
+    
+    <script type="text/javascript">
+        Firmin.animate($('#test-skew-rotate-scale .transform-js'), {
+            skew: {
+                x: "20deg",
+                y: "40deg"
+            },
+            
+            rotate: "2rad",
+            scale:  0.6
+        }, 1);
     </script>
 </body></html>
