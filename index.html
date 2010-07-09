@@ -26,7 +26,7 @@
         }
         
         h1 {
-            font-family:'Times New Roman', Times, serif;
+            font-family:"Times New Roman", Times, serif;
             font-size:30px;
             font-style:italic;
             font-weight:normal;
@@ -181,7 +181,7 @@
             seconds.
         </p>
         
-        <pre>var box = document.getElementById('box');
+        <pre>var box = document.getElementById("box");
 
 Firmin.animate(box, {
     skew: {
@@ -189,6 +189,13 @@ Firmin.animate(box, {
         y: "30deg"
     }
 }, "2.1s");</pre>
+        
+        <p>
+            It&#8217;s worth mentioning that any Firmin animation without a
+            specified duration will be executed instantaneously&mdash;that is,
+            the element will transition from its initial state to its final
+            state with no visible intermediate states.
+        </p>
         
         <p>
             The <code>animate</code> function returns an object with a
@@ -293,6 +300,56 @@ Firmin.animate(box, {
     </div>
     
     
+    <div id="operation-order">
+        <h2>Operation order</h2>
+        
+        <p>
+            <a href="http://en.wikipedia.org/wiki/Matrix_multiplication">Matrix multiplication</a>
+            for non-<a href="http://en.wikipedia.org/wiki/Diagonal_matrix">diagonal</a>
+            square matrices is not in general
+            <a href="http://en.wikipedia.org/wiki/Commutativity">commutative</a>,
+            so the order in which transforms are applied will affect the final
+            state of the transform. Consider this CSS declaration:
+        </p>
+        
+        <pre>transform: skew(15deg, 30deg) rotate(45deg);</pre>
+        
+        <p>
+            This is <em>not</em> equivalent to the following declaration:
+        </p>
+        
+        <pre>transform: rotate(45deg) skew(15deg, 30deg);</pre>
+        
+        <p>
+            Firmin will respect the order of operations specified in an
+            animation description, so one can write Firmin code that will
+            produce the same outcome as the first CSS declaration above.
+        </p>
+        
+        <pre>Firmin.animate(el, {
+    skew: {x: "15deg", y: "30deg"},
+    rotate: "45deg"
+});</pre>
+        
+        <p>
+            One could also use the relative transform functions to generate the
+            same final transformation as the second example CSS declaration.
+        </p>
+        
+        <pre>Firmin.rotateR("45deg").skewR({x: "15deg", y: "30deg"});</pre>
+        
+        <p>
+            One caveat is necessary. Firmin is able to respect the order of
+            operations specified in an animation description only because most
+            widely-used JavaScript interpreters iterate over object properties
+            (using a <code>for&hellip;in</code> loop) in the order that they
+            those properties are declared, despite the fact that the
+            JavaScript specification states that &#8220;The mechanics and order of
+            enumerating the properties is not specified.&#8221;
+        </p>
+    </div>
+    
+    
     <div id="platforms">
         <h2>Supported platforms</h2>
         
@@ -342,7 +399,7 @@ Firmin.animate(box, {
             This allows for the filtering of properties which the transition
             will be applied to. It defaults to <code>"all"</code> and can be
             set to the string <code>"none"</code> or an array of CSS property
-            names. It's described in detail in the CSS Transitions Module
+            names. It&#8217;s described in detail in the CSS Transitions Module
             specification <a href="http://www.w3.org/TR/css3-transitions/#the-transition-property-property-">section 2.1</a>.
         </p>
         
