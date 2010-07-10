@@ -1,6 +1,11 @@
 Version 0.1.4
 
-* Documented order of operations issues.
+* Add support for 3D transforms.
+* Represent transforms internally as 4x4 matrices.
+* Use the matrix3d transform function where supported.
+* Remove Firmin.TransformMatrix.
+* Remove outdated benchmarks.
+* Document order of operations issues.
 
 2010.07.08, Version 0.1.3
 
