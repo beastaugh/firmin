@@ -35,6 +35,18 @@ Firmin.prefix = (function() {
     }
 })();
 
+Firmin.supports3d = (function() {
+    var test = document.createElement("div"),
+        transform;
+    
+    test.style.cssText = "-" + Firmin.prefix.toLowerCase() +
+        "-transform:matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);";
+    
+    transform = test.style[Firmin.prefix + "Transform"];
+    
+    return typeof transform === "string" && transform.length > 0;
+})();
+
 /*
 
 Instances of Firmin.Transform represent CSS transforms to be applied to a
@@ -161,8 +173,15 @@ Firmin.Transform.prototype.matrix = function(a, b, c, d, e, f) {
 };
 
 Firmin.Transform.prototype.build = function(properties) {
-    var transformProperty = "matrix3d(" + this.ctm.join(",") + ")",
-        originProperty    = this.centre.join(" ");
+    var originProperty = this.centre.join(" "), m = this.ctm,
+        transformProperty;
+    
+    if (Firmin.supports3d) {
+        transformProperty = "matrix3d(" + m.join(",") + ")";
+    } else {
+        transformProperty = "matrix(" +
+            [m[0], m[1], m[4], m[5], m[12], m[13]].join(",") + ")";
+    }
     
     properties = properties || {};
     
