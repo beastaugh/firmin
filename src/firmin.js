@@ -64,10 +64,7 @@ functions and methods that wrap the more general animation functionality.
 */
 
 Firmin.Transform = function(vector, origin) {
-    this.ctm    = vector || [1, 0, 0, 0,
-                             0, 1, 0, 0,
-                             0, 0, 1, 0,
-                             0, 0, 0, 1];
+    this.ctm    = new WebKitCSSMatrix();
     this.centre = Firmin.pointToVector(origin) || ["50%", "50%", 0];
 };
 
@@ -87,34 +84,34 @@ on the previous state.
 */
 
 Firmin.Transform.multiply = function(a, b) {
-    var c = [];
+    var c = new WebKitCSSMatrix();
     
-    c[0]  = a[0] * b[0]  + a[4]  * b[1] + a[8]  * b[2]  + a[12] * b[3];
-    c[1]  = a[1] * b[0]  + a[5]  * b[1] + a[9]  * b[2]  + a[13] * b[3];
-    c[2]  = a[2] * b[0]  + a[6]  * b[1] + a[10] * b[2]  + a[14] * b[3];
-    c[3]  = a[3] * b[0]  + a[7]  * b[1] + a[11] * b[2]  + a[15] * b[3];
-    c[4]  = a[0] * b[4]  + a[4]  * b[5] + a[8]  * b[6]  + a[12] * b[7];
-    c[5]  = a[1] * b[4]  + a[5]  * b[5] + a[9]  * b[6]  + a[13] * b[7];
-    c[6]  = a[2] * b[4]  + a[6]  * b[5] + a[10] * b[6]  + a[14] * b[7];
-    c[7]  = a[3] * b[4]  + a[7]  * b[5] + a[11] * b[6]  + a[15] * b[7];
-    c[8]  = a[0] * b[8]  + a[4]  * b[9] + a[8]  * b[10] + a[12] * b[11];
-    c[9]  = a[1] * b[8]  + a[5]  * b[9] + a[9]  * b[10] + a[13] * b[11];
-    c[10] = a[2] * b[8]  + a[6]  * b[9] + a[10] * b[10] + a[14] * b[11];
-    c[11] = a[3] * b[8]  + a[7]  * b[9] + a[11] * b[10] + a[15] * b[11];
-    c[12] = a[0] * b[12] + a[4] * b[13] + a[8]  * b[14] + a[12] * b[15];
-    c[13] = a[1] * b[12] + a[5] * b[13] + a[9]  * b[14] + a[13] * b[15];
-    c[14] = a[2] * b[12] + a[6] * b[13] + a[10] * b[14] + a[14] * b[15];
-    c[15] = a[3] * b[12] + a[7] * b[13] + a[11] * b[14] + a[15] * b[15];
+    c.m11  = b[0];
+    c.m12  = b[1];
+    c.m13  = b[2];
+    c.m14  = b[3];
+    c.m21  = b[4];
+    c.m22  = b[5];
+    c.m23  = b[6];
+    c.m24  = b[7];
+    c.m31  = b[8];
+    c.m32  = b[9];
+    c.m33  = b[10];
+    c.m34  = b[11];
+    c.m41  = b[12];
+    c.m42  = b[13];
+    c.m43  = b[14];
+    c.m44  = b[15];
     
-    return c;
+    return a.multiply(c);
 };
 
 Firmin.Transform.methods = [
-    "translate", "translateX", "translateY",
-    "scale", "scaleX", "scaleY",
-    "rotate",
+    "translate", "translate3d", "translateX", "translateY", "translateZ",
+    "scale", "scale3d", "scaleX", "scaleY", "scaleZ",
+    "rotate", "rotate3d", "rotateX", "rotateY", "rotateZ",
     "skew", "skewX", "skewY",
-    "matrix"
+    "matrix", "matrix3d"
 ];
 
 /*
@@ -180,7 +177,7 @@ Firmin.Transform.prototype.build = function(properties) {
         transformProperty, tx, ty;
     
     if (Firmin.supports3d) {
-        transformProperty = "matrix3d(" + m.join(",") + ")";
+        transformProperty = m.toString();
     } else {
         tx = m[12];
         ty = m[13];
@@ -219,6 +216,22 @@ Firmin.Transform.prototype.translate = function(distances) {
     this.matrix(1, 0, 0, 1, x, y);
 };
 
+Firmin.Transform.prototype.translate3d = function(distances) {
+    var vector = Firmin.pointToVector(distances),
+        x      = vector[0],
+        y      = vector[1],
+        z      = vector[2];
+    
+    if (typeof x !== "number") x = parseInt(x, 10) || 0;
+    if (typeof y !== "number") y = parseInt(y, 10) || 0;
+    if (typeof z !== "number") z = parseInt(z, 10) || 0;
+    
+    this.matrix3d([1, 0, 0, 0,
+                   0, 1, 0, 0,
+                   0, 0, 1, 0,
+                   x, y, z, 1]);
+};
+
 Firmin.Transform.prototype.translateX = function(distance) {
     this.translate([distance, 0]);
 };
@@ -227,29 +240,50 @@ Firmin.Transform.prototype.translateY = function(distance) {
     this.translate([0, distance]);
 };
 
+Firmin.Transform.prototype.translateZ = function(distance) {
+    this.translate3d([0, 0, distance]);
+};
+
+Firmin.Transform.prototype.scale3d = function(magnitudes) {
+    var vector = Firmin.pointToVector(magnitudes),
+        x      = vector[0],
+        y      = vector[1],
+        z      = vector[2];
+    
+    if (typeof x !== "number") x = 1;
+    if (typeof y !== "number") y = 1;
+    if (typeof z !== "number") z = 1;
+    
+    this.matrix3d([x, 0, 0, 0,
+                   0, y, 0, 0,
+                   0, 0, z, 0,
+                   0, 0, 0, 1]);
+};
+
 Firmin.Transform.prototype.scale = function(magnitudes) {
-    var vector, x, y;
+    var vector;
     
     if (typeof magnitudes === "number") {
-        x = y = magnitudes;
+        vector = [magnitudes, magnitudes, 1];
     } else {
         vector = Firmin.pointToVector(magnitudes);
-        x      = vector[0];
-        y      = vector[1];
         
-        if (typeof x !== "number") x = 1;
-        if (typeof y !== "number") y = 1;
+        if (typeof vector[2] !== "number") vector[2] = 1;
     }
     
-    this.matrix(x, 0, 0, y, 0, 0);
+    this.scale3d(vector);
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
-    this.scale([magnitude, 1]);
+    this.scale3d([magnitude, 1, 1]);
 };
 
 Firmin.Transform.prototype.scaleY = function(magnitude) {
-    this.scale([1, magnitude]);
+    this.scale3d([1, magnitude, 1]);
+};
+
+Firmin.Transform.prototype.scaleZ = function(magnitude) {
+    this.scale3d([1, 1, magnitude]);
 };
 
 Firmin.Transform.prototype.skew = function(magnitudes) {
@@ -271,8 +305,7 @@ Firmin.Transform.prototype.skew = function(magnitudes) {
         Math.tan(x),
         1,
         0,
-        0
-    );
+        0);
 };
 
 Firmin.Transform.prototype.skewX = function(magnitude) {
@@ -292,8 +325,37 @@ Firmin.Transform.prototype.rotate = function(angle) {
         -Math.sin(angle),
         Math.cos(angle),
         0,
-        0
-    );
+        0);
+};
+
+Firmin.Transform.prototype.rotate3d = function(params) {
+    var x   = params.x,
+        y   = params.y,
+        z   = params.z,
+        a   = params.angle,
+        cos = Math.cos,
+        sin = Math.sin;
+    
+    if (typeof x !== "number") x = 0;
+    if (typeof y !== "number") y = 0;
+    if (typeof z !== "number") z = 0;
+    
+    a = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(a)) *
+        (180 / Math.PI);
+    
+    this.ctm = this.ctm.rotateAxisAngle(x, y, z, a);
+};
+
+Firmin.Transform.prototype.rotateX = function(angle) {
+    this.rotate3d({x: 1, angle: angle});
+};
+
+Firmin.Transform.prototype.rotateY = function(angle) {
+    this.rotate3d({y: 1, angle: angle});
+};
+
+Firmin.Transform.prototype.rotateZ = function(angle) {
+    this.rotate3d({z: 1, angle: angle});
 };
 
 Firmin.Transform.prototype.origin = function(origin) {
