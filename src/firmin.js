@@ -276,14 +276,13 @@ Firmin.Transform.prototype.rotate3d = function(params) {
     var x   = params.x,
         y   = params.y,
         z   = params.z,
-        a   = params.angle,
-        cos = Math.cos,
-        sin = Math.sin;
+        a   = params.angle;
     
-    if (typeof x !== "number") x = 0;
-    if (typeof y !== "number") y = 0;
-    if (typeof z !== "number") z = 0;
+    if (typeof x != "number") x = 0;
+    if (typeof y != "number") y = 0;
+    if (typeof z != "number") z = 0;
     
+    // Normalise angle to radians and then convert to degrees
     a = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(a)) *
         (180 / Math.PI);
     
@@ -303,11 +302,11 @@ Firmin.Transform.prototype.rotateZ = function(angle) {
 };
 
 Firmin.Transform.prototype.origin = function(origin) {
-    var vector = Firmin.pointToVector(origin);
+    var vector = Firmin.pointToVector(origin), v1, v2, v3;
     
-    if (vector[0]) this.centre[0] = vector[0];
-    if (vector[1]) this.centre[1] = vector[1];
-    if (vector[2]) this.centre[2] = vector[2];
+    if ((v0 = vector[0])) this.centre[0] = v0;
+    if ((v1 = vector[1])) this.centre[1] = v1;
+    if ((v2 = vector[2])) this.centre[2] = v2;
 };
 
 /*
@@ -347,9 +346,9 @@ Firmin.Transition.parse = function(description, context) {
     
     for (p in description) {
         if (methods.indexOf(p) !== -1) {
-            if (p === "properties" && typeof p === "string") {
+            if (p === "properties" && typeof p == "string") {
                 transition[p] = [description[p]];
-            } else if (p === "timingFunction" && typeof description[p] !== "string") {
+            } else if (p === "timingFunction" && typeof description[p] != "string") {
                 transition[p] = "cubic-bezier(" + description[p].join(",") + ")";
             } else if (p === "duration") {
                 duration = Firmin.Parser.parseTime(description[p]);
@@ -389,7 +388,7 @@ Firmin.Transition.prototype.getDelay = function() {
 Firmin.Transition.prototype.build = function(properties) {
     properties = properties || {};
     
-    if (typeof this.properties === "string") {
+    if (typeof this.properties == "string") {
         properties[Firmin.prefix + "TransitionProperty"] = this.properties;
     } else {
         properties[Firmin.prefix + "TransitionProperty"] = this.properties.join(", ");
