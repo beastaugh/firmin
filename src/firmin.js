@@ -266,6 +266,18 @@ Firmin.Transform.prototype.translateZ = function(distance) {
     this.translate3d([0, 0, distance]);
 };
 
+/**
+ *  Firmin.Transform#scale(magnitudes) -> undefined
+ *  - magnitudes (Array | Object | Number): the scaling factors to be applied
+ *    to the x, y and z axes.
+ *
+ *  Generally, the magnitudes argument should be either a three-dimensional
+ *  unitless vector, or an object with numeric `x`, `y` and `z` properties,
+ *  determining the values to scale the element by along those axes.
+ *
+ *  However, if the argument is a number, the element will be scaled by that
+ *  value along both x and y axes (it will not be scaled along the z axis).
+ **/
 Firmin.Transform.prototype.scale   =
 Firmin.Transform.prototype.scale3d = function(magnitudes) {
     var vector, x, y, z;
@@ -287,14 +299,32 @@ Firmin.Transform.prototype.scale3d = function(magnitudes) {
     this.ctm = this.ctm.scale(x, y, z);
 };
 
+/** alias of: Firmin.Transform#scale
+ *  Firmin.Transform#scale3d(magnitudes) -> undefined
+ *  - magnitudes (Array | Object | Number): the scaling factors to be applied
+ *    to the x, y and z axes.
+ **/
+
+/**
+ * Firmin.Transform#scaleX(magnitude) -> undefined
+ * - magnitude (Number): the distance to scale the element along the x axis.
+ **/
 Firmin.Transform.prototype.scaleX = function(magnitude) {
     this.scale3d([magnitude, 1, 1]);
 };
 
+/**
+ * Firmin.Transform#scaleY(magnitude) -> undefined
+ * - magnitude (Number): the distance to scale the element along the y axis.
+ **/
 Firmin.Transform.prototype.scaleY = function(magnitude) {
     this.scale3d([1, magnitude, 1]);
 };
 
+/**
+ * Firmin.Transform#scaleZ(magnitude) -> undefined
+ * - magnitude (Number): the distance to scale the element along the z axis.
+ **/
 Firmin.Transform.prototype.scaleZ = function(magnitude) {
     this.scale3d([1, 1, magnitude]);
 };
