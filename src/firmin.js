@@ -332,7 +332,7 @@ Firmin.Transform.prototype.matrix3d = function(v) {
  *
  *  Generally, the distances argument should be either a three-dimensional
  *  vector, or an object with `x`, `y` and `z` properties, determining the
- *  values to scale the element by along those axes.
+ *  values to translate the element by along those axes.
  *
  *  However, if it is a number, the element will be translated by that value
  *  along both x and y axes (it will not be translated along the z axis).
@@ -431,24 +431,24 @@ Firmin.Transform.prototype.scale3d = function(magnitudes) {
  **/
 
 /**
- * Firmin.Transform#scaleX(magnitude = 1) -> undefined
- * - magnitude (Number): the distance to scale the element along the x axis.
+ *  Firmin.Transform#scaleX(magnitude = 1) -> undefined
+ *  - magnitude (Number): the distance to scale the element along the x axis.
  **/
 Firmin.Transform.prototype.scaleX = function(magnitude) {
     this.scale3d([magnitude, 1, 1]);
 };
 
 /**
- * Firmin.Transform#scaleY(magnitude = 1) -> undefined
- * - magnitude (Number): the distance to scale the element along the y axis.
+ *  Firmin.Transform#scaleY(magnitude = 1) -> undefined
+ *  - magnitude (Number): the distance to scale the element along the y axis.
  **/
 Firmin.Transform.prototype.scaleY = function(magnitude) {
     this.scale3d([1, magnitude, 1]);
 };
 
 /**
- * Firmin.Transform#scaleZ(magnitude = 1) -> undefined
- * - magnitude (Number): the distance to scale the element along the z axis.
+ *  Firmin.Transform#scaleZ(magnitude = 1) -> undefined
+ *  - magnitude (Number): the distance to scale the element along the z axis.
  **/
 Firmin.Transform.prototype.scaleZ = function(magnitude) {
     this.scale3d([1, 1, magnitude]);
@@ -547,7 +547,7 @@ Firmin.Transform.prototype.rotate3d = function(params) {
  *  Firmin.Transform#rotateX(angle) -> undefined
  *  - angle (Number | String): the angle around the x axis which the element
  *    should be rotated. It can be either a number or a string representation of
- *    a CSS angle
+ *    a CSS angle.
  **/
 Firmin.Transform.prototype.rotateX = function(angle) {
     this.rotate3d({x: 1, angle: angle});
@@ -557,7 +557,7 @@ Firmin.Transform.prototype.rotateX = function(angle) {
  *  Firmin.Transform#rotateY(angle) -> undefined
  *  - angle (Number | String): the angle around the y axis which the element
  *    should be rotated. It can be either a number or a string representation of
- *    a CSS angle
+ *    a CSS angle.
  **/
 Firmin.Transform.prototype.rotateY = function(angle) {
     this.rotate3d({y: 1, angle: angle});
@@ -567,7 +567,7 @@ Firmin.Transform.prototype.rotateY = function(angle) {
  *  Firmin.Transform#rotateZ(angle) -> undefined
  *  - angle (Number | String): the angle around the z axis which the element
  *    should be rotated. It can be either a number or a string representation of
- *    a CSS angle
+ *    a CSS angle.
  **/
 Firmin.Transform.prototype.rotateZ = function(angle) {
     this.rotate3d({z: 1, angle: angle});
