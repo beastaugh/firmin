@@ -776,7 +776,7 @@ Firmin.Transition.prototype.build = function(properties) {
 Firmin.Animation = function(description, context) {
     var tsp, trp;
     
-    if (typeof description.callback === "function") {
+    if (typeof description.callback == "function") {
         this.callback = description.callback;
     }
     
@@ -1003,8 +1003,17 @@ Firmin.animate = function(el, description, duration, callback) {
  *  rather than its base transform.
  **/
 Firmin.animateR = function(el, description, duration, callback) {
-    // TODO: set initial value of CTM from el, via setMatrixValue
-    var animated = new Firmin.Animated(el);
+    var previous  = new Firmin.Animation({}),
+        animated  = new Firmin.Animated(el),
+        matrix    = new WebKitCSSMatrix(),
+        cssStr    = el.style[Firmin.prefix + "Transform"],
+        transform = new Firmin.Transform();
+    
+    matrix.setMatrixValue(cssStr);
+    
+    transform.ctm       = matrix;
+    previous.transform  = transform;
+    animated.__lastAnim = previous;
     
     animated.animateR(description, duration, callback);
     
