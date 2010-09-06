@@ -84,6 +84,60 @@ Firmin.pointToVector = function(point) {
     return point instanceof Array ? point : [point.x, point.y, point.z];
 };
 
+
+/*
+
+CSS data type parsing
+
+There are numerous CSS data types. We are mainly interested in the various
+numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
+50%), but there are a few functions which allow or require a keyword instead.
+
+The parsers implemented below all have a common pattern: they accept a string
+(or, if the type can be numeric and has a default unit, a number) and return a
+pair consisting of the unit and the magnitude (or null, if the input was not of
+the expected format).
+
+One major limitation, albeit not with the parsing library itself, is that there
+is currently no straightforward way to convert between length units. Users of
+this library must use pixels, rather than being able to use any length unit
+they like and relying on the library to perform an internal conversion to
+pixels. This limits the usefulness of the parsing library, essentially to
+angles and times.
+
+*/
+
+Firmin.Parser = {};
+
+Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?/;
+
+Firmin.Parser.parseNumeric = function(units, def) {
+    return function(input) {
+        var unit, magnitude;
+        
+        if (typeof input === "number") {
+            return [def, input];
+        } else if (typeof input !== "string") {
+            return null;
+        }
+        
+        magnitude = (input.match(Firmin.Parser.NUMBER_PATTERN) || [""])[0];
+        
+        if (magnitude.length === input.length) {
+            unit = def;
+        } else {
+            unit = units.filter(function(u) {
+                return input.substr(magnitude.length) === u;
+            })[0];
+        }
+        
+        return unit && magnitude ? [unit, parseFloat(magnitude)] : null;
+    };
+};
+
+Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
+Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["s", "ms"], "s");
+
 /**
  *  class Firmin.Transform
  *
@@ -760,56 +814,3 @@ Firmin.Transform.methods.forEach(function(method) {
         return this.animateR(description, t, cb);
     };
 });
-
-/*
-
-CSS data type parsing
-
-There are numerous CSS data types. We are mainly interested in the various
-numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg or
-50%), but there are a few functions which allow or require a keyword instead.
-
-The parsers implemented below all have a common pattern: they accept a string
-(or, if the type can be numeric and has a default unit, a number) and return a
-pair consisting of the unit and the magnitude (or null, if the input was not of
-the expected format).
-
-One major limitation, albeit not with the parsing library itself, is that there
-is currently no straightforward way to convert between length units. Users of
-this library must use pixels, rather than being able to use any length unit
-they like and relying on the library to perform an internal conversion to
-pixels. This limits the usefulness of the parsing library, essentially to
-angles and times.
-
-*/
-
-Firmin.Parser = {};
-
-Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?/;
-
-Firmin.Parser.parseNumeric = function(units, def) {
-    return function(input) {
-        var unit, magnitude;
-        
-        if (typeof input === "number") {
-            return [def, input];
-        } else if (typeof input !== "string") {
-            return null;
-        }
-        
-        magnitude = (input.match(Firmin.Parser.NUMBER_PATTERN) || [""])[0];
-        
-        if (magnitude.length === input.length) {
-            unit = def;
-        } else {
-            unit = units.filter(function(u) {
-                return input.substr(magnitude.length) === u;
-            })[0];
-        }
-        
-        return unit && magnitude ? [unit, parseFloat(magnitude)] : null;
-    };
-};
-
-Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
-Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["s", "ms"], "s");
