@@ -264,16 +264,12 @@ Firmin.Transform.prototype.skewY = function(magnitude) {
     this.skew([0, magnitude]);
 };
 
-Firmin.Transform.prototype.rotate = function(angle) {
-    angle = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(angle));
+Firmin.Transform.prototype.rotate = function(a) {
+    // Normalise angle to radians and then convert to degrees
+    a = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(a)) *
+        (180 / Math.PI);
     
-    this.matrix(
-        Math.cos(angle),
-        Math.sin(angle),
-        -Math.sin(angle),
-        Math.cos(angle),
-        0,
-        0);
+    this.ctm = this.ctm.rotate(0, 0, a);
 };
 
 Firmin.Transform.prototype.rotate3d = function(params) {
