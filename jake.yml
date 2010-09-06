@@ -27,3 +27,9 @@ packages:
         - FirminCSSMatrix
       provides:
         - Firmin
+
+bundles:
+  all:
+    files:
+      - matrix
+      - firmin
