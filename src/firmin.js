@@ -22,32 +22,19 @@ prefixes is in use.
 
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
-        prefixes = ["o", "moz", "webkit"],
-        prefix, i, transform;
+        prefixes = ["webkit", "Moz", "O"],
+        i        = 3,
+        prefix;
     
-    for (i = 0; i < 3; i++) {
+    while (i--) {
         prefix = prefixes[i];
-        
-        test.style.cssText = "-" + prefix + "-transition-property: opacity;";
-        
-        if (prefix === "moz") {
-            prefix = "Moz";
-        } else if (prefix === "o") {
-            prefix = "O";
-        }
-        
-        if (typeof test.style[prefix + "TransitionProperty"] !== "undefined") {
-            test.style.cssText = "-" + prefix.toLowerCase() +
-                "-transform:matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);";
-            
-            transform = test.style[prefix + "Transform"];
-            
-            Firmin.supports3d = typeof transform === "string" &&
-                transform.length > 0;
-            
+        test.style.cssText = "-" + prefix.toLowerCase() +
+            "-transition-property:opacity;";
+        if (typeof test.style[prefix + "TransitionProperty"] != "undefined")
             return prefix;
-        }
     }
+
+    return prefix;
 })();
 
 /*
@@ -173,28 +160,10 @@ Firmin.Transform.prototype.matrix = function(a, b, c, d, e, f) {
 };
 
 Firmin.Transform.prototype.build = function(properties) {
-    var originProperty = this.centre.join(" "), m = this.ctm,
-        transformProperty, tx, ty;
-    
-    if (Firmin.supports3d) {
-        transformProperty = m.toString();
-    } else {
-        tx = m[12];
-        ty = m[13];
-        
-        if (Firmin.prefix === "Moz") {
-            tx += "px";
-            ty += "px";
-        }
-        
-        transformProperty = "matrix(" +
-            [m[0], m[1], m[4], m[5], tx, ty].join(",") + ")";
-    }
-    
     properties = properties || {};
     
-    properties[Firmin.prefix + "Transform"]       = transformProperty;
-    properties[Firmin.prefix + "TransformOrigin"] = originProperty;
+    properties[Firmin.prefix + "Transform"]       = this.ctm.toString();
+    properties[Firmin.prefix + "TransformOrigin"] = this.centre.join(" ");
     
     return properties;
 };
