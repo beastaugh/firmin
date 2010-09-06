@@ -1,25 +1,26 @@
 /*
+ *  Firmin, a JavaScript animation library using CSS transforms and transitions.
+ *  (c) 2010 Benedict Eastaugh
+ *
+ *  Firmin is freely distributable under the terms of the BSD license.
+ *  For details, see the Firmin website: http://extralogical.net/projects/firmin
+ *
+ *---------------------------------------------------------------------------*/
 
-Firmin, a JavaScript animation library using CSS transforms and transitions.
-
-Documentation:  http://extralogical.net/projects/firmin
-GitHub project: http://github.com/ionfish/firmin
-
-<%= license %>
-*/
-
+/**
+ *  Firmin
+ **/
 Firmin = (typeof Firmin == 'undefined') ? {} : Firmin;
 
-/*
-
-Currently, several browsers support (to varying degrees) the CSS transform and
-transition functionality which Firmin is based upon. However, they each use
-vendor-specific prefixes for the various CSS properties involved. Consequently,
-for Firmin to work on these different browsers it must detect which of these
-prefixes is in use.
-
-*/
-
+/**
+ *  Firmin.prefix -> String
+ *
+ *  Currently, several browsers support (to varying degrees) the CSS transform
+ *  and transition functionality which Firmin is based upon. However, they each
+ *  use vendor-specific prefixes for the various CSS properties involved.
+ *  Consequently, for Firmin to work on these different browsers it must detect
+ *  which of these prefixes is in use.
+ */
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
         prefixes = ["webkit", "Moz", "O"],
@@ -37,39 +38,50 @@ Firmin.prefix = (function() {
     return prefix;
 })();
 
-/*
+/**
+ *  class Firmin.Transform
+ *
+ *  Instances of [[Firmin.Transform]] represent CSS transforms to be applied to
+ *  a given DOM element. As well as encapsulating a transformation matrix, they
+ *  also contain the transform origin, and methods for translating API methods
+ *  such as `translate` and `rotate` to lower-level matrix methods.
+ *
+ *  Transform objects have methods corresponding to all the CSS 2D transform
+ *  functions; this list is also used to add generate higher-level wrapper
+ *  functions and methods that wrap the more general animation functionality.
+ *
+ *  ##### Transformation matrices
+ *
+ *  The CSS transform modules provide a way to create a new local coordinate
+ *  system for a given element and its descendants. All transform functions
+ *  (rotate, skew, translate, scale etc.) are defined in terms of a
+ *  transformation matrix. Firmin translates each use of these API-level
+ *  transform functions into a matrix and then concatenates them to determine
+ *  the final value. By performing these operations internally rather than
+ *  deferring them to the browser, it is possible to introduce stateful
+ *  transforms, where each new state of the element is based on its previous
+ *  state.
+ **/
 
-Instances of Firmin.Transform represent CSS transforms to be applied to a
-given DOM element. As well as encapsulating a transformation matrix, they also
-contain the transform origin, and methods for translating API methods such as
-translate and rotate to lower-level matrix methods.
-
-Transform objects have methods corresponding to all the CSS 2D transform
-functions; this list is also used to add generate higher-level wrapper
-functions and methods that wrap the more general animation functionality.
-
-*/
-
-Firmin.Transform = function(vector, origin) {
-    this.ctm    = new WebKitCSSMatrix();
+/**
+ *  new Firmin.Transform([matrix], [origin])
+ *  - matrix (WebKitCSSMatrix): an initial transform matrix.
+ *  - origin (Array): a three-element array defining the transform origin.
+ **/
+Firmin.Transform = function(matrix, origin) {
+    this.ctm    = matrix || new WebKitCSSMatrix();
     this.centre = Firmin.pointToVector(origin) || ["50%", "50%", 0];
 };
 
-/*
-
-Transformation matrices
-
-The CSS transform modules provide a way to create a new local coordinate system
-for a given element and its descendants. All transform functions (rotate, skew,
-translate, scale etc.) are defined in terms of a transformation matrix. Firmin
-translates each use of these API-level transform functions into a matrix and
-then concatenates them to determine the final value. By performing these
-operations internally rather than deferring them to the browser, it is possible
-to introduce stateful transforms, where each new state of the element is based
-on the previous state.
-
-*/
-
+/**
+ *  Firmin.Transform.methods -> Array
+ *
+ *  This list of methods defines the available transform API: they are defined
+ *  primarily as methods on instances of `Firmin.Transform`, but are available
+ *  to the user as methods on the `Firmin` object itself, as a wrapper around
+ *  the `Firmin.animate` function, and on instances of `Firmin.Animated` as
+ *  wrappers around the `Firmin.Animated#animate` method.
+ **/
 Firmin.Transform.methods = [
     "translate", "translate3d", "translateX", "translateY", "translateZ",
     "scale", "scale3d", "scaleX", "scaleY", "scaleZ",
@@ -78,34 +90,35 @@ Firmin.Transform.methods = [
     "matrix", "matrix3d"
 ];
 
-/*
-
-The Firmin.Transform.parse method follows the standard Firmin animation
-description-parsing API. It accepts a description object and a context
-(generally the previous animation applied), and returns an object with two
-properties: the result (a Transform object, or null) and the remainder (an
-object containing any unparsed properties of the description, to be passed to
-other parsers).
-
-The resultant Transform object wraps a transformation matrix formed by
-cumulatively applying the transform options in the description to either the
-identity matrix, or the transformation matrix given by the context's transform
-property. This feature is what enables stateful transforms, as otherwise
-applying a new transform to an element would simply overwrite its previous
-state with the new state.
-
-*/
-
+/**
+ *  Firmin.Transform.parse(description, [context]) -> Object
+ *  - description (Object): an animation description provided by the user.
+ *  - context (Firmin.Animation): generally the previous animation applied.
+ *
+ *  The [[Firmin.Transform.parse]] method follows the standard Firmin animation
+ *  description-parsing API. It accepts a description object and a context
+ *  (generally the previous animation applied), and returns an object with two
+ *  properties: the result (a [[Firmin.Transform]] object, or null) and the
+ *  remainder (an object containing any unparsed properties of the description,
+ *  to be passed to other parsers).
+ *
+ *  The resultant [[Firmin.Transform]] object wraps a transformation matrix
+ *  formed by cumulatively applying the transform options in the description to
+ *  either the identity matrix, or the transformation matrix given by the
+ *  context's transform property. This feature is what enables stateful
+ *  transforms, as otherwise applying a new transform to an element would
+ *  simply overwrite its previous state with the new state.
+ **/
 Firmin.Transform.parse = function(description, context) {
     var methods   = Firmin.Transform.methods,
         rest      = {},
         transform = null,
-        vector, origin;
+        matrix, origin;
     
     if (typeof context === "object" && context.transform) {
-        vector    = context.transform.ctm;
+        matrix    = context.transform.ctm;
         origin    = context.transform.centre;
-        transform = new Firmin.Transform(vector, origin);
+        transform = new Firmin.Transform(matrix, origin);
     }
     
     for (property in description) {
@@ -123,6 +136,14 @@ Firmin.Transform.parse = function(description, context) {
     return {result: transform, remainder: rest};
 };
 
+/**
+ *  Firmin.Transform#matrix(vector) -> undefined
+ *  - vector (Array): representation of a transform matrix in column-major
+ *    order.
+ *
+ *  Converts the given vector into a transform matrix and multiplies the
+ *  current transform matrix by it, then sets the CTM to the resulting matrix.
+ **/
 Firmin.Transform.prototype.matrix   =
 Firmin.Transform.prototype.matrix3d = function(v) {
     var t = new WebKitCSSMatrix();
@@ -156,6 +177,20 @@ Firmin.Transform.prototype.matrix3d = function(v) {
     this.ctm = this.ctm.multiply(t);
 };
 
+/** alias of: Firmin.Transform#matrix
+ *  Firmin.Transform#matrix3d(vector) -> undefined
+ *  - vector (Array): representation of a transform matrix in column-major
+ *    order.
+ **/
+
+/**
+ *  Firmin.Transform#build([properties]) -> Object
+ *  - properties (Object): a set of CSS properties which will be modified with
+ *    the transform and transform-origin properties.
+ *
+ *  Returns the (modified) properties object initially passed in, or a new
+ *  object if no properties argument is provided.
+ **/
 Firmin.Transform.prototype.build = function(properties) {
     properties = properties || {};
     
