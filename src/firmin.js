@@ -33,7 +33,7 @@ Firmin.prefix = (function() {
         if (typeof test.style[prefix + "TransitionProperty"] != "undefined")
             return prefix;
     }
-
+    
     return prefix;
 })();
 
@@ -73,22 +73,22 @@ on the previous state.
 Firmin.Transform.multiply = function(a, b) {
     var c = new WebKitCSSMatrix();
     
-    c.m11  = b[0];
-    c.m12  = b[1];
-    c.m13  = b[2];
-    c.m14  = b[3];
-    c.m21  = b[4];
-    c.m22  = b[5];
-    c.m23  = b[6];
-    c.m24  = b[7];
-    c.m31  = b[8];
-    c.m32  = b[9];
-    c.m33  = b[10];
-    c.m34  = b[11];
-    c.m41  = b[12];
-    c.m42  = b[13];
-    c.m43  = b[14];
-    c.m44  = b[15];
+    c.m11 = b[0];
+    c.m12 = b[1];
+    c.m13 = b[2];
+    c.m14 = b[3];
+    c.m21 = b[4];
+    c.m22 = b[5];
+    c.m23 = b[6];
+    c.m24 = b[7];
+    c.m31 = b[8];
+    c.m32 = b[9];
+    c.m33 = b[10];
+    c.m34 = b[11];
+    c.m41 = b[12];
+    c.m42 = b[13];
+    c.m43 = b[14];
+    c.m44 = b[15];
     
     return a.multiply(c);
 };
