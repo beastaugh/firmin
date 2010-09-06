@@ -38,6 +38,46 @@ Firmin.prefix = (function() {
     return prefix;
 })();
 
+/*
+
+Angular conversion
+
+The transform operations assume that angles are given in radians. However,
+there are several other valid CSS angle types: degrees, grads and turns.
+We therefore need code to, at a minimum, convert values of all these types to
+values in radians.
+
+*/
+
+Firmin.angleToRadians = function(type, magnitude) {
+    var ratio;
+    
+    switch (type) {
+        case "rad"  : return magnitude;
+        case "deg"  : ratio = Math.PI / 180; break;
+        case "grad" : ratio = Math.PI / 200; break;
+        case "turn" : ratio = Math.PI * 2;   break;
+    }
+    
+    return ratio * magnitude;
+};
+
+/*
+
+Point to vector conversion
+
+Points are used as a convenient and meaningful way for users to specify
+origins, translations etc., but a vector is a more convenient internal format,
+so in general points are converted to vectors on the way in.
+
+*/
+
+Firmin.pointToVector = function(point) {
+    if (!point) return null;
+    
+    return point instanceof Array ? point : [point.x, point.y, point.z];
+};
+
 /**
  *  class Firmin.Transform
  *
@@ -767,43 +807,3 @@ Firmin.Parser.parseNumeric = function(units, def) {
 
 Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
 Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["s", "ms"], "s");
-
-/*
-
-Angular conversion
-
-The transform operations assume that angles are given in radians. However,
-there are several other valid CSS angle types: degrees, grads and turns.
-We therefore need code to, at a minimum, convert values of all these types to
-values in radians.
-
-*/
-
-Firmin.angleToRadians = function(type, magnitude) {
-    var ratio;
-    
-    switch (type) {
-        case "rad"  : return magnitude;
-        case "deg"  : ratio = Math.PI / 180; break;
-        case "grad" : ratio = Math.PI / 200; break;
-        case "turn" : ratio = Math.PI * 2;   break;
-    }
-    
-    return ratio * magnitude;
-};
-
-/*
-
-Point to vector conversion
-
-Points are used as a convenient and meaningful way for users to specify
-origins, translations etc., but a vector is a more convenient internal format,
-so in general points are converted to vectors on the way in.
-
-*/
-
-Firmin.pointToVector = function(point) {
-    if (!point) return null;
-    
-    return point instanceof Array ? point : [point.x, point.y, point.z];
-};
