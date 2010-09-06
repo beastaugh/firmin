@@ -964,8 +964,8 @@ Firmin.Animated.prototype.animateR = function(description, duration, callback) {
 };
 
 /**
- *  Firmin.animate(el, description, [duration], [callback]) -> Firmin.Animated
- *  - el (HTMLElement): the element to animate.
+ *  Firmin.animate(element, description, [duration], [callback]) -> Firmin.Animated
+ *  - element (HTMLElement): the element to animate.
  *  - description (Object): the description of the animation.
  *  - duration (Number | String): the duration of the animation.
  *  - callback (Function): a function to execute after the animation completes.
@@ -981,9 +981,26 @@ Firmin.Animated.prototype.animateR = function(description, duration, callback) {
  *  If any transform methods (such as `translate` or `rotate`) are specified,
  *  the transformation will be 'absolute', i.e. it will be calculated from the
  *  element's base transform rather than its current transform matrix.
+ *
+ *  ##### Transform function aliases
+ *
+ *  For convenience, all the transform functions are provided as wrappers
+ *  around the [[Firmin.animate]] function and method. Without these wrappers,
+ *  one would have to call animate and pass in a description, even if that
+ *  description only contained one transform function:
+ *
+ *      Firmin.animate(el, {rotate: "45deg"});
+ *
+ *  By effectively aliasing rotate to this call, one can effectively use rotate
+ *  (or any other transform function) directly:
+ *
+ *      Firmin.rotate(el, "45deg");
+ *
+ *  The abbreviated notation expresses intention more directly in such
+ *  scenarios, and thus should be preferred.
  **/
-Firmin.animate = function(el, description, duration, callback) {
-    var animated = new Firmin.Animated(el);
+Firmin.animate = function(element, description, duration, callback) {
+    var animated = new Firmin.Animated(element);
     
     animated.animate(description, duration, callback);
     
@@ -991,8 +1008,8 @@ Firmin.animate = function(el, description, duration, callback) {
 };
 
 /**
- *  Firmin.animateR(el, description, [duration], [callback]) -> Firmin.Animated
- *  - el (HTMLElement): the element to animate.
+ *  Firmin.animateR(element, description, [duration], [callback]) -> Firmin.Animated
+ *  - element (HTMLElement): the element to animate.
  *  - description (Object): the description of the animation.
  *  - duration (Number | String): the duration of the animation.
  *  - callback (Function): a function to execute after the animation completes.
@@ -1002,12 +1019,12 @@ Firmin.animate = function(el, description, duration, callback) {
  *  transformation will be based on the element's current transform matrix
  *  rather than its base transform.
  **/
-Firmin.animateR = function(el, description, duration, callback) {
-    var previous  = new Firmin.Animation({}),
-        animated  = new Firmin.Animated(el),
+Firmin.animateR = function(element, description, duration, callback) {
+    var animated  = new Firmin.Animated(element),
+        previous  = new Firmin.Animation({}),
+        transform = new Firmin.Transform(),
         matrix    = new WebKitCSSMatrix(),
-        cssStr    = el.style[Firmin.prefix + "Transform"],
-        transform = new Firmin.Transform();
+        cssStr    = element.style[Firmin.prefix + "Transform"];
     
     matrix.setMatrixValue(cssStr);
     
@@ -1019,27 +1036,6 @@ Firmin.animateR = function(el, description, duration, callback) {
     
     return animated.run();
 };
-
-/*
-
-Transform function aliases
-
-For convenience, all the transform functions are provided as wrappers around
-the animate function and method. Without these wrappers, one would have to
-call animate and pass in a description, even if that description only contained
-one transform function:
-
-    Firmin.animate(el, {rotate: "45deg"});
-
-By effectively aliasing rotate to this call, one can effectively use rotate (or
-any other transform function) directly:
-
-    Firmin.rotate(el, "45deg");
-
-The abbreviated notation expresses intention more directly in such scenarios,
-and thus should be preferred.
-
-*/
 
 Firmin.Transform.methods.forEach(function(method) {
     var relativeMethod = method + "R";
