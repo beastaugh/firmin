@@ -573,6 +573,13 @@ Firmin.Transform.prototype.rotateZ = function(angle) {
     this.rotate3d({z: 1, angle: angle});
 };
 
+/**
+ *  Firmin.Transform#origin(origin) -> undefined
+ *  - origin (Array | Object): three-dimensional vector or point object with
+ *    `x`, `y` and `z` properties, determining the origin point which
+ *    transforms will be performed from. The values should be CSS lengths, e.g.
+ *    in pixels (`"150px"`) or percentages (`"50%"`).
+ **/
 Firmin.Transform.prototype.origin = function(origin) {
     var vector = Firmin.pointToVector(origin), v1, v2, v3;
     
