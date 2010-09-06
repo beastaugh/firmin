@@ -963,6 +963,25 @@ Firmin.Animated.prototype.animateR = function(description, duration, callback) {
     return this.__animate__(new Firmin.Animation(description, this.__lastAnim));
 };
 
+/**
+ *  Firmin.animate(el, description, [duration], [callback]) -> Firmin.Animated
+ *  - el (HTMLElement): the element to animate.
+ *  - description (Object): the description of the animation.
+ *  - duration (Number | String): the duration of the animation.
+ *  - callback (Function): a function to execute after the animation completes.
+ *
+ *  The [[Firmin.animate]] function is the starting point for most animations
+ *  in Firmin, and the basis for all the specialised transformational methods.
+ *
+ *      Firmin.animate(document.getElementById('example'), {
+ *          backgroundColor: '#f00',
+ *          marginTop:       '200px'
+ *      }, 1.5);
+ *
+ *  If any transform methods (such as `translate` or `rotate`) are specified,
+ *  the transformation will be 'absolute', i.e. it will be calculated from the
+ *  element's base transform rather than its current transform matrix.
+ **/
 Firmin.animate = function(el, description, duration, callback) {
     var animated = new Firmin.Animated(el);
     
@@ -971,7 +990,20 @@ Firmin.animate = function(el, description, duration, callback) {
     return animated.run();
 };
 
+/**
+ *  Firmin.animateR(el, description, [duration], [callback]) -> Firmin.Animated
+ *  - el (HTMLElement): the element to animate.
+ *  - description (Object): the description of the animation.
+ *  - duration (Number | String): the duration of the animation.
+ *  - callback (Function): a function to execute after the animation completes.
+ *
+ *  [[Firmin.animateR]] is the 'relative' version of [[Firmin.animate]]: if any
+ *  transform methods (such as `translate` or `rotate`) are specified, the
+ *  transformation will be based on the element's current transform matrix
+ *  rather than its base transform.
+ **/
 Firmin.animateR = function(el, description, duration, callback) {
+    // TODO: set initial value of CTM from el, via setMatrixValue
     var animated = new Firmin.Animated(el);
     
     animated.animateR(description, duration, callback);
