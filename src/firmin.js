@@ -70,29 +70,6 @@ on the previous state.
 
 */
 
-Firmin.Transform.multiply = function(a, b) {
-    var c = new WebKitCSSMatrix();
-    
-    c.m11 = b[0];
-    c.m12 = b[1];
-    c.m13 = b[2];
-    c.m14 = b[3];
-    c.m21 = b[4];
-    c.m22 = b[5];
-    c.m23 = b[6];
-    c.m24 = b[7];
-    c.m31 = b[8];
-    c.m32 = b[9];
-    c.m33 = b[10];
-    c.m34 = b[11];
-    c.m41 = b[12];
-    c.m42 = b[13];
-    c.m43 = b[14];
-    c.m44 = b[15];
-    
-    return a.multiply(c);
-};
-
 Firmin.Transform.methods = [
     "translate", "translate3d", "translateX", "translateY", "translateZ",
     "scale", "scale3d", "scaleX", "scaleY", "scaleZ",
@@ -146,17 +123,37 @@ Firmin.Transform.parse = function(description, context) {
     return {result: transform, remainder: rest};
 };
 
-Firmin.Transform.prototype.matrix3d = function(m) {
-    this.ctm = Firmin.Transform.multiply(this.ctm, m);
-};
-
-Firmin.Transform.prototype.matrix = function(a, b, c, d, e, f) {
-    if (typeof a === "object") return this.matrix.apply(this, a);
+Firmin.Transform.prototype.matrix   =
+Firmin.Transform.prototype.matrix3d = function(v) {
+    var t = new WebKitCSSMatrix();
     
-    this.matrix3d([a, b, 0, 0,
-                   c, d, 0, 0,
-                   0, 0, 1, 0,
-                   e, f, 0, 1]);
+    if (v.length === 6) {
+        t.a = v[0];
+        t.b = v[1];
+        t.c = v[2];
+        t.d = v[3];
+        t.e = v[4];
+        t.f = v[5];
+    } else {
+        t.m11 = v[0];
+        t.m12 = v[1];
+        t.m13 = v[2];
+        t.m14 = v[3];
+        t.m21 = v[4];
+        t.m22 = v[5];
+        t.m23 = v[6];
+        t.m24 = v[7];
+        t.m31 = v[8];
+        t.m32 = v[9];
+        t.m33 = v[10];
+        t.m34 = v[11];
+        t.m41 = v[12];
+        t.m42 = v[13];
+        t.m43 = v[14];
+        t.m44 = v[15];
+    }
+    
+    this.ctm = this.ctm.multiply(t);
 };
 
 Firmin.Transform.prototype.build = function(properties) {
@@ -247,13 +244,13 @@ Firmin.Transform.prototype.skew = function(magnitudes) {
         y      = angle2rads.apply(null, parseAngle(vector[1])) || 0;
     }
     
-    this.matrix(
+    this.matrix([
         1,
         Math.tan(y),
         Math.tan(x),
         1,
         0,
-        0);
+        0]);
 };
 
 Firmin.Transform.prototype.skewX = function(magnitude) {
