@@ -12,10 +12,18 @@ builds:
     private:      true
 
 packages:
+  matrix:
+    files:
+      - matrix
+    meta:
+      requires:
+      provides:
+        - FirminCSSMatrix
   firmin:
     files:
       - firmin
     meta:
       requires:
+        - FirminCSSMatrix
       provides:
         - Firmin
