@@ -200,12 +200,24 @@ Firmin.Transform.prototype.matrix3d = function(v) {
  *    order.
  **/
 
+/**
+ *  Firmin.Transform#translate(distances) -> undefined
+ *  - distances (Array | Object | Number | String): the distances in pixels to
+ *    translate the element by.
+ *
+ *  Generally, the distances argument should be either a three-dimensional
+ *  vector, or an object with `x`, `y` and `z` properties, determining the
+ *  values to scale the element by along those axes.
+ *
+ *  However, if it is a number, the element will be translated by that value
+ *  along both x and y axes (it will not be translated along the z axis).
+ **/
 Firmin.Transform.prototype.translate   =
 Firmin.Transform.prototype.translate3d = function(distances) {
     var vector, x, y, z;
     
     if (typeof distances == "number" || typeof distances == "string") {
-        x = y = distances;
+        x = y = parseInt(distances, 10) || 0;
         z = 0;
     } else {
         vector = Firmin.pointToVector(distances);
@@ -221,14 +233,35 @@ Firmin.Transform.prototype.translate3d = function(distances) {
     this.ctm = this.ctm.translate(x, y, z);
 };
 
+/** alias of: Firmin.Transform#translate
+ *  Firmin.Transform#translate3d(distances) -> undefined
+ *  - distances (Array | Object | Number): the distances in pixels to translate
+ *    the element by.
+ **/
+
+/**
+ *  Firmin.Transform#translateX(distance) -> undefined
+ *  - distance (Number): the distance in pixels to translate the element along
+ *    the x axis.
+ **/
 Firmin.Transform.prototype.translateX = function(distance) {
     this.translate([distance, 0]);
 };
 
+/**
+ *  Firmin.Transform#translateY(distance) -> undefined
+ *  - distance (Number): the distance in pixels to translate the element along
+ *    the y axis.
+ **/
 Firmin.Transform.prototype.translateY = function(distance) {
     this.translate([0, distance]);
 };
 
+/**
+ *  Firmin.Transform#translateX(distance) -> undefined
+ *  - distance (Number): the distance in pixels to translate the element along
+ *    the z axis.
+ **/
 Firmin.Transform.prototype.translateZ = function(distance) {
     this.translate3d([0, 0, distance]);
 };
