@@ -739,32 +739,40 @@ Firmin.Transition.prototype.build = function(properties) {
     return properties;
 };
 
-/*
+/**
+ *  class Firmin.Animation
+ *
+ *  Animations in Firmin consist of three components: a Transform object,
+ *  representing the how the target element's local coordinate space will be
+ *  transformed when the animation is run; a Transition object, determining how
+ *  the element's state will evolve; and a bundle of other CSS properties,
+ *  which represent the final state of the element when the animation
+ *  completes, and which will be modified incrementally as the animation
+ *  progresses, just as the transformation matrix will.
+ *
+ *  It is these additional CSS properties which allow Firmin to operate as a
+ *  replacement for existing JavaScript animation libraries: the visual
+ *  properties of the element can be modified over an interval, with the
+ *  evolution of their state unfolding in accord with the provided transition
+ *  function. For example, an element's background might be set to animate from
+ *  one colour to another.
+ *
+ *  When an Animation object is created, it must be given a description object
+ *  describing the properties of the animation. This description will be passed
+ *  to [[Firmin.Transition.parse]] and [[Firmin.Transform.parse]] in turn, and
+ *  they will return result objects and any remaining, unconsumed description
+ *  properties, which will "fall through" to become style properties. For
+ *  example, if the description has a `backgroundColor` property then that will
+ *  not be removed by either parser, and will thus be set as a normal CSS
+ *  property.
+ **/
 
-Animations in Firmin consist of three components: a Transform object,
-representing the how the target element's local coordinate space will be
-transformed when the animation is run; a Transition object, determining how
-the element's state will evolve; and a bundle of other CSS properties, which
-represent the final state of the element when the animation completes, and
-which will be modified incrementally as the animation progresses, just as the
-transformation matrix will.
-
-It is these additional CSS properties which allow Firmin to operate as a
-replacement for existing JavaScript animation libraries: the visual properties
-of the element can be modified over an interval, with the evolution of their
-state unfolding in accord with the provided transition function. For example,
-an element's background might be set to animate from one colour to another.
-
-When an Animation object is created, it must be given a description object
-describing the properties of the animation. This description will be passed to
-Transition and Transform parsers in turn, and they will return result objects
-and any remaining, unconsumed description properties, which will "fall through"
-to become style properties. For example, if the description has a
-backgroundColor property then that will not be removed by either parser, and
-will thus be set as a normal CSS property.
-
-*/
-
+/**
+ *  new Firmin.Animation(description, [context])
+ *  - description (Object): the user-provided description of the animation to
+ *    be performed.
+ *  - context (Firmin.Animation): generally the previous animation applied.
+ **/
 Firmin.Animation = function(description, context) {
     var tsp, trp;
     
@@ -783,15 +791,32 @@ Firmin.Animation = function(description, context) {
     this.style = trp.remainder;
 };
 
+/**
+ *  Firmin.Animation#hasDuration() -> Boolean
+ *
+ *  Returns whether the animation has a duration.
+ **/
 Firmin.Animation.prototype.hasDuration = function() {
     return this.transition && this.transition.hasDuration();
 };
 
+/**
+ *  Firmin.Animation#getTotalDuration() -> Number
+ *
+ *  Returns the total duration of the animation in milliseconds. This includes
+ *  both the duration of the transition and any delay before it executes.
+ **/
 Firmin.Animation.prototype.getTotalDuration = function() {
     return this.transition ?
         this.transition.getDuration() + this.transition.getDelay() : 0;
 };
 
+/**
+ *  Firmin.Animation#exec(element) -> undefined
+ *  - element (HTMLElement): the DOM element to apply the animation to.
+ *
+ *  This method applies the animation to the given element.
+ **/
 Firmin.Animation.prototype.exec = function(element) {
     var properties = this.style, property;
     
