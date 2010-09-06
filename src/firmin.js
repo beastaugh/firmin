@@ -38,17 +38,19 @@ Firmin.prefix = (function() {
     return prefix;
 })();
 
-/*
-
-Angular conversion
-
-The transform operations assume that angles are given in radians. However,
-there are several other valid CSS angle types: degrees, grads and turns.
-We therefore need code to, at a minimum, convert values of all these types to
-values in radians.
-
-*/
-
+/**
+ *  Firmin.angleToRadians(type, magnitude) -> Number
+ *  - type (String): the unit of the angle to convert. This should be one of
+ *   `rad`, `deg`, `grad` or `turn`.
+ *  - magnitude (Number): the magnitude of the angle to convert.
+ *
+ *  ##### Angular conversion
+ *
+ *  The transform operations assume that angles are given in radians. However,
+ *  there are several other valid CSS angle types: degrees, grads and turns.
+ *  We therefore need code to, at a minimum, convert values of all these types
+ *  to values in radians.
+ **/
 Firmin.angleToRadians = function(type, magnitude) {
     var ratio;
     
@@ -62,16 +64,20 @@ Firmin.angleToRadians = function(type, magnitude) {
     return ratio * magnitude;
 };
 
-/*
-
-Point to vector conversion
-
-Points are used as a convenient and meaningful way for users to specify
-origins, translations etc., but a vector is a more convenient internal format,
-so in general points are converted to vectors on the way in.
-
-*/
-
+/**
+ *  Firmin.pointToVector(point) -> Array
+ *  - point (Object | Array): the point object to convert to a
+ *    three-dimensional vector. It should have `x`, `y` and `z` properties.
+ *
+ *  Often transform methods can accept both points and vectors, so this
+ *  function converts points to vectors, while returning vectors as they are.
+ *
+ *  ##### Point to vector conversion
+ *
+ *  Points are used as a convenient and meaningful way for users to specify
+ *  origins, translations etc., but a vector is a more convenient internal
+ *  format, so in general points are converted to vectors on the way in.
+ **/
 Firmin.pointToVector = function(point) {
     if (!point) return null;
     
