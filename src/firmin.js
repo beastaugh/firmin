@@ -326,7 +326,7 @@ Firmin.Transform.prototype.matrix3d = function(v) {
  **/
 
 /**
- *  Firmin.Transform#translate(distances) -> undefined
+ *  Firmin.Transform#translate(distances = {x: 0, y: 0, z: 0}) -> undefined
  *  - distances (Array | Object | Number | String): the distances in pixels to
  *    translate the element by.
  *
@@ -359,13 +359,13 @@ Firmin.Transform.prototype.translate3d = function(distances) {
 };
 
 /** alias of: Firmin.Transform#translate
- *  Firmin.Transform#translate3d(distances) -> undefined
+ *  Firmin.Transform#translate3d(distances = {x: 0, y: 0, z: 0}) -> undefined
  *  - distances (Array | Object | Number): the distances in pixels to translate
  *    the element by.
  **/
 
 /**
- *  Firmin.Transform#translateX(distance) -> undefined
+ *  Firmin.Transform#translateX(distance = 0) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the x axis.
  **/
@@ -374,7 +374,7 @@ Firmin.Transform.prototype.translateX = function(distance) {
 };
 
 /**
- *  Firmin.Transform#translateY(distance) -> undefined
+ *  Firmin.Transform#translateY(distance = 0) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the y axis.
  **/
@@ -383,7 +383,7 @@ Firmin.Transform.prototype.translateY = function(distance) {
 };
 
 /**
- *  Firmin.Transform#translateX(distance) -> undefined
+ *  Firmin.Transform#translateX(distance = 0) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the z axis.
  **/
@@ -392,7 +392,7 @@ Firmin.Transform.prototype.translateZ = function(distance) {
 };
 
 /**
- *  Firmin.Transform#scale(magnitudes) -> undefined
+ *  Firmin.Transform#scale(magnitudes = {x: 1, y: 1, z: 1}) -> undefined
  *  - magnitudes (Array | Object | Number): the scaling factors to be applied
  *    to the x, y and z axes.
  *
@@ -425,13 +425,13 @@ Firmin.Transform.prototype.scale3d = function(magnitudes) {
 };
 
 /** alias of: Firmin.Transform#scale
- *  Firmin.Transform#scale3d(magnitudes) -> undefined
+ *  Firmin.Transform#scale3d(magnitudes = {x: 1, y: 1, z: 1}) -> undefined
  *  - magnitudes (Array | Object | Number): the scaling factors to be applied
  *    to the x, y and z axes.
  **/
 
 /**
- * Firmin.Transform#scaleX(magnitude) -> undefined
+ * Firmin.Transform#scaleX(magnitude = 1) -> undefined
  * - magnitude (Number): the distance to scale the element along the x axis.
  **/
 Firmin.Transform.prototype.scaleX = function(magnitude) {
@@ -439,7 +439,7 @@ Firmin.Transform.prototype.scaleX = function(magnitude) {
 };
 
 /**
- * Firmin.Transform#scaleY(magnitude) -> undefined
+ * Firmin.Transform#scaleY(magnitude = 1) -> undefined
  * - magnitude (Number): the distance to scale the element along the y axis.
  **/
 Firmin.Transform.prototype.scaleY = function(magnitude) {
@@ -447,7 +447,7 @@ Firmin.Transform.prototype.scaleY = function(magnitude) {
 };
 
 /**
- * Firmin.Transform#scaleZ(magnitude) -> undefined
+ * Firmin.Transform#scaleZ(magnitude = 1) -> undefined
  * - magnitude (Number): the distance to scale the element along the z axis.
  **/
 Firmin.Transform.prototype.scaleZ = function(magnitude) {
@@ -455,7 +455,7 @@ Firmin.Transform.prototype.scaleZ = function(magnitude) {
 };
 
 /**
- *  Firmin.Transform#skew(angles) -> undefined
+ *  Firmin.Transform#skew(angles = 0) -> undefined
  *  - angles (Array | Object | Number | String): the amounts by which the
  *    element should be skewed along the x and y axes.
  *
