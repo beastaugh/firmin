@@ -1,5 +1,5 @@
 /*
- *  Firmin, a JavaScript animation library using CSS transforms and transitions.
+ *  Firmin, a JavaScript animation library using CSS transforms and transitions
  *  (c) 2010 Benedict Eastaugh
  *
  *  Firmin is freely distributable under the terms of the BSD license.
@@ -588,21 +588,24 @@ Firmin.Transform.prototype.origin = function(origin) {
     if ((v2 = vector[2])) this.centre[2] = v2;
 };
 
-/*
+/**
+ *  class Firmin.Transition
+ *
+ *  CSS transitions are the basic mechanism behind animation in Firmin, and
+ *  [[Firmin.Transition]] objects encapsulate specific CSS transition
+ *  properties. As well as those properties, Transition objects feature various
+ *  utility methods allowing other objects to alter their behaviour based on
+ *  the state of the [[Firmin.Transition]] object they are concerned with.
+ *
+ *  For example, if the duration of a Transition is 0, any animation using that
+ *  Transition should execute immediately and then trigger the next state
+ *  directly, as at least in WebKit-based browsers, the transitionEnd event is
+ *  not triggered when the transition duration is 0.
+ **/
 
-CSS transitions are the basic mechanism behind animation in Firmin, and
-Firmin.Transition objects encapsulate specific CSS transition properties. As
-well as those properties, Transition objects feature various utility methods
-allowing other objects to alter their behaviour based on the state of the
-Transition object they are concerned with.
-
-For example, if the duration of a Transition is 0, any animation using that
-Transition should execute immediately and then trigger the next state directly,
-as at least in WebKit-based browsers, the transitionEnd event is not triggered
-when the transition duration is 0.
-
-*/
-
+/**
+ *  new Firmin.Transition()
+ **/
 Firmin.Transition = function() {
     this.properties     = ["all"];
     this.duration       = ["ms", 0];
@@ -610,6 +613,14 @@ Firmin.Transition = function() {
     this.timingFunction = "ease";
 };
 
+/**
+ *  Firmin.Transition.methods -> Array
+ *
+ *  This list of methods defines the available transition API: when an
+ *  animation description is parsed, properties with these names are used by
+ *  the [[Firmin.Transition.parse]] method to build a new [[Firmin.Transition]]
+ *  object.
+ **/
 Firmin.Transition.methods = [
     "properties",
     "timingFunction",
@@ -617,6 +628,22 @@ Firmin.Transition.methods = [
     "delay"
 ];
 
+/**
+ *  Firmin.Transition.parse(description, [context]) -> Object
+ *  - description (Object): an animation description provided by the user.
+ *  - context (Firmin.Animation): generally the previous animation applied.
+ *
+ *  The [[Firmin.Transition.parse]] method follows the standard Firmin animation
+ *  description-parsing API. It accepts a description object and a context
+ *  (generally the previous animation applied), and returns an object with two
+ *  properties: the result (a [[Firmin.Transition]] object, or null) and the
+ *  remainder (an object containing any unparsed properties of the description,
+ *  to be passed to other parsers).
+ *
+ *  The resultant [[Firmin.Transition]] object will have those properties set
+ *  that were correctly added in the description; they will be a subset of
+ *  [[Firmin.Transition.methods]].
+ **/
 Firmin.Transition.parse = function(description, context) {
     var methods    = Firmin.Transition.methods,
         rest       = {},
@@ -646,24 +673,53 @@ Firmin.Transition.parse = function(description, context) {
     return {result: transition, remainder: rest};
 };
 
+/**
+ *  Firmin.Transition#hasDuration() -> Boolean
+ *
+ *  Returns whether the transition has a duration set.
+ **/
 Firmin.Transition.prototype.hasDuration = function() {
     return this.duration[1] !== 0;
 };
 
+/**
+ *  Firmin.Transition#getDuration() -> Number
+ *
+ *  Returns the duration of the transition in milliseconds.
+ **/
 Firmin.Transition.prototype.getDuration = function() {
     var duration = this.duration;
     return duration[0] === "s" ? duration[1] * 1000 : duration[1];
 };
 
+/**
+ *  Firmin.Transition#hasDelay() -> Boolean
+ *
+ *  Returns whether the transition has a delay set.
+ **/
 Firmin.Transition.prototype.hasDelay = function() {
     return this.delay[1] !== 0;
 };
 
+/**
+ *  Firmin.Transition#getDelay() -> Number
+ *
+ *  Returns the duration of the transition delay in milliseconds.
+ **/
 Firmin.Transition.prototype.getDelay = function() {
     var delay = this.delay;
     return delay[0] === "s" ? delay[1] * 1000 : delay[1];
 };
 
+/**
+ *  Firmin.Transition#build(properties) -> Object
+ *  - properties (Object): a set of CSS properties which will be modified with
+ *    the `transition-property`, `transistion-duration`, `transistion-delay`
+ *    and `transistion-timing-function` properties.
+ *
+ *  Returns the (modified) properties object initially passed in, or a new
+ *  object if no properties argument is provided.
+ **/
 Firmin.Transition.prototype.build = function(properties) {
     properties = properties || {};
     
