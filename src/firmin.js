@@ -420,10 +420,6 @@ Firmin.Transform.prototype.scale3d = function(magnitudes) {
         x      = vector[0];
         y      = vector[1];
         z      = vector[2];
-        
-        if (typeof x != "number") x = 1;
-        if (typeof y != "number") y = 1;
-        if (typeof z != "number") z = 1;
     }
     
     this.ctm = this.ctm.scale(x, y, z);
