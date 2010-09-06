@@ -182,7 +182,7 @@ Firmin.Transform.prototype.translate = function(distances) {
         if (typeof y !== "number") y = parseInt(y, 10) || 0;
     }
     
-    this.matrix(1, 0, 0, 1, x, y);
+    this.ctm = this.ctm.translate(x, y, 0);
 };
 
 Firmin.Transform.prototype.translate3d = function(distances) {
@@ -195,10 +195,7 @@ Firmin.Transform.prototype.translate3d = function(distances) {
     if (typeof y !== "number") y = parseInt(y, 10) || 0;
     if (typeof z !== "number") z = parseInt(z, 10) || 0;
     
-    this.matrix3d([1, 0, 0, 0,
-                   0, 1, 0, 0,
-                   0, 0, 1, 0,
-                   x, y, z, 1]);
+    this.ctm = this.ctm.translate(x, y, z);
 };
 
 Firmin.Transform.prototype.translateX = function(distance) {
@@ -219,28 +216,28 @@ Firmin.Transform.prototype.scale3d = function(magnitudes) {
         y      = vector[1],
         z      = vector[2];
     
-    if (typeof x !== "number") x = 1;
-    if (typeof y !== "number") y = 1;
-    if (typeof z !== "number") z = 1;
+    if (typeof x != "number") x = 1;
+    if (typeof y != "number") y = 1;
+    if (typeof z != "number") z = 1;
     
-    this.matrix3d([x, 0, 0, 0,
-                   0, y, 0, 0,
-                   0, 0, z, 0,
-                   0, 0, 0, 1]);
+    this.ctm = this.ctm.scale(x, y, z);
 };
 
 Firmin.Transform.prototype.scale = function(magnitudes) {
-    var vector;
+    var vector, x, y;
     
-    if (typeof magnitudes === "number") {
-        vector = [magnitudes, magnitudes, 1];
+    if (typeof magnitudes == "number") {
+        x = y = magnitudes;
     } else {
         vector = Firmin.pointToVector(magnitudes);
+        x      = vector[0];
+        y      = vector[1];
         
-        if (typeof vector[2] !== "number") vector[2] = 1;
+        if (typeof x != "number") x = 1;
+        if (typeof y != "number") y = 1;
     }
     
-    this.scale3d(vector);
+    this.ctm = this.ctm.scale(x, y, 1);
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
