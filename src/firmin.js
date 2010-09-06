@@ -41,7 +41,7 @@ Firmin.prefix = (function() {
 /**
  *  Firmin.angleToRadians(type, magnitude) -> Number
  *  - type (String): the unit of the angle to convert. This should be one of
- *   `rad`, `deg`, `grad` or `turn`.
+ *   `"rad"`, `"deg"`, `"grad"` or `"turn"`.
  *  - magnitude (Number): the magnitude of the angle to convert.
  *
  *  ##### Angular conversion
@@ -102,14 +102,14 @@ Firmin.NUMBER_PATTERN = /^-?\d+(\.\d+)?/;
  *
  *  [[Firmin.parseNumeric]] is a parser generator: it returns parser functions,
  *  parameterised by the given unit types. For example, [[Firmin.parseAngle]]
- *  accepts angular units (`grad`, `rad` etc.) and defaults to degrees.
+ *  accepts angular units (`"grad"`, `"rad"` etc.) and defaults to degrees.
  *
  *  ##### CSS data type parsing
  *
  *  There are numerous CSS data types. We are mainly interested in the various
- *  numeric types, generally consisting of a magnitude plus a unit (e.g. 45deg
- *  or 50%), but there are a few functions which allow or require a keyword
- *  instead.
+ *  numeric types, generally consisting of a magnitude plus a unit (e.g.
+ *  `"45deg"` or `"50%'`), but there are a few functions which allow or require
+ *  a keyword instead.
  *
  *  The parsers implemented below all have a common pattern: they accept a
  *  string (or, if the type can be numeric and has a default unit, a number)
