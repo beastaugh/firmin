@@ -107,11 +107,9 @@ angles and times.
 
 */
 
-Firmin.Parser = {};
+Firmin.NUMBER_PATTERN = /^-?\d+(\.\d+)?/;
 
-Firmin.Parser.NUMBER_PATTERN = /^-?\d+(\.\d+)?/;
-
-Firmin.Parser.parseNumeric = function(units, def) {
+Firmin.parseNumeric = function(units, def) {
     return function(input) {
         var unit, magnitude;
         
@@ -121,7 +119,7 @@ Firmin.Parser.parseNumeric = function(units, def) {
             return null;
         }
         
-        magnitude = (input.match(Firmin.Parser.NUMBER_PATTERN) || [""])[0];
+        magnitude = (input.match(Firmin.NUMBER_PATTERN) || [""])[0];
         
         if (magnitude.length === input.length) {
             unit = def;
@@ -135,8 +133,8 @@ Firmin.Parser.parseNumeric = function(units, def) {
     };
 };
 
-Firmin.Parser.parseAngle = Firmin.Parser.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
-Firmin.Parser.parseTime  = Firmin.Parser.parseNumeric(["s", "ms"], "s");
+Firmin.parseAngle = Firmin.parseNumeric(["deg", "grad", "rad", "turn"], "deg");
+Firmin.parseTime  = Firmin.parseNumeric(["s", "ms"], "s");
 
 /**
  *  class Firmin.Transform
@@ -430,7 +428,7 @@ Firmin.Transform.prototype.scaleZ = function(magnitude) {
 };
 
 Firmin.Transform.prototype.skew = function(magnitudes) {
-    var parseAngle = Firmin.Parser.parseAngle,
+    var parseAngle = Firmin.parseAngle,
         angle2rads = Firmin.angleToRadians,
         vector, x, y;
     
@@ -461,7 +459,7 @@ Firmin.Transform.prototype.skewY = function(magnitude) {
 
 Firmin.Transform.prototype.rotate = function(a) {
     // Normalise angle to radians and then convert to degrees
-    a = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(a)) *
+    a = Firmin.angleToRadians.apply(null, Firmin.parseAngle(a)) *
         (180 / Math.PI);
     
     this.ctm = this.ctm.rotate(0, 0, a);
@@ -478,7 +476,7 @@ Firmin.Transform.prototype.rotate3d = function(params) {
     if (typeof z != "number") z = 0;
     
     // Normalise angle to radians and then convert to degrees
-    a = Firmin.angleToRadians.apply(null, Firmin.Parser.parseAngle(a)) *
+    a = Firmin.angleToRadians.apply(null, Firmin.parseAngle(a)) *
         (180 / Math.PI);
     
     this.ctm = this.ctm.rotateAxisAngle(x, y, z, a);
@@ -546,10 +544,10 @@ Firmin.Transition.parse = function(description, context) {
             } else if (p === "timingFunction" && typeof description[p] != "string") {
                 transition[p] = "cubic-bezier(" + description[p].join(",") + ")";
             } else if (p === "duration") {
-                duration = Firmin.Parser.parseTime(description[p]);
+                duration = Firmin.parseTime(description[p]);
                 if (duration) { transition[p] = duration; }
             } else if (p === "delay") {
-                delay = Firmin.Parser.parseTime(description[p]);
+                delay = Firmin.parseTime(description[p]);
                 if (delay) { transition[p] = delay; }
             } else {
                 transition[p] = description[p];

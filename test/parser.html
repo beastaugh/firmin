@@ -26,8 +26,8 @@
             }
         };
         
-        parseAngle = Firmin.Parser.parseAngle;
-        parseTime  = Firmin.Parser.parseTime;
+        parseAngle = Firmin.parseAngle;
+        parseTime  = Firmin.parseTime;
         
         assertEqual(["deg", 50], parseAngle(50));
         assertEqual(["deg", 50.0], parseAngle(50.0));
