@@ -137,6 +137,23 @@ Firmin.Transform.parse = function(description, context) {
 };
 
 /**
+ *  Firmin.Transform#build([properties]) -> Object
+ *  - properties (Object): a set of CSS properties which will be modified with
+ *    the transform and transform-origin properties.
+ *
+ *  Returns the (modified) properties object initially passed in, or a new
+ *  object if no properties argument is provided.
+ **/
+Firmin.Transform.prototype.build = function(properties) {
+    properties = properties || {};
+    
+    properties[Firmin.prefix + "Transform"]       = this.ctm.toString();
+    properties[Firmin.prefix + "TransformOrigin"] = this.centre.join(" ");
+    
+    return properties;
+};
+
+/**
  *  Firmin.Transform#matrix(vector) -> undefined
  *  - vector (Array): representation of a transform matrix in column-major
  *    order.
@@ -182,23 +199,6 @@ Firmin.Transform.prototype.matrix3d = function(v) {
  *  - vector (Array): representation of a transform matrix in column-major
  *    order.
  **/
-
-/**
- *  Firmin.Transform#build([properties]) -> Object
- *  - properties (Object): a set of CSS properties which will be modified with
- *    the transform and transform-origin properties.
- *
- *  Returns the (modified) properties object initially passed in, or a new
- *  object if no properties argument is provided.
- **/
-Firmin.Transform.prototype.build = function(properties) {
-    properties = properties || {};
-    
-    properties[Firmin.prefix + "Transform"]       = this.ctm.toString();
-    properties[Firmin.prefix + "TransformOrigin"] = this.centre.join(" ");
-    
-    return properties;
-};
 
 Firmin.Transform.prototype.translate   =
 Firmin.Transform.prototype.translate3d = function(distances) {
