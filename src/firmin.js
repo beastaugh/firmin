@@ -454,34 +454,51 @@ Firmin.Transform.prototype.scaleZ = function(magnitude) {
     this.scale3d([1, 1, magnitude]);
 };
 
-Firmin.Transform.prototype.skew = function(magnitudes) {
+/**
+ *  Firmin.Transform#skew(angles) -> undefined
+ *  - angles (Array | Object | Number | String): the amounts by which the
+ *    element should be skewed along the x and y axes.
+ *
+ *  Generally, the angles argument should be either a two-dimensional unitless
+ *  vector, or an object with `x` and `y` properties, determining the angles to
+ *  skew the element by along those axes.
+ *
+ *  However, if the argument is an angle (a number, or a string representation
+ *  of a CSS angle), the element will be scaled by that value along both x and
+ *  y axes.
+ **/
+Firmin.Transform.prototype.skew = function(angles) {
     var parseAngle = Firmin.parseAngle,
         angle2rads = Firmin.angleToRadians,
-        vector, x, y;
+        x, y;
     
-    if (typeof magnitudes === "number" || typeof magnitudes === "string") {
-        x = y = angle2rads.apply(null, parseAngle(magnitudes));
+    if (typeof angles == "number" || typeof angles == "string") {
+        x = y = angle2rads.apply(null, parseAngle(angles)) || 0;
     } else {
-        vector = Firmin.pointToVector(magnitudes);
-        x      = angle2rads.apply(null, parseAngle(vector[0])) || 0;
-        y      = angle2rads.apply(null, parseAngle(vector[1])) || 0;
+        angles = Firmin.pointToVector(angles);
+        x      = angle2rads.apply(null, parseAngle(angles[0])) || 0;
+        y      = angle2rads.apply(null, parseAngle(angles[1])) || 0;
     }
     
-    this.matrix([
-        1,
-        Math.tan(y),
-        Math.tan(x),
-        1,
-        0,
-        0]);
+    this.matrix([1, Math.tan(y), Math.tan(x), 1, 0, 0]);
 };
 
-Firmin.Transform.prototype.skewX = function(magnitude) {
-    this.skew([magnitude, 0]);
+/**
+ *  Firmin.Transform#skewX(angle) -> undefined
+ *  - angle (Number | String): the angle by which the element should be skewed
+ *    along the x axis.
+ **/
+Firmin.Transform.prototype.skewX = function(angle) {
+    this.skew([angle, 0]);
 };
 
-Firmin.Transform.prototype.skewY = function(magnitude) {
-    this.skew([0, magnitude]);
+/**
+ *  Firmin.Transform#skewY(angle) -> undefined
+ *  - angle (Number | String): the angle by which the element should be
+ *    skewed along the y axis.
+ **/
+Firmin.Transform.prototype.skewY = function(angle) {
+    this.skew([0, angle]);
 };
 
 Firmin.Transform.prototype.rotate = function(a) {
