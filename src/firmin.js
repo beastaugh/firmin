@@ -907,6 +907,13 @@ Firmin.Animated.prototype.fireCallback = function() {
     }
 };
 
+/**
+ *  Firmin.Animated#__animate__(animation) -> Firmin.Animated
+ *  - animation (Firmin.Animated): an animation to push onto the stack.
+ *
+ *  Internal method to add an animation to the stack and restart the animation
+ *  execution chain if it has halted.
+ **/
 Firmin.Animated.prototype.__animate__ = function(animation) {
     this.operations.push(animation);
     this.__lastAnim = animation;
