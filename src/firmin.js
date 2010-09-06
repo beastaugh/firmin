@@ -168,32 +168,23 @@ Firmin.Transform.prototype.build = function(properties) {
     return properties;
 };
 
-Firmin.Transform.prototype.translate = function(distances) {
-    var vector, x, y;
+Firmin.Transform.prototype.translate   =
+Firmin.Transform.prototype.translate3d = function(distances) {
+    var vector, x, y, z;
     
-    if (typeof distances === "number" || typeof distances === "string") {
+    if (typeof distances == "number" || typeof distances == "string") {
         x = y = distances;
+        z = 0;
     } else {
         vector = Firmin.pointToVector(distances);
         x      = vector[0];
         y      = vector[1];
-        
-        if (typeof x !== "number") x = parseInt(x, 10) || 0;
-        if (typeof y !== "number") y = parseInt(y, 10) || 0;
-    }
-    
-    this.ctm = this.ctm.translate(x, y, 0);
-};
-
-Firmin.Transform.prototype.translate3d = function(distances) {
-    var vector = Firmin.pointToVector(distances),
-        x      = vector[0],
-        y      = vector[1],
         z      = vector[2];
-    
-    if (typeof x !== "number") x = parseInt(x, 10) || 0;
-    if (typeof y !== "number") y = parseInt(y, 10) || 0;
-    if (typeof z !== "number") z = parseInt(z, 10) || 0;
+        
+        if (typeof x != "number") x = parseInt(x, 10) || 0;
+        if (typeof y != "number") y = parseInt(y, 10) || 0;
+        if (typeof z != "number") z = parseInt(z, 10) || 0;
+    }
     
     this.ctm = this.ctm.translate(x, y, z);
 };
