@@ -828,30 +828,37 @@ Firmin.Animation.prototype.exec = function(element) {
     }
 };
 
-/*
+/**
+ *  class Firmin.Animated
+ *
+ *  Instances of [[Firmin.Animated]] allow for the construction of chained
+ *  sequences of animations: they contain a list of Animation objects, and as
+ *  soon as one animation completes, it fires the next. Because
+ *  [[Firmin.Animated]] objects are returned by the [[Firmin.animate]]
+ *  function, and calling the animate method on an `Animated` object returns
+ *  the object itself, one can call `animate` (or one of the transform function
+ *  aliases) any number of times in a chain of method calls.
+ *
+ *      Firmin.animate(el, {color: "#f00"}, "1.0s")
+ *          .translateX("500px", "0.4s")
+ *          .scale(2, "0.5s")
+ *          .rotate("30deg", "0.1s");
+ *
+ *  Because of the callback-based nature of the animations, the method chain
+ *  will run synchronously, but firing the animations will not block the
+ *  execution of the next statement. For examples of prior art in this area,
+ *  take a look at [JS.MethodChain][methodchain] and
+ *  [Ojay's animation module][ojayanim].
+ *
+ *  [methodchain]: http://jsclass.jcoglan.com/methodchain.html
+ *  [ojayanim]:    http://ojay.othermedia.org/articles/animation.html
+ **/
 
-Instances of Firmin.Animated allow for the construction of chained sequences of
-animations: they contain a list of Animation objects, and as soon as one
-animation completes, it fires the next. Because Animated objects are returned
-by the Firmin.animate function, and calling the animate method on an Animated
-object returns the object itself, one can call animate (or one of the transform
-function aliases) any number of times in a chain of method calls.
-
-    Firmin.animate(el, {color: "#f00"}, "1.0s")
-        .translateX("500px", "0.4s")
-        .scale(2, "0.5s")
-        .rotate("30deg", "0.1s");
-
-Because of the callback-based nature of the animations, the method chain will
-run synchronously, but firing the animations will not block the execution of
-the next statement. For examples of prior art in this area, take a look at
-JS.MethodChain and Ojay's animation module.
-
-* http://jsclass.jcoglan.com/methodchain.html
-* http://ojay.othermedia.org/articles/animation.html
-
-*/
-
+/**
+ *  new Firmin.Animated(element)
+ *  - element (HTMLElement): the DOM element which animations defined in this
+ *    chain should be applied to.
+ **/
 Firmin.Animated = function(element) {
     var self = this;
     
@@ -860,6 +867,12 @@ Firmin.Animated = function(element) {
     this.callback   = null;
 };
 
+/**
+ *  Firmin.Animated#run() -> undefined
+ *
+ *  Execute the first animation in the chain and set a timeout to fire any
+ *  callbacks and run the next animation once the first one has completed.
+ **/
 Firmin.Animated.prototype.run = function() {
     var animation = this.operations.shift(),
         self      = this;
@@ -881,6 +894,11 @@ Firmin.Animated.prototype.run = function() {
     return this;
 };
 
+/**
+ *  Firmin.Animated#fireCallback() -> undefined
+ *
+ *  Fire the current callback.
+ **/
 Firmin.Animated.prototype.fireCallback = function() {
     var callback = this.callback;
     
@@ -901,6 +919,17 @@ Firmin.Animated.prototype.__animate__ = function(animation) {
     return this;
 };
 
+/**
+ *  Firmin.Animated#animate(description, [duration], [callback]) -> Firmin.Animated
+ *  - description (Object): a user-supplied description of the animation to be
+ *    performed.
+ *  - duration (Number | String): the duration of the animation.
+ *  - callback (Function): a callback function to execute once the described
+ *    animation has run.
+ *
+ *  An 'absolute' animation function, which will transform the animated element
+ *  from its base transform rather than its current transformation matrix.
+ **/
 Firmin.Animated.prototype.animate = function(description, duration, callback) {
     description.duration = duration;
     description.callback = callback;
@@ -908,6 +937,18 @@ Firmin.Animated.prototype.animate = function(description, duration, callback) {
     return this.__animate__(new Firmin.Animation(description));
 };
 
+/**
+ *  Firmin.Animated#animateR(description, [duration], [callback]) -> Firmin.Animated
+ *  - description (Object): a user-supplied description of the animation to be
+ *    performed.
+ *  - duration (Number | String): the duration of the animation.
+ *  - callback (Function): a callback function to execute once the described
+ *    animation has run.
+ *
+ *  A 'relative' animation function, which will base the transformation of the
+ *  animated element on its current transform matrix rather than its base
+ *  transform.
+ **/
 Firmin.Animated.prototype.animateR = function(description, duration, callback) {
     description.duration = duration;
     description.callback = callback;
