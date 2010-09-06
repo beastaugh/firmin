@@ -13,6 +13,11 @@
 Firmin = (typeof Firmin == 'undefined') ? {} : Firmin;
 
 /**
+ *  Firmin.CSSMatrix -> String
+ **/
+Firmin.CSSMatrix = WebKitCSSMatrix;
+
+/**
  *  Firmin.prefix -> String
  *
  *  Currently, several browsers support (to varying degrees) the CSS transform
@@ -190,11 +195,11 @@ Firmin.parseTime  = Firmin.parseNumeric(["s", "ms"], "s");
 
 /**
  *  new Firmin.Transform([matrix], [origin])
- *  - matrix (WebKitCSSMatrix): an initial transform matrix.
+ *  - matrix (Firmin.CSSMatrix): an initial transform matrix.
  *  - origin (Array): a three-element array defining the transform origin.
  **/
 Firmin.Transform = function(matrix, origin) {
-    this.ctm    = matrix || new WebKitCSSMatrix();
+    this.ctm    = matrix || new Firmin.CSSMatrix();
     this.centre = Firmin.pointToVector(origin) || ["50%", "50%", 0];
 };
 
@@ -288,7 +293,7 @@ Firmin.Transform.prototype.build = function(properties) {
  **/
 Firmin.Transform.prototype.matrix   =
 Firmin.Transform.prototype.matrix3d = function(v) {
-    var t = new WebKitCSSMatrix();
+    var t = new Firmin.CSSMatrix();
     
     if (v.length === 6) {
         t.a = v[0];
@@ -1023,7 +1028,7 @@ Firmin.animateR = function(element, description, duration, callback) {
     var animated  = new Firmin.Animated(element),
         previous  = new Firmin.Animation({}),
         transform = new Firmin.Transform(),
-        matrix    = new WebKitCSSMatrix(),
+        matrix    = new Firmin.CSSMatrix(),
         cssStr    = element.style[Firmin.prefix + "Transform"];
     
     matrix.setMatrixValue(cssStr);
