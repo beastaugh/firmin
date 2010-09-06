@@ -501,6 +501,14 @@ Firmin.Transform.prototype.skewY = function(angle) {
     this.skew([0, angle]);
 };
 
+/**
+ *  Firmin.Transform#rotate(angle) -> undefined
+ *  - angle (Number | String): the angle to rotate the element by, in the plane
+ *    of the web page (i.e. the z axis).
+ *
+ *  The angle argument can be either a number (assumed to be in degrees) or a
+ *  string representation of a CSS angle (e.g. `"90deg"`, `"1.4rad"`).
+ **/
 Firmin.Transform.prototype.rotate = function(a) {
     // Normalise angle to radians and then convert to degrees
     a = Firmin.angleToRadians.apply(null, Firmin.parseAngle(a)) *
@@ -509,6 +517,15 @@ Firmin.Transform.prototype.rotate = function(a) {
     this.ctm = this.ctm.rotate(0, 0, a);
 };
 
+/**
+ *  Firmin.Transform#rotate3d(params) -> undefined
+ *  - params (Object): an object describing the rotation to perform. It should
+ *    have `x`, `y` and `z` properties which state the vector around which the
+ *    rotation should be performed, and an `angle` property determining the
+ *    magnitude of the rotation. The `angle` property can be either a number
+ *    (assumed to be in degrees) or a string representation of a CSS angle
+ *    (e.g. `"90deg"`, `"1.4rad"`).
+ **/
 Firmin.Transform.prototype.rotate3d = function(params) {
     var x   = params.x,
         y   = params.y,
@@ -526,14 +543,32 @@ Firmin.Transform.prototype.rotate3d = function(params) {
     this.ctm = this.ctm.rotateAxisAngle(x, y, z, a);
 };
 
+/**
+ *  Firmin.Transform#rotateX(angle) -> undefined
+ *  - angle (Number | String): the angle around the x axis which the element
+ *    should be rotated. It can be either a number or a string representation of
+ *    a CSS angle
+ **/
 Firmin.Transform.prototype.rotateX = function(angle) {
     this.rotate3d({x: 1, angle: angle});
 };
 
+/**
+ *  Firmin.Transform#rotateY(angle) -> undefined
+ *  - angle (Number | String): the angle around the y axis which the element
+ *    should be rotated. It can be either a number or a string representation of
+ *    a CSS angle
+ **/
 Firmin.Transform.prototype.rotateY = function(angle) {
     this.rotate3d({y: 1, angle: angle});
 };
 
+/**
+ *  Firmin.Transform#rotateZ(angle) -> undefined
+ *  - angle (Number | String): the angle around the z axis which the element
+ *    should be rotated. It can be either a number or a string representation of
+ *    a CSS angle
+ **/
 Firmin.Transform.prototype.rotateZ = function(angle) {
     this.rotate3d({z: 1, angle: angle});
 };
