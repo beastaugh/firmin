@@ -201,34 +201,25 @@ Firmin.Transform.prototype.translateZ = function(distance) {
     this.translate3d([0, 0, distance]);
 };
 
+Firmin.Transform.prototype.scale   =
 Firmin.Transform.prototype.scale3d = function(magnitudes) {
-    var vector = Firmin.pointToVector(magnitudes),
-        x      = vector[0],
-        y      = vector[1],
-        z      = vector[2];
-    
-    if (typeof x != "number") x = 1;
-    if (typeof y != "number") y = 1;
-    if (typeof z != "number") z = 1;
-    
-    this.ctm = this.ctm.scale(x, y, z);
-};
-
-Firmin.Transform.prototype.scale = function(magnitudes) {
-    var vector, x, y;
+    var vector, x, y, z;
     
     if (typeof magnitudes == "number") {
         x = y = magnitudes;
+        z = 1;
     } else {
         vector = Firmin.pointToVector(magnitudes);
         x      = vector[0];
         y      = vector[1];
+        z      = vector[2];
         
         if (typeof x != "number") x = 1;
         if (typeof y != "number") y = 1;
+        if (typeof z != "number") z = 1;
     }
     
-    this.ctm = this.ctm.scale(x, y, 1);
+    this.ctm = this.ctm.scale(x, y, z);
 };
 
 Firmin.Transform.prototype.scaleX = function(magnitude) {
