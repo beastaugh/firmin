@@ -8,7 +8,7 @@ GitHub project: http://github.com/ionfish/firmin
 <%= license %>
 */
 
-Firmin = (typeof Firmin === 'undefined') ? {} : Firmin;
+Firmin = (typeof Firmin == 'undefined') ? {} : Firmin;
 
 /*
 
