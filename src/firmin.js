@@ -25,7 +25,7 @@ Firmin.CSSMatrix = WebKitCSSMatrix;
  *  use vendor-specific prefixes for the various CSS properties involved.
  *  Consequently, for Firmin to work on these different browsers it must detect
  *  which of these prefixes is in use.
- */
+ **/
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
         prefixes = ["webkit", "Moz", "O"],
@@ -194,7 +194,7 @@ Firmin.parseTime  = Firmin.parseNumeric(["s", "ms"], "s");
  **/
 
 /**
- *  new Firmin.Transform([matrix], [origin])
+ *  new Firmin.Transform([matrix][, origin])
  *  - matrix (Firmin.CSSMatrix): an initial transform matrix.
  *  - origin (Array): a three-element array defining the transform origin.
  **/
@@ -221,7 +221,7 @@ Firmin.Transform.methods = [
 ];
 
 /**
- *  Firmin.Transform.parse(description, [context]) -> Object
+ *  Firmin.Transform.parse(description[, context]) -> Object
  *  - description (Object): an animation description provided by the user.
  *  - context (Firmin.Animation): generally the previous animation applied.
  *
@@ -331,7 +331,7 @@ Firmin.Transform.prototype.matrix3d = function(v) {
  **/
 
 /**
- *  Firmin.Transform#translate(distances = {x: 0, y: 0, z: 0}) -> undefined
+ *  Firmin.Transform#translate([distances = {x: 0, y: 0, z: 0}]) -> undefined
  *  - distances (Array | Object | Number | String): the distances in pixels to
  *    translate the element by.
  *
@@ -364,13 +364,13 @@ Firmin.Transform.prototype.translate3d = function(distances) {
 };
 
 /** alias of: Firmin.Transform#translate
- *  Firmin.Transform#translate3d(distances = {x: 0, y: 0, z: 0}) -> undefined
+ *  Firmin.Transform#translate3d([distances = {x: 0, y: 0, z: 0}]) -> undefined
  *  - distances (Array | Object | Number): the distances in pixels to translate
  *    the element by.
  **/
 
 /**
- *  Firmin.Transform#translateX(distance = 0) -> undefined
+ *  Firmin.Transform#translateX([distance = 0]) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the x axis.
  **/
@@ -379,7 +379,7 @@ Firmin.Transform.prototype.translateX = function(distance) {
 };
 
 /**
- *  Firmin.Transform#translateY(distance = 0) -> undefined
+ *  Firmin.Transform#translateY([distance = 0]) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the y axis.
  **/
@@ -388,7 +388,7 @@ Firmin.Transform.prototype.translateY = function(distance) {
 };
 
 /**
- *  Firmin.Transform#translateX(distance = 0) -> undefined
+ *  Firmin.Transform#translateX([distance = 0]) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the z axis.
  **/
@@ -397,7 +397,7 @@ Firmin.Transform.prototype.translateZ = function(distance) {
 };
 
 /**
- *  Firmin.Transform#scale(magnitudes = {x: 1, y: 1, z: 1}) -> undefined
+ *  Firmin.Transform#scale(magnitudes) -> undefined
  *  - magnitudes (Array | Object | Number): the scaling factors to be applied
  *    to the x, y and z axes.
  *
@@ -426,13 +426,13 @@ Firmin.Transform.prototype.scale3d = function(magnitudes) {
 };
 
 /** alias of: Firmin.Transform#scale
- *  Firmin.Transform#scale3d(magnitudes = {x: 1, y: 1, z: 1}) -> undefined
+ *  Firmin.Transform#scale3d(magnitudes) -> undefined
  *  - magnitudes (Array | Object | Number): the scaling factors to be applied
  *    to the x, y and z axes.
  **/
 
 /**
- *  Firmin.Transform#scaleX(magnitude = 1) -> undefined
+ *  Firmin.Transform#scaleX(magnitude) -> undefined
  *  - magnitude (Number): the distance to scale the element along the x axis.
  **/
 Firmin.Transform.prototype.scaleX = function(magnitude) {
@@ -440,7 +440,7 @@ Firmin.Transform.prototype.scaleX = function(magnitude) {
 };
 
 /**
- *  Firmin.Transform#scaleY(magnitude = 1) -> undefined
+ *  Firmin.Transform#scaleY(magnitude) -> undefined
  *  - magnitude (Number): the distance to scale the element along the y axis.
  **/
 Firmin.Transform.prototype.scaleY = function(magnitude) {
@@ -448,7 +448,7 @@ Firmin.Transform.prototype.scaleY = function(magnitude) {
 };
 
 /**
- *  Firmin.Transform#scaleZ(magnitude = 1) -> undefined
+ *  Firmin.Transform#scaleZ(magnitude) -> undefined
  *  - magnitude (Number): the distance to scale the element along the z axis.
  **/
 Firmin.Transform.prototype.scaleZ = function(magnitude) {
@@ -456,7 +456,7 @@ Firmin.Transform.prototype.scaleZ = function(magnitude) {
 };
 
 /**
- *  Firmin.Transform#skew(angles = 0) -> undefined
+ *  Firmin.Transform#skew(angles) -> undefined
  *  - angles (Array | Object | Number | String): the amounts by which the
  *    element should be skewed along the x and y axes.
  *
@@ -630,7 +630,7 @@ Firmin.Transition.methods = [
 ];
 
 /**
- *  Firmin.Transition.parse(description, [context]) -> Object
+ *  Firmin.Transition.parse(description[, context]) -> Object
  *  - description (Object): an animation description provided by the user.
  *  - context (Firmin.Animation): generally the previous animation applied.
  *
@@ -769,7 +769,7 @@ Firmin.Transition.prototype.build = function(properties) {
  **/
 
 /**
- *  new Firmin.Animation(description, [context])
+ *  new Firmin.Animation(description[, context])
  *  - description (Object): the user-provided description of the animation to
  *    be performed.
  *  - context (Firmin.Animation): generally the previous animation applied.
@@ -928,7 +928,7 @@ Firmin.Animated.prototype.__animate__ = function(animation) {
 };
 
 /**
- *  Firmin.Animated#animate(description, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.Animated#animate(description[, duration][, callback]) -> Firmin.Animated
  *  - description (Object): a user-supplied description of the animation to be
  *    performed.
  *  - duration (Number | String): the duration of the animation.
@@ -946,7 +946,7 @@ Firmin.Animated.prototype.animate = function(description, duration, callback) {
 };
 
 /**
- *  Firmin.Animated#animateR(description, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.Animated#animateR(description[, duration][, callback]) -> Firmin.Animated
  *  - description (Object): a user-supplied description of the animation to be
  *    performed.
  *  - duration (Number | String): the duration of the animation.
@@ -965,7 +965,7 @@ Firmin.Animated.prototype.animateR = function(description, duration, callback) {
 };
 
 /**
- *  Firmin.animate(element, description, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.animate(element, description[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - description (Object): the description of the animation.
  *  - duration (Number | String): the duration of the animation.
@@ -1009,7 +1009,7 @@ Firmin.animate = function(element, description, duration, callback) {
 };
 
 /**
- *  Firmin.animateR(element, description, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.animateR(element, description[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - description (Object): the description of the animation.
  *  - duration (Number | String): the duration of the animation.
@@ -1039,7 +1039,7 @@ Firmin.animateR = function(element, description, duration, callback) {
 };
 
 /** related to: Firmin.Transform#translate
- *  Firmin.translate(element, distances, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.translate(element, distances[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - distances (Array | Object | Number | String): the distances in pixels to
  *    translate the element by.
@@ -1048,7 +1048,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** alias of: Firmin.translate, related to: Firmin.Transform#translate3d
- *  Firmin.translate3d(element, distances, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.translate3d(element, distances[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - distances (Array | Object | Number | String): the distances in pixels to
  *    translate the element by.
@@ -1057,7 +1057,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#translateX
- *  Firmin.translateX(element, distance, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.translateX(element, distance[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - distance (Array | Object | Number | String): the distance in pixels to
  *    translate the element along the x axis.
@@ -1066,7 +1066,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#translateY
- *  Firmin.translateY(element, distance, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.translateY(element, distance[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - distance (Array | Object | Number | String): the distance in pixels to
  *    translate the element along the y axis.
@@ -1075,7 +1075,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#translateZ
- *  Firmin.translateZ(element, distance, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.translateZ(element, distance[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - distance (Array | Object | Number | String): the distance in pixels to
  *    translate the element along the z axis.
@@ -1084,7 +1084,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#scale
- *  Firmin.scale(element, magnitudes, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.scale(element, magnitudes[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - magnitudes (Array | Object | Number): the scaling factors to be applied
  *    to the x, y and z axes.
@@ -1093,7 +1093,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** alias of: Firmin.scale, related to: Firmin.Transform#scale3d
- *  Firmin.scale3d(element, magnitudes, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.scale3d(element, magnitudes[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - magnitudes (Array | Object | Number): the scaling factors to be applied
  *    to the x, y and z axes.
@@ -1102,7 +1102,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#scaleX
- *  Firmin.scaleX(element, magnitude, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.scaleX(element, magnitude[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - magnitude (Number): the distance to scale the element along the x axis.
  *  - duration (Number | String): the duration of the animation.
@@ -1110,7 +1110,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#scaleY
- *  Firmin.scaleY(element, magnitude, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.scaleY(element, magnitude[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - magnitude (Number): the distance to scale the element along the y axis.
  *  - duration (Number | String): the duration of the animation.
@@ -1118,7 +1118,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#scaleZ
- *  Firmin.scaleZ(element, magnitude, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.scaleZ(element, magnitude[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - magnitude (Number): the distance to scale the element along the z axis.
  *  - duration (Number | String): the duration of the animation.
@@ -1126,7 +1126,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#rotate
- *  Firmin.rotate(element, angle, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.rotate(element, angle[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angle (Number | String): the angle to rotate the element by, in the plane
  *    of the web page (i.e. the z axis).
@@ -1135,7 +1135,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#rotate3d
- *  Firmin.rotate3d(element, params, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.rotate3d(element, params[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - params (Object): an object describing the rotation to perform. It should
  *    have `x`, `y` and `z` properties which state the vector around which the
@@ -1148,7 +1148,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#rotateX
- *  Firmin.rotateX(element, angle, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.rotateX(element, angle[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angle (Number | String): the angle around the x axis which the element
  *    should be rotated. It can be either a number or a string representation of
@@ -1158,7 +1158,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#rotateY
- *  Firmin.rotateY(element, angle, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.rotateY(element, angle[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angle (Number | String): the angle around the y axis which the element
  *    should be rotated. It can be either a number or a string representation of
@@ -1168,7 +1168,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#rotateZ
- *  Firmin.rotateZ(element, angle, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.rotateZ(element, angle[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angle (Number | String): the angle around the z axis which the element
  *    should be rotated. It can be either a number or a string representation of
@@ -1178,7 +1178,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#skew
- *  Firmin.skew(element, angles, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.skew(element, angles[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angles (Array | Object | Number | String): the amounts by which the
  *    element should be skewed along the x and y axes.
@@ -1187,7 +1187,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#skewX
- *  Firmin.skewX(element, angle, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.skewX(element, angle[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angle (Number | String): the angle by which the element should be skewed
  *    along the x axis.
@@ -1196,7 +1196,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#skewY
- *  Firmin.skewY(element, angle, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.skewY(element, angle[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - angle (Number | String): the angle by which the element should be skewed
  *    along the y axis.
@@ -1205,7 +1205,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** related to: Firmin.Transform#matrix
- *  Firmin.matrix(element, vector, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.matrix(element, vector[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - vector (Array): representation of a transform matrix in column-major
  *    order.
@@ -1214,7 +1214,7 @@ Firmin.animateR = function(element, description, duration, callback) {
  **/
 
 /** alias for: Firmin.matrix, related to: Firmin.Transform#matrix3d
- *  Firmin.matrix3d(element, vector, [duration], [callback]) -> Firmin.Animated
+ *  Firmin.matrix3d(element, vector[, duration][, callback]) -> Firmin.Animated
  *  - element (HTMLElement): the element to animate.
  *  - vector (Array): representation of a transform matrix in column-major
  *    order.

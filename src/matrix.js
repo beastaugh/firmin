@@ -44,7 +44,7 @@ FirminCSSMatrix.displayName = "FirminCSSMatrix";
  *
  *  Converts angles in degrees, which are used by the external API, to angles
  *  in radians used in internal calculations.
- */
+ **/
 FirminCSSMatrix.degreesToRadians = function(angle) {
     return angle * Math.PI / 180;
 };
