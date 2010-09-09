@@ -3,3 +3,7 @@
 
 build
 test/lib
+
+src/*.pdoc.yaml
+
+doc
