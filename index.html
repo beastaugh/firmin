@@ -221,12 +221,41 @@ Firmin.animate(box, {
         </p>
         
         <ul>
-            <li><code>translate</code>, <code>translateX</code>,
-                <code>translateY</code>;</li>
-            <li><code>scale</code>, <code>scaleX</code>, <code>scaleY</code>;
-            <li><code>rotate</code>;</li>
-            <li><code>skew</code>, <code>skewX</code>, <code>skewY</code>;
-            <li><code>matrix</code>.</li>
+            <li>
+                <a href="#api-translate"><code>translate</code></a>,
+                <a href="#api-translate3d"><code>translate3d</code></a>,
+                <a href="#api-translateX"><code>translateX</code></a>,
+                <a href="#api-translateY"><code>translateY</code></a>,
+                <a href="#api-translateZ"><code>translateZ</code></a>;
+            </li>
+            
+            <li>
+                <a href="#api-scale"><code>scale</code></a>,
+                <a href="#api-scale3d"><code>scale3d</code></a>,
+                <a href="#api-scaleX"><code>scaleX</code></a>,
+                <a href="#api-scaleX"><code>scaleX</code></a>,
+                <a href="#api-scaleY"><code>scaleY</code></a>,
+                <a href="#api-scaleZ"><code>scaleZ</code></a>;
+            </li>
+            
+            <li>
+                <a href="#api-rotate"><code>rotate</code></a>,
+                <a href="#api-rotate3d"><code>rotate3d</code></a>,
+                <a href="#api-rotateX"><code>rotateX</code></a>,
+                <a href="#api-rotateY"><code>rotateY</code></a>,
+                <a href="#api-rotateZ"><code>rotateZ</code></a>;
+            </li>
+            
+            <li>
+                <a href="#api-skew"><code>skew</code></a>,
+                <a href="#api-skewX"><code>skewX</code></a>,
+                <a href="#api-skewY"><code>skewY</code></a>;
+            </li>
+            
+            <li>
+                <a href="#api-matrix"><code>matrix</code></a>,
+                <a href="#api-matrix3d"><code>matrix3d</code></a>.
+            </li>
         </ul>
         
         <p>
@@ -488,7 +517,7 @@ Firmin.animate(box, {
     <div id="reference">
         <h2>Reference</h2>
         
-        <div class="function" id="animate">
+        <div class="function" id="api-animate">
             <h3>animate</h3>
             
             <p class="signature">
@@ -543,7 +572,7 @@ Firmin.animate(el, tf);</pre>
 });</pre>
         </div>
         
-        <div class="function" id="translate">
+        <div class="function" id="api-translate">
             <h3>translate</h3>
             
             <p class="signature">
@@ -565,7 +594,7 @@ Firmin.animate(el, tf);</pre>
 });</pre>
         </div>
         
-        <div class="function" id="translateX">
+        <div class="function" id="api-translateX">
             <h3>translateX</h3>
             
             <p class"signature">
@@ -582,7 +611,7 @@ Firmin.animate(el, tf);</pre>
             <pre>Firmin.translateX(el, -50);</pre>
         </div>
         
-        <div class="function" id="translateX">
+        <div class="function" id="api-translateY">
             <h3>translateY</h3>
             
             <p class="signature">
@@ -598,7 +627,7 @@ Firmin.animate(el, tf);</pre>
             <pre>Firmin.translateY(el, 40);</pre>
         </div>
         
-        <div class="function" id="scale">
+        <div class="function" id="api-scale">
             <h3>scale</h3>
             
             <p class="signature">
@@ -620,7 +649,7 @@ Firmin.animate(el, tf);</pre>
 });</pre>
         </div>
         
-        <div class="function" id="scaleX">
+        <div class="function" id="api-scaleX">
             <h3>scaleX</h3>
             
             <p class="signature">
@@ -636,7 +665,7 @@ Firmin.animate(el, tf);</pre>
             <pre>Firmin.scaleX(el, 4);</pre>
         </div>
         
-        <div class="function" id="scaleY">
+        <div class="function" id="api-scaleY">
             <h3>scaleY</h3>
             
             <p class="signature">
@@ -652,7 +681,7 @@ Firmin.animate(el, tf);</pre>
             <pre>Firmin.scaleY(el, 0.5);</pre>
         </div>
         
-        <div class="function" id="rotate">
+        <div class="function" id="api-rotate">
             <h3>rotate</h3>
             
             <p class="signature">
@@ -669,7 +698,7 @@ Firmin.animate(el, tf);</pre>
             </p>
         </div>
         
-        <div class="function" id="skew">
+        <div class="function" id="api-skew">
             <h3>skew</h3>
             
             <p class="signature">
@@ -689,7 +718,7 @@ Firmin.animate(el, tf);</pre>
 });</pre>
         </div>
         
-        <div class="function" id="skewX">
+        <div class="function" id="api-skewX">
             <h3>skewX</h3>
             
             <p class="signature">
@@ -703,7 +732,7 @@ Firmin.animate(el, tf);</pre>
             <pre>Firmin.skewX(el, "45deg");</pre>
         </div>
         
-        <div class="function" id="skewX">
+        <div class="function" id="api-skewX">
             <h3>skewY</h3>
             
             <p class="signature">
@@ -717,7 +746,7 @@ Firmin.animate(el, tf);</pre>
             <pre>Firmin.skewY(el, "30deg");</pre>
         </div>
         
-        <div class="function" id="matrix">
+        <div class="function" id="api-matrix">
             <h3>matrix</h3>
             
             <p class="signature">
