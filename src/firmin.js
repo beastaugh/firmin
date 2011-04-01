@@ -1,6 +1,6 @@
 /*
  *  Firmin, a JavaScript animation library using CSS transforms and transitions
- *  (c) 2010 Benedict Eastaugh
+ *  (c) 2010-2011 Benedict Eastaugh
  *
  *  Firmin is freely distributable under the terms of the BSD license.
  *  For details, see the Firmin website: http://extralogical.net/projects/firmin

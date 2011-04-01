@@ -1,3 +1,10 @@
+2011.04.02, Version 1.0.0
+
+* First full release.
+* Documented the source code with PDoc.
+* Make the internal transform representation conform to the CSSMatrix
+  interface.
+
 2010.07.10, Version 0.1.4
 
 * Add support for 3D transforms.
