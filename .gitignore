@@ -1,9 +1,12 @@
-.DS_Store
-*/.DS_Store
-
 build
 test/lib
 
 src/*.pdoc.yaml
 
 doc
+
+site/_site
+site/_cache
+site/*.o
+site/*.hi
+site/site

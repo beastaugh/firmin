@@ -1,8 +1,8 @@
 Firmin
 ======
 
-[Firmin][site] is a JavaScript animation library based on CSS [transforms][tf]
-and [transitions][ts].
+[Firmin] is a JavaScript animation library based on CSS [transforms] and
+[transitions].
 
     var box = document.getElementById("box");
     
@@ -11,7 +11,6 @@ and [transitions][ts].
         translate: {x: -100, y: 35}
     }, 0.5);
 
-
-  [site]: http://extralogical.net/projects/firmin
-  [tf]:   http://www.w3.org/TR/css3-2d-transforms/
-  [ts]:   http://www.w3.org/TR/css3-transitions/
+[Firmin]:      http://extralogical.net/projects/firmin
+[transforms]:  http://www.w3.org/TR/css3-2d-transforms/
+[transitions]: http://www.w3.org/TR/css3-transitions/
