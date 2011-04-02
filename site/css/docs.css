@@ -2,7 +2,7 @@ body {
     margin: 0;
     border: none;
     padding: 0;
-    min-width: 910px;
+    min-width: 950px;
     background: #fff;
     color: #373932;
     font-family: Helvetica, sans-serif;
@@ -11,27 +11,32 @@ body {
     overflow-y: scroll;
 }
 
-#wrapper {
+.wrapper {
     width: 890px;
     margin: 0 auto;
 }
 
-#title {
-    padding: 15px 0 10px 0;
-    border-bottom: 1px solid #E4D7BA;
+header {
+    border-bottom: 2px solid #D0CFBD;
     margin-bottom: 20px;
-    font-size: 30px;
+}
+
+#title {
+    border: none;
+    padding: 15px 0 5px 0;
+    font-size: 32px;
     line-height: 1;
-    font-weight: normal;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
 }
 
 #title a {
-    display: block;
     text-decoration: none;
     background: none;
     color: #373932;
+}
+
+#subtitle {
+    margin-bottom: 10px;
+    color: #4D5047;
 }
 
 h1, h2, h3 {
@@ -39,15 +44,17 @@ h1, h2, h3 {
     font-weight:bold;
 }
 
+h1, h2 {
+    border-bottom: 1px solid #E7C9A8;
+}
+
 h1 {
     font-size: 24px;
-    border-bottom: 1px solid #EEE7D3;
 }
 
 h2 {
     font-size:18px;
     margin-top:24px;
-    border-bottom: 1px solid #EEE7D3;
 }
 
 h3 {
@@ -128,7 +135,7 @@ sub {
     float: right;
     padding: 10px 15px;
     border-width: 5px 1px 1px;
-    border-color: #B7C2C4;
+    border-color: #A3ABC5;
     border-style: solid;
     background: #D0DDDF;
     font-size: 12px;
@@ -136,10 +143,12 @@ sub {
 }
 
 #toc h2 {
-    margin: 0 0 8px 0;
-    border-bottom: 1px solid #ccc;
-    padding: 0 0 3px 0;
+    margin: 2px 0 8px 0;
+    border-bottom: 2px solid #ABB5B7;
+    padding: 0 0 7px 0;
     font-size: 16px;
+    line-height: 1;
+    color: #373932;
 }
 
 #toc ul {
@@ -179,14 +188,19 @@ sub {
     text-decoration: underline;
 }
 
+#main {
+    overflow: auto;
+}
+
 #content {
     width: 600px;
     float: left;
 }
 
 #footer {
-    margin: 50px 0;
-    border-top: 1px solid #D1CABA;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-top: 1px solid #D0CFBD;
     padding-top: 12px;
     clear: both;
     font-size: 12px;
