@@ -1,7 +1,9 @@
 2011.04.02, Version 1.0.0
 
 * First full release.
-* Documented the source code with PDoc.
+* Document the source code with PDoc.
+* Update the website with documentation for the 3D and relative transform
+  functions.
 * Make the internal transform representation conform to the CSSMatrix
   interface.
 
