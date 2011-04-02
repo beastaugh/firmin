@@ -388,7 +388,7 @@ Firmin.Transform.prototype.translateY = function(distance) {
 };
 
 /**
- *  Firmin.Transform#translateX([distance = 0]) -> undefined
+ *  Firmin.Transform#translateZ([distance = 0]) -> undefined
  *  - distance (Number): the distance in pixels to translate the element along
  *    the z axis.
  **/
@@ -505,7 +505,7 @@ Firmin.Transform.prototype.skewY = function(angle) {
 /**
  *  Firmin.Transform#rotate(angle) -> undefined
  *  - angle (Number | String): the angle to rotate the element by, in the plane
- *    of the web page (i.e. the z axis).
+ *    of the web page (i.e. about the z axis).
  *
  *  The angle argument can be either a number (assumed to be in degrees) or a
  *  string representation of a CSS angle (e.g. `"90deg"`, `"1.4rad"`).
