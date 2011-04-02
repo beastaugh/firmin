@@ -4,3 +4,9 @@ test/lib
 src/*.pdoc.yaml
 
 doc
+
+site/_site
+site/_cache
+site/*.o
+site/*.hi
+site/site
