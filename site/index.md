@@ -72,6 +72,8 @@ without passing a verbose description to `animate`. Detailed documentation can
 be found in the [reference](/api.html). All of Firmin's objects and methods
 fall under the `Firmin` namespace.
 
+### Transform origins
+
 Aside from the transforms themselves, there is a further transform-related
 property which can be given in an animation description: the `origin` from
 which the transform will be performed. This should be supplied as an object
