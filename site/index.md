@@ -277,9 +277,9 @@ arguments to transform functions.
 ### Angles
 
 Angles can be given as strings in _radians_ (e.g. `"2rad"`), _grads_ (e.g.
-`"1grad"`), _turns_ (e.g. `"0.5turn"`) and _degrees_ (e.g. `"45deg"`). The
-default is degrees, so if you provide a number as an angle argument, it is
-assumed to be in degrees.
+`"1grad"`), _turns_ (e.g. `"0.5turn"`) and _degrees_ (e.g. `"45deg"`).
+These correspond exactly to the [CSS angle type]. The default is degrees, so if
+you provide a number as an angle argument, it is assumed to be in degrees.
 
 ### Lengths
 
@@ -292,6 +292,8 @@ operating system environment, Firmin only accepts _pixel_ lengths, e.g.
 Times can be given as strings in _seconds_ (e.g. `"2s"`) or _milliseconds_
 (e.g. `"300ms"`). The default is seconds, so if you provide a numeric argument,
 Firmin will assume it is in seconds.
+
+[CSS angle type]: http://www.w3.org/TR/css3-values/#angles
 
 
 Axes

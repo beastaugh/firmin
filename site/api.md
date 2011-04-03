@@ -195,14 +195,11 @@ Rotation functions
 `Firmin.rotate(element, angle, [duration], [callback])`
 
 The _angle_ by which the element will be rotated can be specified as a string,
-in which case it will be parsed as a [CSS angle type] (i.e. `"2rad"`,
-`"45deg"`, `"1grad"`, `"0.25turn"`), or as a number, in which case it is
-assumed that the angle is given in degrees.
+in which case it will be parsed as [an angle][angle], or as a number, in which
+case it is assumed that the angle is given in degrees.
 
 The `rotate` function will rotate an element by the given angle in the plane of
 the web page, i.e. about the _Z_ axis.
-
-[CSS angle type]: http://www.w3.org/TR/css3-values/#angles
 
 <h3 id="api-rotate3d">rotate3d</h3>
 
@@ -212,8 +209,8 @@ The _description_ object should contain four properties: `x`, `y` and `z`
 values, and an `angle` value specifying the angle through which the element
 should be rotated. The `x`, `y` and `z` properties should be given as numbers:
 taken together, they are interpreted as a vector about which the element is to
-be rotated. The `angle` property should be a string specifying a CSS angle or a
-number, as explained in the description of the `rotate` function.
+be rotated. The `angle` property should be a [string or number][angle]
+specifying a CSS angle.
 
 In this example, the element would be rotated about the vector (0.25, 0.5,
 0.75) by 1 radian.
@@ -245,7 +242,9 @@ Firmin.rotate3d(el, {
 
 These functions rotate the element about the given axis rather than an
 arbitrary vector, as the `rotate3d` function does. The _angle_ should be given
-as a string or a number exactly as for the `rotate` function.
+as a [string or a number][angle].
+
+[angle]: /#angles
 
 
 Skew functions
@@ -257,9 +256,8 @@ Skew functions
 
 A [skew transformation] along the X and Y axes is specified via an _angles_
 object with two properties: the `x` and `y` angles by which the element will
-be skewed. These should be given as CSS angles or numbers, as with the `rotate`
-function. Either of these properties may be omitted and will in that case just
-be set to 0.
+be skewed. These should be given as [angles or numbers][angle]. Either of these
+properties may be omitted and will in that case just be set to 0.
 
 ~~~{.JavaScript}
 Firmin.skew(el, {
@@ -274,9 +272,10 @@ Firmin.skew(el, {
 
 `Firmin.skewX(element, angle, [duration], [callback])`
 
-The _angle_ by which the element will be skewed should be a CSS angle or a
-number. Note that HTML elements are two-dimensional, and so there is no `skewZ`
-function as it would not make sense to skew an HTML element along the _Z_ axis.
+The _angle_ by which the element will be skewed should be an [angle or a
+number][angle]. Note that HTML elements are two-dimensional, and so there is no
+`skewZ` function as it would not make sense to skew an HTML element along the
+_Z_ axis.
 
 In this example, the element would be skewed by 30&deg; along the _Y_ axis.
 
