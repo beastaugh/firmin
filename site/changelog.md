@@ -12,7 +12,7 @@ version 1.0 wasn't released until April 2011.
 Version 1.0.0
 -------------
 
-Released 4th April 2011.
+Released 3rd April 2011.
 
 * First full release.
 * Documented the source code with PDoc.
