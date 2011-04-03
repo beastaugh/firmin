@@ -164,7 +164,7 @@ the first CSS declaration above.
 
 ~~~{.JavaScript}
 Firmin.animate(document.getElementById("an-element"), {
-    skew: {x: "15deg", y: "30deg"},
+    skew:   {x: "15deg", y: "30deg"},
     rotate: "45deg"
 });
 ~~~
