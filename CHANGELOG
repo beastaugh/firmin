@@ -1,42 +1,44 @@
 2011.04.02, Version 1.0.0
 
 * First full release.
-* Document the source code with PDoc.
-* Update the website with documentation for the 3D and relative transform
+* Documented the source code with PDoc.
+* Updated the website with documentation for the 3D and relative transform
   functions.
-* Make the internal transform representation conform to the CSSMatrix
+* Made the internal transform representation conform to the CSSMatrix
   interface.
 
 2010.07.10, Version 0.1.4
 
-* Add support for 3D transforms.
-* Represent transforms internally as 4x4 matrices.
-* Use the matrix3d transform function where supported.
-* Remove Firmin.TransformMatrix.
-* Remove outdated benchmarks.
-* Document order of operations issues.
+* Added support for 3D transforms.
+* Transform are now represented internally as 4x4 matrices.
+* The matrix3d transform function is now used where supported.
+* Removed Firmin.TransformMatrix.
+* Removed outdated benchmarks.
+* Documented order of operations issues.
 
 2010.07.08, Version 0.1.3
 
-* Delete references to old animations so they can be garbage collected.
-* Add a set of regression tests for transforms.
-* Add basic transform support for Opera.
-* Add basic transform support for Firefox.
+* References to old animations are now deleted so they can be garbage
+  collected.
+* Added a set of regression tests for transforms.
+* Added basic transform support for Opera.
+* Added basic transform support for Firefox.
 
 2010.06.21, Version 0.1.2
 
-* Make absolute transformations the default.
-* Add separate relative animation functions with R-postfixed names.
-* Store a separate reference to the next callback to be fired.
+* Made absolute transformations the default.
+* Added separate relative animation functions with R-postfixed names.
+* A separate reference to the next callback to be fired is now stored.
 
 2010.06.09, Version 0.1.1
 
-* Add callbacks to animation methods.
-* Use vectors instead of point objects to represent points and transformations
-  internally, but continue to allow point objects to be used at the API level.
-* Better inline documentation for core objects and functions.
-* Rename Firmin.CTM to Firmin.TransformMatrix.
-* Remove unused accessor method for elements of Firmin.TransformMatrix.
+* Added callbacks to animation methods.
+* Vectors are now used instead of point objects to represent points and
+  transformations internally, but point objects can still be used at the API
+  level.
+* Added better inline documentation for core objects and functions.
+* Renamed Firmin.CTM to Firmin.TransformMatrix.
+* Removed unused accessor method for elements of Firmin.TransformMatrix.
 
 2010.06.01, Version 0.1.0
 
