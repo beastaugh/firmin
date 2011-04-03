@@ -215,8 +215,8 @@ Supported platforms
 Currently, the only supported platforms are those that use a recent version of
 the WebKit engine: _Safari 4_ and _5_, _Mobile Safari_ (i.e. iPhone and iPad)
 and _Google Chrome_. While CSS transforms and transitions are available for
-other browsers such as Opera 10.50 and Firefox 4, their implementations are
-less than complete. The CSS transforms and transitions API is experimental, and
+other browsers such as Opera 11 and Firefox 4, their implementations are less
+than complete. The CSS transforms and transitions API is experimental, and
 support for it varies between browsers. In the future, I hope to make Firmin
 compatible with more browsers.
 
