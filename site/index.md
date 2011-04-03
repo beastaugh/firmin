@@ -58,8 +58,9 @@ from its initial state to its final state with no visible intermediate states.
 
 The `animate` function returns an object with a complementary `animate` method.
 This method takes two arguments, an animation description and a duration, and
-will be applied to the same element. This allows animations to be chained,
-applying the transformations in sequence.
+will be applied to the same element (in other words, the method's interface is
+the same as the function's, just without the element parameter). This allows
+animations to be chained, applying transformations sequentially.
 
 ~~~{.JavaScript}
 Firmin.animate(box, {translateX: "200px"}, "1.6s")
