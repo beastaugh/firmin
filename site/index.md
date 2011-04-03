@@ -132,7 +132,7 @@ Relative animations can be used at any time; Firmin maintains an internal list
 of previous animations which can be referred to when necessary, so one can call
 a series of absolute transforms and then a relative transform, or vice versa.
 
-This internal state is encapsulated in the `Animated` object returned by all
+This internal state is encapsulated in the `Animated` objects returned by all
 transform functions and methods. This is similar to the way other libraries
 which offer chaining APIs (like jQuery) work. To make what's going on here
 clearer, let's replace the chains of method calls used above with a more
