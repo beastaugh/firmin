@@ -299,7 +299,7 @@ matrix are needed to compute the transformation, it can be represented as a
 6-element vector.
 
 ~~~{.JavaScript}
-Firmin.matrix(element, [3, 1, 0, 2, 1, 1]);
+Firmin.matrix(el, [3, 1, 0, 2, 1, 1]);
 ~~~
 
 3D transformations are represented by 4x4 matrices, and in this case all 16
@@ -308,7 +308,7 @@ they are interpreted internally as representing either distances in pixels or
 angles in degrees.
 
 ~~~{.JavaScript}
-Firmin.matrix(element, [
+Firmin.matrix(el, [
     -0.5, 0.6, -0.7, 0,
     -0.7, 0.3, 0.7,  0,
     0.6,  0.7, 0.2,  0,
