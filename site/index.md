@@ -103,7 +103,6 @@ Firmin.animate(box, {
 Relative transforms
 -------------------
 
-
 Every animation function in Firmin has a complementary _relative_ version;
 these can be used simply by appending an uppercase `R` to the function name,
 e.g. `Firmin.animateR` or `Firmin.translateXR`.
@@ -131,6 +130,30 @@ Firmin.translateX(el, 100).translateYR(el, -200);
 Relative animations can be used at any time; Firmin maintains an internal list
 of previous animations which can be referred to when necessary, so one can call
 a series of absolute transforms and then a relative transform, or vice versa.
+
+This internal state is encapsulated in the `Animated` object returned by all
+transform functions and methods. This is similar to the way other libraries
+which offer chaining APIs (like jQuery) work. To make what's going on here
+clearer, let's replace the chains of method calls used above with a more
+obviously stateful assignment and sequence of method calls.
+
+~~~{.JavaScript}
+// Store a reference to the Animated object encapsulating
+// the element's transformation state.
+var animated = Firmin.rotate(el, 90);
+
+// Call an animation method on that object.
+animated.skewX(30);
+
+// Call a relative transform on that object; the final transformation
+// state will include a rotation through 120 degrees, not 30.
+animated.rotateR(30);
+~~~
+
+Transform states are stored in these `Animated` instances, rather than read
+from the DOM. Because of this, to perform relative transforms on an element a
+reference to the relevant object must be kept, whether through a variable or a
+sequence of method calls.
 
 
 Operation order
