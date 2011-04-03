@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+rsync -avzc -e ssh --delete site/_site/ extralogical.net:"/var/www/firmin.extralogical.net/public"
