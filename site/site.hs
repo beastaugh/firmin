@@ -9,15 +9,17 @@ import Hakyll
 main :: IO ()
 main = hakyll $ do
     -- Compress CSS
-    route   "css/*" idRoute
-    compile "css/*" compressCssCompiler
+    match "css/*.css" $ do
+        route   idRoute
+        compile compressCssCompiler
     
     -- Read templates
-    compile "templates/*" templateCompiler
+    match "templates/*" $ compile templateCompiler
     
     -- Release archive
-    route   "downloads/*" idRoute
-    compile "downloads/*" copyFileCompiler
+    match "downloads/*.js" $ do
+        route   idRoute
+        compile copyFileCompiler
     
     -- Documentation pages
     forM_ [ "index.md"
@@ -25,7 +27,8 @@ main = hakyll $ do
           , "downloads.md"
           , "api.md"
           ] $ \page -> do
-        route   page $ setExtension ".html"
-        compile page $ pageCompiler
-            >>> applyTemplateCompiler "templates/default.html"
-            >>> relativizeUrlsCompiler
+        match page $ do
+            route   $ setExtension ".html"
+            compile $ pageCompiler
+                >>> applyTemplateCompiler "templates/default.html"
+                >>> relativizeUrlsCompiler
