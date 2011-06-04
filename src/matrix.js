@@ -554,11 +554,14 @@ FirminCSSMatrix.prototype.translate = function(x, y, z) {
 FirminCSSMatrix.prototype.setMatrixValue = function(domstr) {
         domstr = domstr.trim();
     var mstr   = domstr.match(/^matrix(3d)?\(\s*(.+)\s*\)$/),
-        is3d   = !!mstr[1],
-        chunks = mstr[2].split(/\s*,\s*/),
-        len    = chunks.length,
-        points = new Array(len),
-        i, chunk;
+        is3d, chunks, len, points, i, chunk;
+
+    if (!mstr) return;
+
+    is3d   = !!mstr[1],
+    chunks = mstr[2].split(/\s*,\s*/),
+    len    = chunks.length,
+    points = new Array(len);
     
     if ((is3d && len !== 16) || !(is3d || len === 6)) return;
     

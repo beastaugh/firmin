@@ -175,6 +175,14 @@
             d.setMatrixValue(t2);
             
             assertMatricesEqual(c, d);
+            
+            var e = new WebKitCSSMatrix(),
+                f = new FirminCSSMatrix();
+            
+            e.setMatrixValue("");
+            f.setMatrixValue("");
+            
+            assertMatricesEqual(e, f);
         })();
         
         (function() {
