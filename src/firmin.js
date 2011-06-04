@@ -46,6 +46,31 @@ Firmin.prefix = (function() {
 })();
 
 /**
+ *  Firmin.matrixToString(ctm) -> String
+ *  - ctm (CSSMatrix): the matrix to serialise to string form. It should be an
+ *    object implementing the CSSMatrix interface, such as [[FirminCSSMatrix]].
+ *
+ *  Note that currently Gecko does not support 3D transforms, and this function
+ *  therefore only produces 6-value 2D transformation matrix strings for
+ *  browsers based on that engine.
+ **/
+Firmin.matrixToString = function(ctm) {
+    if (Firmin.prefix != "Moz") return ctm.toString();
+    
+    var prefix = "matrix(",
+        points = ["a", "b", "c", "d", "e", "f"];
+    
+    return prefix + points.map(function(p, i) {
+        var str = ctm[p].toFixed(6);
+        
+        // Gecko accepts length values for translate values, not numbers.
+        if (i > 3) str += "px";
+        
+        return str;
+    }).join(", ") + ")";
+};
+
+/**
  *  Firmin.angleToRadians(type, magnitude) -> Number
  *  - type (String): the unit of the angle to convert. This should be one of
  *    `"rad"`, `"deg"`, `"grad"` or `"turn"`.
@@ -279,7 +304,7 @@ Firmin.Transform.parse = function(description, context) {
 Firmin.Transform.prototype.build = function(properties) {
     properties = properties || {};
     
-    properties[Firmin.prefix + "Transform"]       = this.ctm.toString();
+    properties[Firmin.prefix + "Transform"]       = Firmin.matrixToString(this.ctm);
     properties[Firmin.prefix + "TransformOrigin"] = this.centre.join(" ");
     
     return properties;
