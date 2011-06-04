@@ -48,7 +48,7 @@ Firmin.prefix = (function() {
 /**
  *  Firmin.angleToRadians(type, magnitude) -> Number
  *  - type (String): the unit of the angle to convert. This should be one of
- *   `"rad"`, `"deg"`, `"grad"` or `"turn"`.
+ *    `"rad"`, `"deg"`, `"grad"` or `"turn"`.
  *  - magnitude (Number): the magnitude of the angle to convert.
  *
  *  ##### Angular conversion
