@@ -163,7 +163,10 @@
     </div>
     
     <script type="text/javascript">
-        Firmin.animate($('#test-skew-rotate-scale .transform-js'), {
+        var t_js  = $('#test-skew-rotate-scale .transform-js'),
+            t_css = $('#test-skew-rotate-scale .transform-css');
+        
+        Firmin.animate(t_js, {
             skew: {
                 x: "20deg",
                 y: "40deg"
@@ -171,6 +174,9 @@
             
             rotate: "2rad",
             scale:  0.6
-        }, 1);
+        }, 1, function() {
+            console.log(window.getComputedStyle(t_js).webkitTransform);
+            console.log(window.getComputedStyle(t_css).webkitTransform);
+        });
     </script>
 </body></html>

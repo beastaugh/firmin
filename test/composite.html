@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Firmin composite transform tests</title>
+    
+    <style type="text/css" media="screen">
+        html, body {font-family:Helvetica, Arial, sans-serif; color:#000; background:#fff; margin:0; border:none; padding:0;}
+        body {margin:50px;}
+        
+        #container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            padding: 30px;
+            margin: 100px auto;
+        }
+        
+        #test-css, #test-js1, #test-js2 {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 300px;
+            height: 300px;
+        }
+        
+        #test-css {
+            background: rgba(255, 0, 0, 0.5);
+            -webkit-transform: skew(20deg, 40deg) rotate(30deg) scale(0.8);
+        }
+        
+        #test-js1 {
+            background: rgba(0, 255, 0, 0.5);
+        }
+        
+        #test-js2 {
+            background: rgba(0, 0, 255, 0.5);
+        }
+    </style>
+    
+    <script type="text/javascript" src="lib/all-min.js"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+        window.$ = function(query) {
+            return document.querySelector(query);
+        };
+    </script>
+</head><body>
+    
+    <div id="container">
+        <div id="test-css"></div>
+        
+        <div id="test-js1"></div>
+        
+        <div id="test-js2"></div>
+    </div>
+    
+    <script type="text/javascript" charset="utf-8">
+        Firmin.skew(document.getElementById('test-js1'), {x: "20deg", y: "40deg"}, 0.5)
+            .rotateR("30deg", 0.5)
+            .scaleR(0.8, 0.5);
+        
+        Firmin.animate(document.getElementById('test-js2'), {
+            skew: {
+                x: "20deg",
+                y: "40deg"
+            },
+            rotate: "30deg",
+            scale: 0.8
+        }, 1.5);
+    </script>
+</body></html>
