@@ -302,10 +302,16 @@ Firmin.Transform.parse = function(description, context) {
  *  object if no properties argument is provided.
  **/
 Firmin.Transform.prototype.build = function(properties) {
+    var centre = this.centre;
+    
+    if (Firmin.prefix == "O") {
+        centre = centre.slice(0, 2);
+    }
+    
     properties = properties || {};
     
     properties[Firmin.prefix + "Transform"]       = Firmin.matrixToString(this.ctm);
-    properties[Firmin.prefix + "TransformOrigin"] = this.centre.join(" ");
+    properties[Firmin.prefix + "TransformOrigin"] = centre.join(" ");
     
     return properties;
 };
