@@ -916,12 +916,14 @@ Firmin.Animated.prototype.run = function() {
         return this;
     }
     
-    animation.exec(this.element);
+    setTimeout(function() {
+        animation.exec(self.element);
+    }, 10);
     
     setTimeout(function() {
         self.fireCallback();
         self.run();
-    }, animation.getTotalDuration() || 1);
+    }, animation.getTotalDuration() || 10);
     
     this.callback = animation.callback;
     
