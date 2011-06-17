@@ -557,7 +557,9 @@ FirminCSSMatrix.prototype.translate = function(x, y, z) {
 
 /**
  *  FirminCSSMatrix#setMatrixValue(domstr) -> undefined
- *  - domstr (String): a CSS transform property.
+ *  - domstr (String): a string representation of a 2D or 3D transform matrix
+ *    in the form given by the CSS transform property, i.e. just like the
+ *    output from [[FirminCSSMatrix#toString]].
  *
  *  Sets the matrix values using a string representation, such as that produced
  *  by the [[FirminCSSMatrix#toString]] method.
