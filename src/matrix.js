@@ -22,15 +22,20 @@
  **/
 
 /**
- *  new FirminCSSMatrix()
+ *  new FirminCSSMatrix(domstr)
+ *  - domstr (String): a string representation of a 2D or 3D transform matrix
+ *    in the form given by the CSS transform property, i.e. just like the
+ *    output from [[FirminCSSMatrix#toString]].
  **/
-FirminCSSMatrix = function() {
+FirminCSSMatrix = function(domstr) {
     this.m11 = this.m22 = this.m33 = this.m44 = 1;
     
                this.m12 = this.m13 = this.m14 =
     this.m21 =            this.m23 = this.m24 =
     this.m31 = this.m32 =            this.m34 =
     this.m41 = this.m42 = this.m43            = 0;
+    
+    this.setMatrixValue(domstr);
 };
 
 /**
