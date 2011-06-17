@@ -50,8 +50,11 @@ FirminCSSMatrix.degreesToRadians = function(angle) {
 };
 
 /**
- *  FirminCSSMatrix.determinant2x2(matrix) -> Number
- *  - matrix (FirminCSSMatrix): the matrix to calculate the determinant of.
+ *  FirminCSSMatrix.determinant2x2(a, b, c, d) -> Number
+ *  - a (Number): top-left value of the matrix.
+ *  - b (Number): top-right value of the matrix.
+ *  - c (Number): bottom-left value of the matrix.
+ *  - d (Number): bottom-right value of the matrix.
  *
  *  Calculates the determinant of a 2x2 matrix.
  **/
@@ -61,7 +64,15 @@ FirminCSSMatrix.determinant2x2 = function(a, b, c, d) {
 
 /**
  *  FirminCSSMatrix.determinant3x3(matrix) -> Number
- *  - matrix (FirminCSSMatrix): the matrix to calculate the determinant of.
+ *  - a1 (Number): matrix value in position [1, 1].
+ *  - a2 (Number): matrix value in position [1, 2].
+ *  - a3 (Number): matrix value in position [1, 3].
+ *  - b1 (Number): matrix value in position [2, 1].
+ *  - b2 (Number): matrix value in position [2, 2].
+ *  - b3 (Number): matrix value in position [2, 3].
+ *  - c1 (Number): matrix value in position [3, 1].
+ *  - c2 (Number): matrix value in position [3, 2].
+ *  - c3 (Number): matrix value in position [3, 3].
  *
  *  Calculates the determinant of a 3x3 matrix.
  **/
