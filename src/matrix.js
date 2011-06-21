@@ -366,9 +366,11 @@ FirminCSSMatrix.prototype.inverse = function() {
     if (Math.abs(det) < 1e-8) return null;
     
     // Scale the adjoint matrix to get the inverse
-    for (i = 1; i < 5; i++)
-        for (j = 1; j < 5; j++)
+    for (i = 1; i < 5; i++) {
+        for (j = 1; j < 5; j++) {
             result[("m" + i) + j] /= det;
+        }
+    }
     
     return result;
 };
@@ -578,9 +580,9 @@ FirminCSSMatrix.prototype.setMatrixValue = function(domstr) {
     
     if (!mstr) return;
     
-    is3d   = !!mstr[1],
-    chunks = mstr[2].split(/\s*,\s*/),
-    len    = chunks.length,
+    is3d   = !!mstr[1];
+    chunks = mstr[2].split(/\s*,\s*/);
+    len    = chunks.length;
     points = new Array(len);
     
     if ((is3d && len !== 16) || !(is3d || len === 6)) return;
