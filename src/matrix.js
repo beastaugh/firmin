@@ -35,7 +35,9 @@ FirminCSSMatrix = function(domstr) {
     this.m31 = this.m32 =            this.m34 =
     this.m41 = this.m42 = this.m43            = 0;
     
-    this.setMatrixValue(domstr);
+    if (typeof domstr == "string") {
+        this.setMatrixValue(domstr);
+    }
 };
 
 /**
