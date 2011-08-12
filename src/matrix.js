@@ -230,12 +230,13 @@ FirminCSSMatrix.determinant4x4 = function(m) {
     var key3d = pair[0], key2d = pair[1];
     
     Object.defineProperty(FirminCSSMatrix.prototype, key2d, {
-      set: function(val) {
-          this[key3d] = val;
-      },
-      get: function() {
-          return this[key3d];
-      }
+        set: function(val) {
+            this[key3d] = val;
+        },
+        
+        get: function() {
+            return this[key3d];
+        }
     });
 });
 
