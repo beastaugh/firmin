@@ -30,18 +30,18 @@ Firmin.CSSMatrix = (typeof WebKitCSSMatrix == 'object')
  **/
 Firmin.prefix = (function() {
     var test     = document.createElement("div"),
-        prefixes = ["webkit", "Moz", "O"],
-        i        = 3,
-        prefix;
-    
+       prefixes = ["webkit", "Moz", "O", "ms"],
+       i        = 4,
+       prefix;
+
     while (i--) {
-        prefix = prefixes[i];
-        test.style.cssText = "-" + prefix.toLowerCase() +
-            "-transition-property:opacity;";
-        if (typeof test.style[prefix + "TransitionProperty"] != "undefined")
-            return prefix;
+       prefix = prefixes[i];
+       test.style.cssText = "-" + prefix.toLowerCase() +
+           "-transform-origin: 0 0;";
+       if (typeof test.style[prefix + "TransformOrigin"] != "undefined")
+           return prefix;
     }
-    
+
     return prefix;
 })();
 
