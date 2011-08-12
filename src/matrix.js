@@ -229,12 +229,13 @@ FirminCSSMatrix.determinant4x4 = function(m) {
  ["m42", "f"]].forEach(function(pair) {
     var key3d = pair[0], key2d = pair[1];
     
-    FirminCSSMatrix.prototype.__defineSetter__(key2d, function(val) {
-        this[key3d] = val;
-    });
-    
-    FirminCSSMatrix.prototype.__defineGetter__(key2d, function() {
-        return this[key3d];
+    Object.defineProperty(FirminCSSMatrix.prototype, key2d, {
+      set: function(val) {
+          this[key3d] = val;
+      },
+      get: function() {
+          return this[key3d];
+      }
     });
 });
 
