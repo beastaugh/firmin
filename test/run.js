@@ -14,6 +14,8 @@ JS.require('JS.Test', 'MatrixAssertions', function() {
     
     JS.require('WebKitCSSMatrix',
                'FirminCSSMatrix',
+               'Firmin',
                'CSSMatrixSpec',
+               'ParsersSpec',
                JS.Test.method('autorun'));
 });
