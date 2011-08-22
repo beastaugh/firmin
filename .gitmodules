@@ -1,0 +1,3 @@
+[submodule "vendor/jsclass"]
+	path = vendor/jsclass
+	url = git://github.com/jcoglan/js.class.git
