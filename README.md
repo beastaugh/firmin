@@ -16,14 +16,39 @@ Firmin
 [transitions]: http://www.w3.org/TR/css3-transitions/
 
 
-Hacking on Firmin
------------------
+Development
+-----------
 
-To build Firmin from source you will need [Ruby], [RubyGems] and [Bundler]. Once
-these prerequisites are installed, run the `bundle install` command in the
-repository's top-level directory to install the required gems. You can then run
-the `jake` command to build the library.
+To build Firmin from source you will need [Ruby], [RubyGems] and [Bundler]. The
+test suite also depends on [JS.Class], which is provided as a Git submodule. To
+get everything working, run the following shell commands in order.
 
-You must build the library in order to run the test suite. Once you've run the
-`jake` command, just open the `*.html` files in the `test/` directory in a
-browser.
+    # Download the source code
+    git clone git://github.com/beastaugh/firmin.git
+    cd firmin
+    git submodule update --init --recursive
+    
+    # Install dependencies
+    gem install bundler
+    bundle install
+    
+    # Build the test framework and Firmin
+    cd vendor/jsclass
+    jake
+    cd -
+    jake
+    
+    # Run tests
+    open test/runner.html
+
+The last command will (on OS X, anyway) open the test runner for Firmin's
+automated test suite. The test runner page also includes links to the manual
+tests which must be run by hand in a browser.
+
+The `FirminCSSMatrix` test suite currently fails on non-WebKit browsers as the
+`WebKitCSSMatrix` class is not available as a reference implementation.
+
+[Ruby]:     http://www.ruby-lang.org/
+[RubyGems]: http://rubygems.org/
+[Bundler]:  http://gembundler.com/
+[JS.Class]: http://jsclass.jcoglan.com/
