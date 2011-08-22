@@ -49,5 +49,12 @@ JS.ENV.ParsersSpec = JS.Test.describe('Firmin', function() {
             this.assertEqual(["ms", -500], Firmin.parseTime("-500ms"));
             this.assertEqual(["ms", -200.5], Firmin.parseTime("-200.5ms"));
         });
+        
+        this.it('returns null when an unparseable value is provided', function() {
+            this.assertNull(Firmin.parseTime("3.s"));
+            this.assertNull(Firmin.parseTime("3years"));
+            this.assertNull(Firmin.parseTime("s"));
+            this.assertNull(Firmin.parseTime({}));
+        });
     });
 });
