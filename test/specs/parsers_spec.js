@@ -40,6 +40,10 @@ JS.ENV.ParsersSpec = JS.Test.describe('Firmin', function() {
         });
         
         this.it('understands negative times', function() {
+            this.assertEqual(["s", -1], Firmin.parseTime("-1"));
+            this.assertEqual(["s", -1], Firmin.parseTime(-1));
+            this.assertEqual(["s", -1.5], Firmin.parseTime("-1.5"));
+            this.assertEqual(["s", -1.5], Firmin.parseTime(-1.5));
             this.assertEqual(["s", -2], Firmin.parseTime("-2s"));
             this.assertEqual(["s", -1.5], Firmin.parseTime("-1.5s"));
             this.assertEqual(["ms", -500], Firmin.parseTime("-500ms"));

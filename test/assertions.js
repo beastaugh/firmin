@@ -11,6 +11,7 @@ JS.ENV.MatrixAssertions = (function() {
     return {
         assertMatricesEqual: function(expected, actual, message) {
             var fullMessage = this.buildMessage(message, "<?> expected but was\n<?>.", expected, actual);
+            
             this.assertBlock(fullMessage, function() {
                 var passed = true;
                 
